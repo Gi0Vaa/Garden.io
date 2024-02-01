@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  description:  REST API CRUD Plants Database
+  version: 1.0.0
+  title: PlantsDatabase
+paths:
+  /plants:
+    get:
+      summary: ottiene tutti i dati delle piante
+      operationId: getPiante
+      tags:
+        - pianta
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pianta'
+    post:
+      summary: crea una nuova pianta
+      operationId: creaPianta
+      tags:
+        - pianta
+      requestBody:
+        description: Pianta da creare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pianta'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pianta'
+  /plants/{id}:
+    get:
+      summary: ottiene i dati di una pianta
+      operationId: getPianta
+      tags:
+        - pianta
+      parameters:
+        - name: id
+          in: path
+          description: id della pianta da ottenere
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pianta'
+        '404':
+          description: Not Found
+    put:
+      summary: aggiorna i dati di una pianta
+      operationId: aggiornaPianta
+      tags:
+        - pianta
+      parameters:
+        - name: id
+          in: path
+          description: id della pianta da aggiornare
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        description: Pianta da aggiornare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pianta'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pianta'
+        '404':
+          description: Not Found
+    delete:
+      summary: elimina una pianta
+      operationId: eliminaPianta
+      tags:
+        - pianta
+      parameters:
+        - name: id
+          in: path
+          description: id della pianta da eliminare
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    Pianta:
+      type: object
+      required:
+        - id
+        - nome
+        - descrizione
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        descrizione:
+          type: string
+       
