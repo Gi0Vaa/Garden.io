@@ -13,6 +13,31 @@ const app = express();
 app.use(express.json()); // JSON
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(apiSpec));
 
+
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('plants.db');
+
+db.serialize(() => {
+    //crea la tabella plants se non esiste
+    db.run(`
+        CREATE TABLE IF NOT EXISTS plants (
+        idPianta INTEGER PRIMARY KEY AUTOINCREMENT,
+        nomePianta TEXT NOT NULL,
+        descrizionePianta TEXT
+        )
+    `);
+});
+
+//verifico se la tabella è vuota
+db.get('SELECT COUNT(*) as count FROM plants', (err, row) => {
+    if (row.count === 0) {
+        //inserisco i dati di esempio
+        db.run('INSERT INTO plants (nomePianta, descrizionePianta) VALUES (?, ?)', ['rosa', 'una pianta']);
+        db.run('INSERT INTO plants (nomePianta, descrizionePianta) VALUES (?, ?)', ['girasole', 'un altra pianta']);
+    }
+});
+
+
 /*
 const corsOptions = {
     origin: function (origin, callback) {
@@ -55,11 +80,17 @@ app.post('/plants', (req, res) => {
 });
 
 app.get('/plants', (req, res) => {
-    res.send('ok');
+    db.all('SELECT * FROM plants', (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json(rows);
+    });
 });
 
 app.get('/plants/:id', (req, res) => {
-    res.send('ok');
+    
 });
 
 app.put('/plants/:id', (req, res) => {
