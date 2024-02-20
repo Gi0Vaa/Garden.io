@@ -45,11 +45,13 @@ app.use((req, res, next) => { //log delle richieste
     next();
 });
 
+
 app.post('/plants', (req, res) => {
     console.log(req.body);
     res.send('ok');
 });
 
+//get di tutte le piante
 app.get('/plants', async (req, res) => {
     db.all('SELECT * FROM plants', (err, rows) => {
         if (err) {
@@ -61,8 +63,28 @@ app.get('/plants', async (req, res) => {
     });
 });
 
+//get di una singola pianta
 app.get('/plants/:id', (req, res) => {
-    
+    //controllo id valido (intero)
+    const idpassato = parseInt(req.params.id);
+    console.log(idpassato);
+    if (isNaN(idpassato)) {
+        res.status(400).send('id non valido');
+        return;
+    }
+    db.get(`SELECT * FROM plants WHERE idPianta = ${idpassato}`, (err, row) => {
+        if (err) {
+            res.status(500).json({error: err.message});
+            return;
+        }
+        if (row === undefined) {
+            res.status(404).json({error: 'Pianta non trovata'});
+            return;
+        }
+        res.json(row);
+        
+    });
+
 });
 
 app.put('/plants/:id', (req, res) => {
