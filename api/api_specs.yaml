@@ -107,21 +107,20 @@ paths:
           description: No Content
         '404':
           description: Not Found
-
 components:
   schemas:
     Pianta:
       type: object
       required:
-        - id
-        - nome
-        - descrizione
+        - idPianta
+        - nomePianta
+        - descrizionePianta
       properties:
-        id:
+        idPianta:
           type: integer
           format: int64
-        nome:
+        nomePianta:
           type: string
-        descrizione:
+        descrizionePianta:
           type: string
        
