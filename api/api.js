@@ -41,7 +41,7 @@ const db = new sqlite3.Database('plants.db');
 require('./DB/dbFunctions').init(db);
 
 app.use((req, res, next) => { //log delle richieste
-    console.log(`${req.method} ${req.path} dal client ${req.ip} con porta ${req.socket.remotePort}`);
+    console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
     next();
 });
 
@@ -56,8 +56,7 @@ app.get('/plants', async (req, res) => {
             res.status(500).send(err);
             return;
         }
-        console.log(rows);
-        res.send(rows);
+        res.status(200).send(rows);
     });
 });
 
