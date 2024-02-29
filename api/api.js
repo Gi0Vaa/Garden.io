@@ -7,10 +7,17 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "serra"
+    database: "garden"
 });
 
-console.log("DB - Connected");
+//connect to DB
+con.connect((err) => {
+    if(err){
+        console.log('DB - Connection failed');
+        process.exit();
+    }
+    console.log('DB - Connected');
+});
 
 
 //swagger and openapi
@@ -47,15 +54,10 @@ app.use((err, req, res, next) => {
     });
 });
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('plants.db');
-
-
 app.use((req, res, next) => { //log delle richieste
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
     next();
 });
-
 
 app.post('/plants', (req, res) => {
     console.log(req.body);
@@ -64,30 +66,18 @@ app.post('/plants', (req, res) => {
 
 //get di tutte le piante
 app.get('/plants', async (req, res) => {
-    res.status(200).json([{message: 'ok'}]);
+    con.query('SELECT * FROM garden_plant', (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        res.status(200).json(result);
+    });
 });
 
 //get di una singola pianta
 app.get('/plants/:id', (req, res) => {
-    //controllo id valido (intero)
-    const idpassato = parseInt(req.params.id);
-    console.log(idpassato);
-    if (isNaN(idpassato)) {
-        res.status(400).send('id non valido');
-        return;
-    }
-    db.get(`SELECT * FROM plants WHERE idPianta = ${idpassato}`, (err, row) => {
-        if (err) {
-            res.status(500).json({error: err.message});
-            return;
-        }
-        if (row === undefined) {
-            res.status(404).json({error: 'Pianta non trovata'});
-            return;
-        }
-        res.json(row);
-        
-    });
 
 });
 
@@ -101,5 +91,11 @@ app.delete('/plants/:id', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);
+});
+
+process.on('SIGINT', () => {
+    console.log('Server shutting down');
+    con.end();
+    process.exit();
 });
 
