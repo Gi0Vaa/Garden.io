@@ -1,15 +1,15 @@
 openapi: 3.0.0
 info:
-  description:  REST API CRUD Plants Database
+  description:  REST API CRUD Garden.io
   version: 1.0.0
-  title: PlantsDatabase
+  title: Garden.io
 paths:
   /plants:
     get:
-      summary: ottiene tutti i dati delle piante
-      operationId: getPiante
+      summary: get all information of plants
+      operationId: getPlants
       tags:
-        - pianta
+        - plant
       responses:
         '200':
           description: OK
@@ -18,36 +18,36 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pianta'
+                  $ref: '#/components/schemas/plant'
     post:
-      summary: crea una nuova pianta
-      operationId: creaPianta
+      summary: create a new plant
+      operationId: createPlant
       tags:
-        - pianta
+        - plant
       requestBody:
-        description: Pianta da creare
+        description: Plants to add
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pianta'
+              $ref: '#/components/schemas/plant'
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pianta'
+                $ref: '#/components/schemas/plant'
   /plants/{id}:
     get:
-      summary: ottiene i dati di una pianta
-      operationId: getPianta
+      summary: get a plant by id
+      operationId: getPlantById
       tags:
-        - pianta
+        - plant
       parameters:
         - name: id
           in: path
-          description: id della pianta da ottenere
+          description: id of the plant to return
           required: true
           schema:
             type: integer
@@ -57,47 +57,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pianta'
+                $ref: '#/components/schemas/plant'
         '404':
           description: Not Found
     put:
-      summary: aggiorna i dati di una pianta
-      operationId: aggiornaPianta
+      summary: update a plant
+      operationId: updatePlant
       tags:
-        - pianta
+        - plant
       parameters:
         - name: id
           in: path
-          description: id della pianta da aggiornare
+          description: id of the plant to update
           required: true
           schema:
             type: integer
             minimum: 1
       requestBody:
-        description: Pianta da aggiornare
+        description: Plant to update
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pianta'
+              $ref: '#/components/schemas/plant'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pianta'
+                $ref: '#/components/schemas/plant'
         '404':
           description: Not Found
     delete:
-      summary: elimina una pianta
-      operationId: eliminaPianta
+      summary: delete a plant
+      operationId: deletePlant
       tags:
-        - pianta
+        - plant
       parameters:
         - name: id
           in: path
-          description: id della pianta da eliminare
+          description: id of the plant to delete
           required: true
           schema:
             type: integer
@@ -107,20 +107,57 @@ paths:
           description: No Content
         '404':
           description: Not Found
+
+
+
+
 components:
   schemas:
-    Pianta:
+
+    plant:
       type: object
       required:
-        - idPianta
-        - nomePianta
-        - descrizionePianta
+        - PLANT_ID
+        - name
+        - description
       properties:
         idPianta:
           type: integer
-          format: int64
+          format: int32
         nomePianta:
           type: string
         descrizionePianta:
           type: string
-       
+    
+    greenhouse:
+      type: object
+      required:
+        - GREENHOUSE_ID
+        - name
+        - description
+      properties:
+        idGreenhouse:
+          type: integer
+          format: int32
+        nomeGreenhouse:
+          type: string
+        descrizioneGreenhouse:
+          type: string
+    
+    user:
+      type: object
+      required:
+        - MAIL
+        - name
+        - surname
+        - type
+      properties:
+        MAIL:
+          type: integer
+          format: int32
+        name:
+          type: string
+        surname:
+          type: string
+        type:
+          type: string

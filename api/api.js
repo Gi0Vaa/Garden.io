@@ -47,6 +47,10 @@ app.use((err, req, res, next) => {
     });
 });
 
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('plants.db');
+
+
 app.use((req, res, next) => { //log delle richieste
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
     next();
@@ -88,7 +92,7 @@ app.get('/plants/:id', (req, res) => {
 });
 
 app.put('/plants/:id', (req, res) => {
-    res.send('ok');
+    
 }); 
 
 app.delete('/plants/:id', (req, res) => {
