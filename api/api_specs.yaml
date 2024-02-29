@@ -217,8 +217,16 @@ paths:
       responses:
         '204':
           description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouse'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouse'
 
 
   /users:
@@ -343,10 +351,6 @@ components:
 
     plant:
       type: object
-      required:
-        - plant_id
-        - name
-        - description
       properties:
         idPianta:
           type: integer
@@ -358,25 +362,17 @@ components:
     
     greenhouse:
       type: object
-      required:
-        - greenhouse_id
-        - name
-        - description
       properties:
-        idGreenhouse:
+        greenhouse_id:
           type: integer
           format: int32
-        nomeGreenhouse:
+        name:
           type: string
-        descrizioneGreenhouse:
+        description:
           type: string
     
     user:
       type: object
-      required:
-        - email
-        - name
-        - surname
       properties:
         email:
           type: string

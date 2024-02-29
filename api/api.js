@@ -1,3 +1,4 @@
+//const router = require('express').Router();
 const express = require('express');
 const cors = require('cors');
 
@@ -144,6 +145,90 @@ app.post('/users', (req, res) => {
     });
 })
 
+
+//GREENHOUSE
+app.get('/greenhouses', (req, res) => {
+    con.query('SELECT * FROM garden_greenhouse', (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        res.status(200).json(result);
+    });
+});
+
+app.post('/greenhouses', (req, res) => {
+    const greenhouse = req.body;
+    con.query('INSERT INTO garden_greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+    });    
+    res.status(201).json({
+        code: 201,
+        message: "Created"
+    });
+}); 
+
+app.get('/greenhouses/:id', (req, res) => {
+    const id = req.params.id;
+    con.query('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        else if(result.length === 0){
+            res.status(404).json({
+                code: 404,
+                message: "Not found"
+            });
+        }
+        else{
+            res.status(200).json(result[0]);
+        }
+    });
+});
+
+app.put('/greenhouses/:id', (req, res) => {
+    const id = req.params.id;
+    const greenhouse = req.body;
+    con.query('UPDATE garden_greenhouse SET name = ?, description = ? WHERE greenhouse_id = ?', [greenhouse.name, greenhouse.description, id], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        res.status(200).json({
+            code: 200,
+            message: "Updated"
+        });
+    });
+});
+
+app.delete('/greenhouses/:id', (req, res) => {
+    const id = req.params.id;
+    con.query('DELETE FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        res.status(204).json({
+            code: 204,
+            message: "No content"
+        });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);
 });
@@ -154,3 +239,4 @@ process.on('SIGINT', () => {
     process.exit();
 });
 
+//module.exports = router;
