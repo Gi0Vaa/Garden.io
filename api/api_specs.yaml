@@ -256,8 +256,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-        '403':
-          description: Already exists
+        '409':
+          description: Conflict
           content:
             application/json:
               schema:

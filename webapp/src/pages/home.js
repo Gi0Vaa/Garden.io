@@ -6,6 +6,8 @@ import Header from '../components/header';
 function Home() {
     useEffect(() => {
         generatePLantCard();
+
+
     }, []);
 
     function generatePLantCard(){
