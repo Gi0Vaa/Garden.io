@@ -9,6 +9,7 @@ import {
 //pages
 import Home from './pages/home';
 import Login from './pages/auth/login';
+import Register from './pages/auth/register';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </Router>
   );
