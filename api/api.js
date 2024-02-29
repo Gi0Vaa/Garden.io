@@ -1,6 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 
+//DB
+const mysql = require('mysql');
+const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "serra"
+});
+
+console.log("DB - Connected");
+
+
+//swagger and openapi
 const yaml = require('yamljs');
 const apiSpec = yaml.load('./api_specs.yaml');
 
@@ -47,13 +60,7 @@ app.post('/plants', (req, res) => {
 
 //get di tutte le piante
 app.get('/plants', async (req, res) => {
-    db.all('SELECT * FROM plants', (err, rows) => {
-        if (err) {
-            res.status(500).send(err);
-            return;
-        }
-        res.status(200).send(rows);
-    });
+    res.status(200).json([{message: 'ok'}]);
 });
 
 //get di una singola pianta
