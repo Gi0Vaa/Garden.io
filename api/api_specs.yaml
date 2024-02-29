@@ -64,33 +64,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /users:
-    post:
-      summary: create a new user
-      operationId: createUser
-      tags:
-        - user
-      requestBody:
-        description: Users to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        '403':
-          description: Already exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-             
     put:
       summary: update a plant
       operationId: updatePlant
@@ -139,6 +112,231 @@ paths:
         '404':
           description: Not Found
 
+  /greenhouses:
+    get:
+      summary: get all information of greenhouses
+      operationId: getGreenhouses
+      tags:
+        - greenhouse
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/greenhouse'
+    post:
+      summary: create a new greenhouse
+      operationId: createGreenhouse
+      tags:
+        - greenhouse
+      requestBody:
+        description: Greenhouses to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/greenhouse'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouse'
+
+
+  /greenhouses/{id}: 
+    get:
+      summary: get a greenhouse by id
+      operationId: getGreenhouseById
+      tags:
+        - greenhouse
+      parameters:
+        - name: id
+          in: path
+          description: id of the greenhouse to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      summary: update a greenhouse
+      operationId: updateGreenhouse
+      tags:
+        - greenhouse
+      parameters:
+        - name: id
+          in: path
+          description: id of the greenhouse to update
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        description: Greenhouse to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/greenhouse'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouse'
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a greenhouse
+      operationId: deleteGreenhouse
+      tags:
+        - greenhouse
+      parameters:
+        - name: id
+          in: path
+          description: id of the greenhouse to delete
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+
+
+  /users:
+    get:
+      summary: get all information of users
+      operationId: getUsers
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+      
+    post:
+      summary: create a new user
+      operationId: createUser
+      tags:
+        - user
+      requestBody:
+        description: Users to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '403':
+          description: Already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+      
+  /users/{email}:
+    get:
+      summary: get a user by email
+      operationId: getUserByemail
+      tags:
+        - user
+      parameters:
+        - name: email
+          in: path
+          description: email of the user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      summary: update a user
+      operationId: updateUser
+      tags:
+        - user
+      parameters:
+        - name: email
+          in: path
+          description: email of the user to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a user
+      operationId: deleteUser
+      tags:
+        - user
+      parameters:
+        - name: email
+          in: path
+          description: email of the user to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+
 
 
 
@@ -148,7 +346,7 @@ components:
     plant:
       type: object
       required:
-        - PLANT_ID
+        - plant_id
         - name
         - description
       properties:
@@ -163,7 +361,7 @@ components:
     greenhouse:
       type: object
       required:
-        - GREENHOUSE_ID
+        - greenhouse_id
         - name
         - description
       properties:
@@ -178,14 +376,13 @@ components:
     user:
       type: object
       required:
-        - MAIL
+        - email
         - name
         - surname
         - type
       properties:
-        MAIL:
-          type: integer
-          format: int32
+        email:
+          type: string
         name:
           type: string
         surname:
