@@ -78,7 +78,23 @@ app.get('/plants', async (req, res) => {
 
 //get di una singola pianta
 app.get('/plants/:id', (req, res) => {
-
+    const id = req.params.id;
+    con.query('SELECT * FROM garden_plant WHERE PLANT_ID = ?', [id], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else if(result.length === 0){
+            res.status(404).json({
+                code: 404,
+                message: "Not found"
+            });
+        }
+        else{
+            res.status(200).json(result[0]);
+        }
+    })
 });
 
 app.put('/plants/:id', (req, res) => {
