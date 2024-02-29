@@ -342,7 +342,34 @@ paths:
           description: No Content
         '404':
           description: Not Found
-
+  /greenhouse/users/{email}:
+    get:
+      summary: get all greenhouse of a user
+      operationId: getAllUsersGreenhouse
+      tags:
+        - greenhouse of a user
+      parameters:
+        - name: email
+          in: path
+          description: email of the user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/greenhouseUser'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
 
 
@@ -380,6 +407,16 @@ components:
           type: string
         surname:
           type: string
+
+    greenhouseUser:
+      type: object
+      properties:
+        greenhouse_id:
+          type: integer
+          format: int32
+        email:
+          type: string
+
     error:
       type: object
       required:
@@ -391,3 +428,4 @@ components:
           format: int32
         message:
           type: string
+

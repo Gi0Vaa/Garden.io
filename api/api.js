@@ -249,6 +249,30 @@ app.delete('/greenhouses/:id', (req, res) => {
     });
 });
 
+//GREENHOUSE USERS
+app.get('/greenhouses/users/:email', (req, res) => {
+    const email = req.params.email;
+    con.query('SELECT * FROM garden_personal_greenhouse WHERE email = ?', [email], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        if(result.length === 0){
+            res.status(404).json({
+                code: 404,
+                message: "Not found"
+            });
+        }
+        res.status(200).json(result);
+    });
+});
+
+
+
+
+
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);
 });
@@ -258,5 +282,7 @@ process.on('SIGINT', () => {
     con.end();
     process.exit();
 });
+
+
 
 //module.exports = router;
