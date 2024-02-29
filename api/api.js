@@ -79,7 +79,7 @@ app.get('/plants', async (req, res) => {
 //get di una singola pianta
 app.get('/plants/:id', (req, res) => {
     const id = req.params.id;
-    con.query('SELECT * FROM garden_plant WHERE PLANT_ID = ?', [id], (err, result, fields) => {
+    con.query('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
         if(err){
             res.status(500).json({
                 error: "Query failed"
@@ -108,7 +108,7 @@ app.delete('/plants/:id', (req, res) => {
 //USERS
 app.post('/users', (req, res) => {
     const user = req.body;
-    con.query('SELECT * FROM garden_user WHERE EMAIL = ?', [user.email], (err, result, fields) => {
+    con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
         if(err){
             res.status(500).json({
                 error: "Query failed"
@@ -116,14 +116,14 @@ app.post('/users', (req, res) => {
         }
         else{
             if(result.length === 0){
-                con.query('INSERT INTO garden_user (EMAIL, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err, result, fields) => {
+                con.query('INSERT INTO garden_user (email, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err, result, fields) => {
                     if(err){
                         console.log(err);
                         res.status(500).json({
                             error: "Query failed"
                         });
                     }
-                    con.query('SELECT * FROM garden_user WHERE EMAIL = ?', [user.email], (err, result, fields) => {
+                    con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
                         if(err){
                             res.status(500).json({
                                 error: "Query failed"

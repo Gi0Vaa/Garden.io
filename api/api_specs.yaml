@@ -111,32 +111,6 @@ paths:
           description: No Content
         '404':
           description: Not Found
-  /users:
-    post:
-      summary: create a new user
-      operationId: createUser
-      tags:
-        - user
-      requestBody:
-        description: Users to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        '403':
-          description: Already exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
 
   /greenhouses:
     get:
@@ -172,8 +146,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/greenhouse'
-
-
   /greenhouses/{id}: 
     get:
       summary: get a greenhouse by id
