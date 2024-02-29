@@ -107,6 +107,23 @@ app.delete('/plants/:id', (req, res) => {
 });
 
 //USERS
+app.get('/users', (req, res) => {
+    con.query('SELECT * FROM garden_user', (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        if(result.length === 0){
+            res.status(404).json({
+                code: 404,
+                message: "Not found"
+            });
+        }
+        res.status(200).json(result);
+    });
+});
+
 app.get('/users/:email', (req, res) => {
     const email = req.params.email;
     con.query('SELECT * FROM garden_user WHERE email = ?', [email], (err, result, fields) => {
@@ -163,7 +180,23 @@ app.post('/users', (req, res) => {
 
         }
     });
-})
+});
+
+app.put('/users/:email', (req, res) => {
+    const email = req.params.email;
+    const user = req.body;
+    con.query('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        res.status(200).json({
+            code: 200,
+            message: "Updated"
+        });
+    });
+});
 
 
 //GREENHOUSE
