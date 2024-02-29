@@ -105,6 +105,45 @@ app.delete('/plants/:id', (req, res) => {
     res.send('ok');
 });
 
+//USERS
+app.post('/users', (req, res) => {
+    const user = req.body;
+    con.query('SELECT * FROM garden_user WHERE EMAIL = ?', [user.email], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else{
+            if(result.length === 0){
+                con.query('INSERT INTO garden_user (EMAIL, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err, result, fields) => {
+                    if(err){
+                        console.log(err);
+                        res.status(500).json({
+                            error: "Query failed"
+                        });
+                    }
+                    con.query('SELECT * FROM garden_user WHERE EMAIL = ?', [user.email], (err, result, fields) => {
+                        if(err){
+                            res.status(500).json({
+                                error: "Query failed"
+                            });
+                        }
+                        res.status(201).json(result[0]);
+                    });
+                });
+            }
+            else{
+                res.status(403).json({
+                    code: 403,
+                    message: "Already exists"
+                });
+            }
+
+        }
+    });
+})
+
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);
 });

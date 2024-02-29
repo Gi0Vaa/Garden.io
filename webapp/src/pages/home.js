@@ -15,8 +15,8 @@ function Home() {
             response.data.forEach((element) => {
                 const card = `
                 <div class='bg-green-400 p-3 rounded-md' id='plantCard'>
-                    <h3>${element.nomePianta}</h3>
-                    <h4>${element.descrizionePianta}</h4>
+                    <h3>${element.name}</h3>
+                    <h4>${element.description}</h4>
                 </div>
                 `;
                 container.innerHTML += card;

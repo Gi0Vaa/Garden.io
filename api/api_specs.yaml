@@ -64,33 +64,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /users:
-    post:
-      summary: create a new user
-      operationId: createUser
-      tags:
-        - user
-      requestBody:
-        description: Users to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        '403':
-          description: Already exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-             
     put:
       summary: update a plant
       operationId: updatePlant
@@ -138,6 +111,32 @@ paths:
           description: No Content
         '404':
           description: Not Found
+  /users:
+    post:
+      summary: create a new user
+      operationId: createUser
+      tags:
+        - user
+      requestBody:
+        description: Users to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '403':
+          description: Already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
 
 
@@ -178,19 +177,15 @@ components:
     user:
       type: object
       required:
-        - MAIL
+        - email
         - name
         - surname
-        - type
       properties:
-        MAIL:
-          type: integer
-          format: int32
+        email:
+          type: string
         name:
           type: string
         surname:
-          type: string
-        type:
           type: string
     error:
       type: object
