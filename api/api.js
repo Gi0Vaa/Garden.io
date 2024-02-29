@@ -107,6 +107,26 @@ app.delete('/plants/:id', (req, res) => {
 });
 
 //USERS
+app.get('/users/:email', (req, res) => {
+    const email = req.params.email;
+    con.query('SELECT * FROM garden_user WHERE email = ?', [email], (err, result, fields) => {
+        if(err){
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else if(result.length === 0){
+            res.status(404).json({
+                code: 404,
+                message: "Not found"
+            });
+        }
+        else{
+            res.status(200).json(result[0]);
+        }
+    })
+})
+
 app.post('/users', (req, res) => {
     const user = req.body;
     con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
@@ -135,9 +155,9 @@ app.post('/users', (req, res) => {
                 });
             }
             else{
-                res.status(403).json({
-                    code: 403,
-                    message: "Already exists"
+                res.status(409).json({
+                    code: 409,
+                    message: "User already exist"
                 });
             }
 
