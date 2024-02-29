@@ -34,12 +34,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('plants.db');
-
-//initialize DB
-require('./DB/dbFunctions').init(db);
-
 app.use((req, res, next) => { //log delle richieste
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
     next();
