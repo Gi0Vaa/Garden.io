@@ -3,12 +3,18 @@ import { useEffect } from 'react';
 
 import Header from '../components/header';
 
-function Home() {
+async function Home() {
     useEffect(() => {
         generatePLantCard();
-
-
     }, []);
+
+    const email = localStorage.getItem('email');
+    const greenhouse = [];
+    await axios.get(`http://localhost:8080/greenhouse/users/${email}`).then((response) => {
+        greenhouse.push(response.data);
+    }).catch((error) => {
+        window.location.href = '/greenhouse';
+    });
 
     function generatePLantCard(){
         const container = document.getElementById('plantsContainer');
