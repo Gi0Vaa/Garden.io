@@ -60,7 +60,7 @@ function FirstGreenhouse() {
     }
 
     return (
-        <div className='grid md:grid-cols-4 place-content-center grid-cols-1 p-3 h-screen bg-green-50'>
+        <div className='grid md:grid-cols-4 place-content-center grid-cols-1 p-3 h-screen bg-green-100'>
             <div></div>
             <div className='md:col-span-2 flex flex-col gap-2 text-center '>
                 <div className="p-2 rounded-md text-left  bg-green-300 backdrop-blur-md shadow-md flex flex-col gap-2">
