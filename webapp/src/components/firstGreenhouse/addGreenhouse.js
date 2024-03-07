@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import greenhouseImg from '../../assets/img/greenhouse.svg';
 
-function AddGreenhouse(greenhouse){
+function AddGreenhouse({greenhouse}){
     useEffect(() => {
         document.getElementById('greenhouseName').value = greenhouse.name;
         document.getElementById('greenhouseDescription').value = greenhouse.description;

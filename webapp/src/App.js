@@ -12,6 +12,7 @@ import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import FirstGreenhouse from './pages/firstGreenhouse';
 import Welcome from './pages/status/welcome';
+import Error from './pages/status/error';
 
 function App() {
   if (localStorage.getItem('email') !== null) {
@@ -23,6 +24,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/welcome' element={<Welcome />} />
+          <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
         </Routes>
       </Router>
     );

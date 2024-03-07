@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import plantsImg from '../../assets/img/Potted-plants.svg'
 import axios from 'axios'
 
-function AddPlant(plant) {
+function AddPlant({plant}) {
     let dataRef = useRef();
     useEffect(() => {
         axios.get('http://localhost:8080/plants')

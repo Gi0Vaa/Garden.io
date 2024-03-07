@@ -24,6 +24,10 @@ function FirstGreenhouse() {
                     if (response.status === 201) {
                         window.location.href = '/welcome';
                     }
+                })
+                .catch(error => {
+                    console.log(error);
+                    window.location.href = '/error';
                 });
         }
     }
@@ -52,13 +56,13 @@ function FirstGreenhouse() {
     let content = '';
     switch (step) {
         case 1:
-            content = <AddGreenhouse {...greenhouse} />
+            content = <AddGreenhouse greenhouse={greenhouse} />
             break;
         case 2:
-            content = <AddPlant {...plant} />
+            content = <AddPlant plant={plant} />
             break;
         default:
-            content = <AddPlant {...plant} />
+            content = <AddPlant plant={plant} />
     }
 
     return (
