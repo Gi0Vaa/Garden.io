@@ -13,7 +13,7 @@ async function Home() {
     await axios.get(`http://localhost:8080/greenhouse/users/${email}`).then((response) => {
         greenhouse.push(response.data);
     }).catch((error) => {
-        window.location.href = '/greenhouse';
+        window.location.href = '/start';
     });
 
     function generatePLantCard(){

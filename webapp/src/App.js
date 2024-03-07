@@ -10,7 +10,7 @@ import {
 import Home from './pages/home';
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
-import Greenhouse from './pages/greenhouse';
+import FirstGreenhouse from './pages/firstGreenhouse';
 
 function App() {
   if (localStorage.getItem('email') !== null) {
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/greenhouse' element={<Greenhouse />} />
+          <Route path='/start' element={<FirstGreenhouse />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
         </Routes>
