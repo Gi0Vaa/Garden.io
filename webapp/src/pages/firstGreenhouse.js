@@ -1,14 +1,17 @@
 import axios from 'axios';
 import AddGreenhouse from '../components/firstGreenhouse/addGreenhouse';
 import AddPlant from '../components/firstGreenhouse/addPlant';
+import { useNavigate } from 'react-router-dom';
 
 const { useEffect, useState } = require("react")
 
 function FirstGreenhouse() {
     const [greenhouse, setGreenhouse] = useState({ name: '', description: '' });
     const [plant, setPlant] = useState({ plant_id: 1 });
-
     const [step, setStep] = useState(1);
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         document.title = 'Greenhouse | Garden.io';
     });
@@ -27,7 +30,13 @@ function FirstGreenhouse() {
                 })
                 .catch(error => {
                     console.log(error);
-                    window.location.href = '/error';
+                    navigate('/error', {
+                        state: {
+                            code: error.response.status,
+                            status: error.response.statusText,
+                            message: error.response.data.message
+                        }
+                    } );
                 });
         }
     }

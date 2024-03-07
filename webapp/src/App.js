@@ -24,6 +24,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/welcome' element={<Welcome />} />
+          <Route path='/error' element={<Error />} />
           <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
         </Routes>
       </Router>
