@@ -15,7 +15,9 @@ function Home() {
             console.log(response.data);
         })
         .catch(err => {
-            console.log(err.response.data);
+            if(err.response.data.code === 404){
+                window.location.href = '/start';
+            }
         });
 
     return (

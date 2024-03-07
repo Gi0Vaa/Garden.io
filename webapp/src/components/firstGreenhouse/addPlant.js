@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import plantsImg from '../../assets/img/background/Potted-plants.svg'
+import plantsImg from '../../assets/img/Potted-plants.svg'
 import axios from 'axios'
 
 function AddPlant(plant) {

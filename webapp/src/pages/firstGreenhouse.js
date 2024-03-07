@@ -22,7 +22,7 @@ function FirstGreenhouse() {
             axios.post('http://localhost:8080/greenhouses', greenhouse)
                 .then(response => {
                     if (response.status === 201) {
-                        window.location.href = '/';
+                        window.location.href = '/welcome';
                     }
                 });
         }
@@ -58,7 +58,7 @@ function FirstGreenhouse() {
             content = <AddPlant {...plant} />
             break;
         default:
-            content = <AddGreenhouse {...greenhouse} />
+            content = <AddPlant {...plant} />
     }
 
     return (

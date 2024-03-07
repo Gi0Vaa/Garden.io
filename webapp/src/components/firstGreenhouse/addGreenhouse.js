@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import greenhouseImg from '../../assets/img/background/greenhouse.svg';
+import greenhouseImg from '../../assets/img/greenhouse.svg';
 
 function AddGreenhouse(greenhouse){
     useEffect(() => {

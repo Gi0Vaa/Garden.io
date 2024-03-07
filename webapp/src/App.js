@@ -11,6 +11,7 @@ import Home from './pages/home';
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import FirstGreenhouse from './pages/firstGreenhouse';
+import Welcome from './pages/status/welcome';
 
 function App() {
   if (localStorage.getItem('email') !== null) {
@@ -21,6 +22,7 @@ function App() {
           <Route path='/start' element={<FirstGreenhouse />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/welcome' element={<Welcome />} />
         </Routes>
       </Router>
     );
