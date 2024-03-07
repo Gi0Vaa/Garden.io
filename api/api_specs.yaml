@@ -342,7 +342,7 @@ paths:
           description: No Content
         '404':
           description: Not Found
-  /greenhouse/users/{email}:
+  /mapgreenhouses/{email}:
     get:
       summary: get all greenhouse of a user
       operationId: getAllUsersGreenhouse
@@ -400,8 +400,11 @@ components:
 
     dtoCreateGreenhouse:
       type: object
+      required:
+        - email
+        - name
       properties:
-        mail:
+        email:
           type: string
         name:
           type: string

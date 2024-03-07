@@ -216,6 +216,7 @@ app.get('/greenhouses', (req, res) => {
 
 app.post('/greenhouses', (req, res) => {
     const greenhouse = req.body;
+    
     con.query('INSERT INTO garden_greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err, result, fields) => {
         if (err) {
             return res.status(500).json({
@@ -239,12 +240,13 @@ app.post('/greenhouses', (req, res) => {
                     message: "Query failed"
                 });
             }
+            else{
+                return res.status(201).json({
+                    code: 201,
+                    message: "Created"
+                });
+            }
         });
-    });
-
-    res.status(201).json({
-        code: 201,
-        message: "Created"
     });
 });
 
@@ -303,7 +305,7 @@ app.delete('/greenhouses/:id', (req, res) => {
 });
 
 //GREENHOUSE USERS
-app.get('/greenhouses/users/:email', (req, res) => {
+app.get('/mapgreenhouses/:email', (req, res) => {
     const email = req.params.email;
     con.query('SELECT * FROM garden_personal_greenhouse WHERE email = ?', [email], (err, result, fields) => {
         if (err) {

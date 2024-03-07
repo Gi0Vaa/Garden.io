@@ -17,6 +17,8 @@ function FirstGreenhouse() {
         saveData();
         setStep(step + 1);
         if (step === 2) {
+            const obj =  greenhouse;
+            obj.email = localStorage.getItem('email');
             axios.post('http://localhost:8080/greenhouses', greenhouse)
                 .then(response => {
                     if (response.status === 201) {
