@@ -9,7 +9,7 @@ function GreenhouseCard({data}) {
             .then(response => {
                 setGreenhouse(response.data);
             });
-    },[]);
+    },[data]);
 
     return(
         <div className="p-3 bg-sky-200 hover:bg-violet-300 rounded-md text-green-900 flex flex-col gap-3 hover:shadow-md transition-all">
