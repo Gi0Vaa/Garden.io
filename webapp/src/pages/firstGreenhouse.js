@@ -14,7 +14,7 @@ function FirstGreenhouse() {
 
     useEffect(() => {
         document.title = 'Greenhouse | Garden.io';
-    });
+    }, []);
 
     function next() {
         saveData();
