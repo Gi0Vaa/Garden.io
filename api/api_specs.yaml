@@ -370,6 +370,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  
+  /mapplants:
+    post:
+      summary: map a plant to a greenhouse
+      operationId: mapPlant
+      tags:
+        - plants of a greenhouse
+      requestBody:
+        description: Map to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtoMapPlant'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtoMapPlant'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  
+  /mapplants/{greenhouse_id}:
+    get:
+      summary: get all plants of a greenhouse
+      operationId: getAllGreenhousePlants
+      tags:
+        - plants of a greenhouse
+      parameters:
+        - name: greenhouse_id
+          in: path
+          description: id of the greenhouse to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/dtoMapPlant'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  
+              
 
 
 
@@ -410,6 +468,30 @@ components:
           type: string
         description:
           type: string
+        
+    dtoMapPlant:
+      type: object
+      required:
+        - greenhouse_id
+        - plant_id
+      properties:
+        greenhouse_id:
+          type: integer
+          format: int32
+        plant_id:
+          type: integer
+          format: int32
+
+    daoMapPlant:
+      type: object
+      properties:
+        greenhouse_id:
+          type: integer
+          format: int32
+        plant_id:
+          type: integer
+          format: int32
+        
     
     user:
       type: object
