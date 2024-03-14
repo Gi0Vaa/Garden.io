@@ -2,26 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 
-//DB
-const mysql = require('mysql2');
-
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "garden"
-});
-
-con.connect((err) => {
-    if (err) {
-        console.log('DB - Connection failed');
-        process.exit();
-    }
-    else {
-        console.log('DB - Connected');
-    }
-});
-
+//router
+const router = require('express').Router();
 
 //swagger and openapi
 const yaml = require('yamljs');
@@ -62,309 +44,22 @@ app.use((req, res, next) => { //log delle richieste
     next();
 });
 
-app.post('/plants', (req, res) => {
-    console.log(req.body);
-    res.send('ok');
-});
 
-//get di tutte le piante
-app.get('/plants', async (req, res) => {
-    con.query('SELECT * FROM garden_plant', (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        res.status(200).json(result);
-    });
-});
+//ROUTES
+const routes = require('./routes/index.js');
 
-//get di una singola pianta
-app.get('/plants/:id', (req, res) => {
-    const id = req.params.id;
-    con.query('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        else if (result.length === 0) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        else {
-            res.status(200).json(result[0]);
-        }
-    })
-});
-
-app.put('/plants/:id', (req, res) => {
-
-});
-
-app.delete('/plants/:id', (req, res) => {
-    res.send('ok');
-});
-
-//USERS
-app.get('/users', (req, res) => {
-    con.query('SELECT * FROM garden_user', (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        if (result.length === 0) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        res.status(200).json(result);
-    });
-});
-
-app.get('/users/:email', (req, res) => {
-    const email = req.params.email;
-    con.query('SELECT * FROM garden_user WHERE email = ?', [email], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        else if (result.length === 0) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        else {
-            res.status(200).json(result[0]);
-        }
-    })
-})
-
-app.post('/users', (req, res) => {
-    const user = req.body;
-    con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        else {
-            if (result.length === 0) {
-                con.query('INSERT INTO garden_user (email, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err, result, fields) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({
-                            error: "Query failed"
-                        });
-                    }
-                    con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
-                        if (err) {
-                            res.status(500).json({
-                                error: "Query failed"
-                            });
-                        }
-                        res.status(201).json(result[0]);
-                    });
-                });
-            }
-            else {
-                res.status(409).json({
-                    code: 409,
-                    message: "User already exist"
-                });
-            }
-
-        }
-    });
-});
-
-app.put('/users/:email', (req, res) => {
-    const email = req.params.email;
-    const user = req.body;
-    con.query('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        res.status(200).json({
-            code: 200,
-            message: "Updated"
-        });
-    });
-});
-
-
-//GREENHOUSE
-app.get('/greenhouses', (req, res) => {
-    con.query('SELECT * FROM garden_greenhouse', (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        res.status(200).json(result);
-    });
-});
-
-app.post('/greenhouses', (req, res) => {
-    const greenhouse = req.body;
-    
-    con.query('INSERT INTO garden_greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-    });
-    con.query('SELECT MAX(greenhouse_id) as id FROM garden_greenhouse', (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        const id = result[0].id;
-        con.query('INSERT INTO garden_personal_greenhouse (greenhouse_id, email) VALUES (?, ?)', [id, greenhouse.email], (err, result, fields) => {
-            if (err) {
-                return res.status(500).json({
-                    code: 500,
-                    message: "Query failed"
-                });
-            }
-            else{
-                return res.status(201).json({
-                    greenhouse_id: id,
-                    name: greenhouse.name,
-                    description: greenhouse.description
-                });
-            }
-        });
-    });
-});
-
-app.get('/greenhouses/:id', (req, res) => {
-    const id = req.params.id;
-    con.query('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        else if (result.length === 0) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        else {
-            res.status(200).json(result[0]);
-        }
-    });
-});
-
-app.put('/greenhouses/:id', (req, res) => {
-    const id = req.params.id;
-    const greenhouse = req.body;
-    con.query('UPDATE garden_greenhouse SET name = ?, description = ? WHERE greenhouse_id = ?', [greenhouse.name, greenhouse.description, id], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        res.status(200).json({
-            code: 200,
-            message: "Updated"
-        });
-    });
-});
-
-app.delete('/greenhouses/:id', (req, res) => {
-    const id = req.params.id;
-    con.query('DELETE FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        res.status(204).json({
-            code: 204,
-            message: "No content"
-        });
-    });
-});
-
-//GREENHOUSE USERS
-app.get('/mapgreenhouses/:email', (req, res) => {
-    const email = req.params.email;
-    con.query('SELECT * FROM garden_personal_greenhouse WHERE email = ?', [email], (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        if (result.length === 0) {
-            return res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        return res.status(200).json(result);
-    });
-});
-
-//MapPlant
-app.get('/mapplants/:greenhouse_id', (req, res) => {
-    const id = req.params.greenhouse_id;
-    con.query('SELECT * FROM garden_plant WHERE greenhouse_id = ?', [id], (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        if (result.length === 0) {
-            return res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        return res.status(200).json(result);
-    });
-});
-
-app.post('/mapplants', (req, res) => {
-    const map = req.body;
-    con.query('INSERT INTO garden_plant_greenhouse (greenhouse_id, plant_id ) VALUES (?, ?)', [map.greenhouse_id, map.plant_id ], (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        return res.status(201).json(map);
-    });
-});
-
-
+app.use(routes.users);
+app.use(routes.plants);
+app.use(routes.greenhouses);
+app.use(routes.greenhousesUsers);
+app.use(routes.greenhousesPlants);
 
 
 
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);
 });
+
 
 process.on('SIGINT', () => {
     console.log('Server shutting down');
@@ -373,5 +68,4 @@ process.on('SIGINT', () => {
 });
 
 
-
-//module.exports = router;
+module.exports = router;
