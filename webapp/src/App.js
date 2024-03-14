@@ -15,6 +15,7 @@ import Welcome from './pages/status/welcome';
 import Error from './pages/status/error';
 import Herbarium from './pages/herbarium';
 import Plant from './pages/plant';
+import Greenhouse from './pages/greenhouse';
 
 function App() {
   if (localStorage.getItem('email') !== null) {
@@ -28,6 +29,7 @@ function App() {
           <Route path='/welcome' element={<Welcome />} />
           <Route path='/herbarium' element={<Herbarium />} />
           <Route path='/plant' element={<Plant />} />
+          <Route path='/greenhouse' element={<Greenhouse />} />
           <Route path='/error' element={<Error />} />
           <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
         </Routes>

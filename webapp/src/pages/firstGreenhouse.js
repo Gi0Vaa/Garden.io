@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const { useEffect, useState } = require("react")
 
 function FirstGreenhouse() {
-    const [greenhouse, setGreenhouse] = useState({ name: '', description: '' });
+    const [greenhouse, setGreenhouse] = useState({ name: '', description: ''});
     const [plant, setPlant] = useState({ plant_id: 1 });
     const [step, setStep] = useState(1);
 
@@ -20,13 +20,20 @@ function FirstGreenhouse() {
         saveData();
         setStep(step + 1);
         if (step === 2) {
-            const obj =  greenhouse;
+            const obj = greenhouse;
             obj.email = localStorage.getItem('email');
-            axios.post('http://localhost:8080/greenhouses', greenhouse)
+            axios.post('http://localhost:8080/greenhouses', obj)
                 .then(response => {
-                    if (response.status === 201) {
-                        window.location.href = '/welcome';
+                    const obj = {
+                        plant_id: plant.plant_id,
+                        greenhouse_id: response.data.greenhouse_id
                     }
+                    axios.post('http://localhost:8080/mapplants', obj)
+                        .then(response => {
+                            if(response.status === 201) {
+                                navigate('/welcome');
+                            }
+                        })
                 })
                 .catch(error => {
                     console.log(error);

@@ -2,8 +2,7 @@ import axios from 'axios'
 import Header from "../components/header"
 import defaultImg from '../assets/img/plants/default.svg'
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 function Plant(){
     const navigate = useNavigate();

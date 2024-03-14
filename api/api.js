@@ -242,8 +242,9 @@ app.post('/greenhouses', (req, res) => {
             }
             else{
                 return res.status(201).json({
-                    code: 201,
-                    message: "Created"
+                    greenhouse_id: id,
+                    name: greenhouse.name,
+                    description: greenhouse.description
                 });
             }
         });
@@ -353,10 +354,7 @@ app.post('/mapplants', (req, res) => {
                 message: "Query failed"
             });
         }
-        return res.status(201).json({
-            code: 201,
-            message: "Created"
-        });
+        return res.status(201).json(map);
     });
 });
 
