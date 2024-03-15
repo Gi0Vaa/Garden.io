@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 
 function PlantCard({plant}){
     const navigate = useNavigate();
-
     function handleClick() {
         navigate(`/plant?id=${plant.plant_id}`);
     }

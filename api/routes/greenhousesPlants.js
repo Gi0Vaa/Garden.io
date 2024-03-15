@@ -7,7 +7,7 @@ const router = Router();
 //MapPlant
 router.get('/mapplants/:greenhouse_id', (req, res) => {
     const id = req.params.greenhouse_id;
-    con.query('SELECT * FROM garden_plant WHERE greenhouse_id = ?', [id], (err, result, fields) => {
+    con.query('SELECT * FROM garden_plant_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 code: 500,
