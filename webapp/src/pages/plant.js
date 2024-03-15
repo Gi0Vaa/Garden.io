@@ -33,6 +33,15 @@ function Plant(){
                         setImageUrl('');
                     }
                     setPlant(response.data)
+                })
+                .catch(() => {
+                    navigate('/error', {
+                        state: {
+                            code: 404,
+                            status: "Page not Found",
+                            message: "Sorry this page doesn't exist :/"
+                        }
+                    } );
                 });
         }
     }, [navigate, id, plant.name]);

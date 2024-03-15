@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function Header({index}) {
+function Header({index, greenhouse}) {
     useEffect(() => {
         const links = document.getElementById('pagesLinks');
         if(index !== undefined){
@@ -10,7 +10,10 @@ function Header({index}) {
 
     return(
         <header className='grid grid-cols-4 p-3 bg-green-300 text-green-800'>
-            <h2>Garden.io</h2>
+           <div className="flex flex-row items-center gap-2">
+                <a href="/"><h2>Garden.io</h2></a>
+                <h3 className="font-medium">{greenhouse ? ` / ${greenhouse}` : "" }</h3>
+            </div>
             <div className='col-span-2'></div>
             <div className="flex flex-row gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">
                 <a href="/" className="">Home</a>

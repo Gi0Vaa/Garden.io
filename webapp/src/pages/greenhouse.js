@@ -17,13 +17,17 @@ function Greenhouse() {
             })
     }, [location.state.greenhouse]);
 
-    return(
+    return (
         <div>
-            <Header />
+            <Header greenhouse={greenhouse.name}/>
             <div className='grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
                 <div className='md:col-span-2' id='greenhouses'>
-                    <h3 className='py-1 my-3 border-b-2 border-green-500 '>{greenhouse.name}</h3>
+                    <div className='flex flex-row gap-2 my-3 text-white'>
+                        <h3 className='font-normal bg-green-700 p-1'>Dashboard</h3>
+                        <h3 className='font-normal bg-green-700 p-1'>Plants</h3>
+                        <h3 className='font-normal bg-green-700 p-1'>Settings</h3>
+                    </div>
                     <PlantsGrid greenhousePlantsId={data} />
                 </div>
                 <div></div>
