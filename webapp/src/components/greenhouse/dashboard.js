@@ -1,12 +1,12 @@
-import Bell from '../assets/icons/bell';
-import Check from '../assets/icons/check';
+import Bell from '../../assets/icons/bell';
+import Check from '../../assets/icons/check';
 
 function Dashboard({ greenhouse }) {
     return (
-        <div className="p-3 bg-violet-600 text-white rounded-md flex flex-col gap-2">
+        <div className="p-3 bg-slate-50 text-green-800 rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
                 <h3>{greenhouse.name}</h3>
-                <div className='w-6 h-6 transition duration-300 fill-current text-slate-300 hover:text-slate-50'>
+                <div className='w-6 h-6 transition duration-300 fill-current text-sky-300 hover:text-sky-500'>
                     <Bell />
                 </div>
             </div>
@@ -22,7 +22,7 @@ function Dashboard({ greenhouse }) {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2 items-center">
-                    <div className='w-32 h-32 text-slate-50'>
+                    <div className='w-32 h-32 text-green-500'>
                         <Check />
                     </div>
                     <h4>La tua serra è in buone condizioni!</h4>

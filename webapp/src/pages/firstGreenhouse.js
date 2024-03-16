@@ -13,7 +13,7 @@ function FirstGreenhouse() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.title = 'Greenhouse | Garden.io';
+        document.title = 'Start | Garden.io';
     }, []);
 
     function next() {
