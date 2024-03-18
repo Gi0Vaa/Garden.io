@@ -37,6 +37,38 @@ router.post('/mapplants', (req, res) => {
     });
 });
 
+router.put('/mapplants/:greenhouse_id/:plant_id', (req, res) => {
+    const greenhouse_id = req.params.greenhouse_id;
+    const plant_id = req.params.plant_id;
+    const map = req.body;
+    con.query('UPDATE garden_plant_greenhouse SET ? WHERE greenhouse_id = ? AND plant_id = ?', [map, greenhouse_id, plant_id], (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        return res.status(200).json(map);
+    });
+});
+
+router.delete('/mapplants/:greenhouse_id/:plant_id', (req, res) => {
+    const greenhouse_id = req.params.greenhouse_id;
+    const plant_id = req.params.plant_id;
+    con.query('DELETE FROM garden_plant_greenhouse WHERE greenhouse_id = ? AND plant_id = ?', [greenhouse_id, plant_id], (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            message: "Deleted"
+        });
+    });
+});
+
 
 
 module.exports = router;

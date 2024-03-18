@@ -342,6 +342,7 @@ paths:
           description: No Content
         '404':
           description: Not Found
+
   /mapgreenhouses/{email}:
     get:
       summary: get all greenhouse of a user
@@ -370,6 +371,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+
+  /mapgreenhouses:
+    post:
+      summary: map a greenhouse to a user
+      operationId: mapGreenhouse
+      tags:
+        - greenhouse of a user
+      requestBody:
+        description: Map to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/greenhouseUser'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/greenhouseUser'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  
+  /mapgreenhouses/{email}/{greenhouse_id}: 
+    delete:
+      summary: delete a greenhouse from a user
+      operationId: deleteGreenhouseFromUser
+      tags:
+        - greenhouse of a user
+      parameters:
+        - name: email
+          in: path
+          description: email of the user to delete
+          required: true
+          schema:
+            type: string
+        - name: greenhouse_id
+          in: query
+          description: id of the greenhouse to delete
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+
   
   /mapplants:
     post:
@@ -426,7 +486,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  
+
+  /mapplants/{greenhouse_id}/{plant_id}:
+    put:
+      summary: update a plant of a greenhouse
+      operationId: updatePlantOfGreenhouse
+      tags:
+        - plants of a greenhouse
+      parameters:
+        - name: greenhouse_id
+          in: path
+          description: id of the greenhouse to update
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: plant_id
+          in: query
+          description: id of the plant to update
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        description: Plant to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtoMapPlant'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtoMapPlant'
+        '404':
+          description: Not Found
+
+
+    delete:
+      summary: delete a plant from a greenhouse
+      operationId: deletePlantFromGreenhouse
+      tags:
+        - plants of a greenhouse
+      parameters:
+        - name: greenhouse_id
+          in: path
+          description: id of the greenhouse to delete
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: plant_id
+          in: query
+          description: id of the plant to delete
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
               
 
 
@@ -501,6 +630,18 @@ components:
         name:
           type: string
         surname:
+          type: string
+
+    userJWT:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        token:
           type: string
 
     greenhouseUser:

@@ -24,5 +24,38 @@ router.get('/mapgreenhouses/:email', (req, res) => {
     });
 });
 
+router.post('/mapgreenhouses', (req, res) => {
+    const { email, greenhouse_id } = req.body;
+    con.query('INSERT INTO garden_personal_greenhouse (email, greenhouse_id) VALUES (?, ?)', [email, greenhouse_id], (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        return res.status(201).json({
+            code: 201,
+            message: "Created"
+        });
+    });
+});
+
+router.delete('/mapgreenhouses/:email/:greenhouse_id', (req, res) => {
+    const email = req.params.email;
+    const greenhouse_id = req.params.greenhouse_id;
+    con.query('DELETE FROM garden_personal_greenhouse WHERE email = ? AND greenhouse_id = ?', [email, greenhouse_id], (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        return res.status(200).json({
+            code: 200,
+            message: "Deleted"
+        });
+    });
+});
+
 
 module.exports = router;

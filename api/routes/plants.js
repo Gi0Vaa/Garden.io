@@ -41,11 +41,35 @@ router.get('/plants/:id', (req, res) => {
 });
 
 router.put('/plants/:id', (req, res) => {
+    const id = req.params.id;
+    con.query('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err, result, fields) => {
+        if (err) {
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else {
+            res.status(200).json(req.body);
+        }
+    });
 
 });
 
 router.delete('/plants/:id', (req, res) => {
-    res.send('ok');
+    const id = req.params.id;
+    con.query('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
+        if (err) {
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else {
+            res.status(200).json({
+                code: 200,
+                message: "Deleted"
+            });
+        }
+    });
 });
 
 
