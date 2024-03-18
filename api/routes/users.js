@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const con = require('../db/connection.js');
+
+const con = require('../db');
 
 const router = Router();
 

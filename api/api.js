@@ -1,4 +1,4 @@
-//const router = require('express').Router();
+//express
 const express = require('express');
 const cors = require('cors');
 
@@ -12,6 +12,7 @@ const apiSpec = yaml.load('./api_specs.yaml');
 const swaggerUi = require('swagger-ui-express');
 const openApiValidator = require('express-openapi-validator');
 
+//application
 const app = express();
 const port = 8080;
 
