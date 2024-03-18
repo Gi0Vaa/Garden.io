@@ -47,7 +47,7 @@ app.use((req, res, next) => { //log delle richieste
 
 
 //ROUTES
-const routes = require('./routes/index.js');
+const routes = require('./routes/endpoints.js');
 
 app.use(routes.users);
 app.use(routes.plants);
