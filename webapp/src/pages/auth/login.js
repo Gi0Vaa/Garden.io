@@ -20,10 +20,13 @@ function Login() {
     }
 
     function sigin(data) {
+        localStorage.setItem('picture', data.picture);
         const email = data.email;
         axios.get(`http://localhost:8080/users/${email}`).then((response) => {
+            console.log(response.data);
             localStorage.setItem('email', response.data.email);
             localStorage.setItem('name', response.data.name);
+            localStorage.setItem('surname', response.data.surname);
             window.location.href = '/';
         }).catch((error) => {
             const data = error.response.data;
