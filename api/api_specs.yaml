@@ -111,6 +111,32 @@ paths:
           description: No Content
         '404':
           description: Not Found
+  /plants/research/{name}:
+    get:
+      summary: get a plant by name
+      operationId: getPlantByName
+      tags:
+        - plant
+      parameters:
+        - name: name
+          in: path
+          description: name of the plant to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/plant'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
   /greenhouses:
     get:

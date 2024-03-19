@@ -74,4 +74,19 @@ router.delete('/plants/:id', (req, res) => {
 });
 
 
+//ricerca di tutte le piante che contengono la stringa passata
+router.get('/plants/research/:name', (req, res) => {
+    const name = req.params.name;
+    con.query('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, result, fields) => {
+        if (err) {
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else {
+            res.status(200).json(result);
+        }
+    });
+})
+
 module.exports = router;
