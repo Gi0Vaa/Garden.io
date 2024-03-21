@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
 import greenhouseImg from '../../assets/img/greenhouse.svg';
 
-function AddGreenhouse({greenhouse}){
-    useEffect(() => {
-        document.getElementById('greenhouseName').value = greenhouse.name;
-        document.getElementById('greenhouseDescription').value = greenhouse.description;
-    }, [greenhouse]);
+function AddGreenhouse({message}){
     return (
         <div>
-            <h3 className=" font-bold text-green-950 p-3" >Hi {localStorage.getItem('name')}, add your first greenhouse</h3>
+            <h3 className=" font-bold text-green-950 p-3" >{message}</h3>
             <div className="grid grid-cols-1 xl:grid-cols-2" >
                 <div className="hidden xl:block h-80">
                     <img src={greenhouseImg} alt="greenhouse" className="h-full w-full object-cover" />

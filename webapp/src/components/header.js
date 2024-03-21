@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import DropdownMenu from "./dropdownMenu";
@@ -6,12 +6,26 @@ import DropdownMenu from "./dropdownMenu";
 function Header({index, greenhouse}) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const menuRef = useRef();
 
     useEffect(() => {
         const links = document.getElementById('pagesLinks');
         if(index !== undefined){
             links.children[index].classList.add('font-bold');
         }
+
+        function handleClickOutside(event) {
+            const pfp = document.getElementById('pfp');
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                pfp.classList.remove('bg-green-100');
+                setOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, [index]);
 
     function goToGreenhouse() {
@@ -21,6 +35,7 @@ function Header({index, greenhouse}) {
     function openMenu(){
         const pfp = document.getElementById('pfp');
         const dropMenu = document.getElementById('dropMenu');
+        console.log(open);
         //close
         if(open){
             pfp.classList.remove('bg-green-100');
@@ -50,7 +65,7 @@ function Header({index, greenhouse}) {
                     <button className="rounded-full transition-colors duration-200 hover:bg-green-100" id="pfp" onClick={openMenu}>
                         <img src={localStorage.getItem('picture')} className="w-10 h-10 rounded-full p-1" alt="profile"/>
                     </button>
-                    <div className="hidden absolute w-max mt-16 right-0 transition-all duration-300" id="dropMenu">
+                    <div ref={menuRef} className="hidden absolute w-max mt-16 right-0 transition-all duration-300" id="dropMenu">
                         <Transition
                             show={open}
                             enter="transition-opacity duration-300"

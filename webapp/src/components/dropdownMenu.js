@@ -11,12 +11,12 @@ function DropdownMenu() {
                 </div>
                 <p>{localStorage.getItem('name')} {localStorage.getItem('surname')}</p>
             </button>
-            <button className='flex flex-row gap-3 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
+            <a href='/createGreenhouse' className='flex flex-row gap-3 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
                 <div className='w-7 h-7'>
                     <Add />
                 </div>
                 <p>Add Greenhouse</p>
-            </button>
+            </a>
             <button className='flex flex-row gap-3 items-center hover:bg-red-500 transition-colors rounded-md p-2'>
                 <div className='w-7 h-7'>
                     <Logout />
