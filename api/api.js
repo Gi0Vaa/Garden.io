@@ -12,6 +12,9 @@ const apiSpec = yaml.load('./api_specs.yaml');
 const swaggerUi = require('swagger-ui-express');
 const openApiValidator = require('express-openapi-validator');
 
+//jwt
+const jwt = require('jsonwebtoken');
+
 //application
 const app = express();
 const port = 8080;
@@ -39,6 +42,27 @@ app.use((err, req, res, next) => {
         errors: err.errors,
     });
 });
+
+ //middleware jwt per verificare il token
+/*function verifyToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        jwt.verify(req.token, 'CHIAVESEGRETA', (err, authData) => {
+            if (err) {
+                res.sendStatus(403);
+            } else {
+                req.authData = authData;
+                next();
+            }
+        });
+    } else {
+        res.sendStatus(403);
+    }
+}
+*/
 
 app.use((req, res, next) => { //log delle richieste
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
