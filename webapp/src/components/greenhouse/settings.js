@@ -37,6 +37,16 @@ function Settings({greenhouse}){
             });
     }
 
+    function deleteGreenhouse(){
+        axios.delete(`http://localhost:8080/greenhouses/${greenhouse.greenhouse_id}`)
+            .then(response => {
+                navigate('/');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     return(
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1 p-3 rounded-md shadow-md">
@@ -44,6 +54,15 @@ function Settings({greenhouse}){
                 <input type="text" onChange={activeBtn} id="name" defaultValue={greenhouse.name} className="p-1 rounded-md border-2 border-green-300 focus:border-green-600 focus:outline-none transition-colors"/>
                 <textarea onChange={activeBtn} id="description" defaultValue={greenhouse.description} className="p-1 h-32 rounded-md border-2 border-green-300 focus:border-green-600 focus:outline-none transition-colors  resize-none"></textarea>
                 <button id="saveBtn" className="p-1 bg-gray-300 text-white rounded-md font-semibold transition-colors">Save</button>
+            </div>
+            <div className="flex flex-row place-content-between gap-1 p-3 rounded-md shadow-md">
+                <div className="flex flex-col">
+                    <h4 className="font-semibold">Delete greenhouse</h4>
+                    <h5 className="font-normal">Once you delete a greenhouse, there is no going back. Please be certain.</h5>
+                </div>
+                <div className="flex items-center">
+                    <button onClick={deleteGreenhouse} className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-semibold transition-colors">DELETE</button>
+                </div>
             </div>
         </div>
     );

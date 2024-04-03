@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AddPlant from "./createGreenhouse/addPlant";
 import AddGreenhouse from "./createGreenhouse/addGreenhouse";
+import Loading from "../pages/status/loading";
 
 function CreateGreenhouse({ message, welcome = false }) {
     const [greenhouse, setGreenhouse] = useState({});
@@ -13,27 +14,35 @@ function CreateGreenhouse({ message, welcome = false }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(greenhouse);
-        console.log(plant);
         switch (step) {
             case 1:
-                setContent(<AddGreenhouse message={message} />);
+                setContent(<AddGreenhouse message={message} greenhouse={greenhouse} />);
                 break;
             case 2:
                 setContent(<AddPlant plant={plant} />);
                 break;
             case 3:
+                setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
                 obj.email = localStorage.getItem('email');
                 axios.post('http://localhost:8080/greenhouses', obj)
                     .then(response => {
-                        const obj = {
-                            plant_id: plant.plant_id,
-                            greenhouse_id: response.data.greenhouse_id
-                        }
-                    })
+                        axios.post(`http://localhost:8080/mapplants`, {
+                            greenhouse_id: response.data.greenhouse_id,
+                            plant_id: plant.plant_id
+                        })
+                        .then(() => {
+                            setTimeout(() => {
+                                axios.get(`http://localhost:8080/greenhouses/${response.data.greenhouse_id}`)
+                                    .then(response => {
+                                        navigate('/greenhouse', { state: { greenhouse: response.data } });
+                                    });
+                            }, 300);
+                        });
+                    });
+                break;
             default:
-                setContent("<div>Not Found</div>");
+                setContent(<div>Not Found</div>);
                 break;
         }
     }, [step, plant, message, greenhouse, navigate, welcome]);
@@ -50,6 +59,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                 }
                 break;
             case 2:
+                console.log(document.getElementById('plants'));
                 if (document.getElementById('plants') !== null) {
                     setPlant({
                         plant_id: parseInt(document.getElementById('plants').value)
@@ -70,7 +80,7 @@ function CreateGreenhouse({ message, welcome = false }) {
     }
 
     return (
-        <div className='md:col-span-2 flex flex-col gap-2 text-center '>
+        <div className='md:col-span-2 flex flex-col gap-2 text-center'>
             <div className="p-2 rounded-md text-left  bg-green-300 shadow-md flex flex-col gap-2">
                 {content}
                 <div className='flex flex-row place-content-between p-3'>

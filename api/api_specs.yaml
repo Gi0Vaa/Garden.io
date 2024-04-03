@@ -130,7 +130,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/plant'
+                type: array
+                items:
+                  $ref: '#/components/schemas/plant'
         '404':
           description: Not Found
           content:

@@ -13,6 +13,22 @@ function Herbarium(){
             .then(response => setPlants(response.data));
     }, []);
 
+    function searchPlant() {
+        const name = document.getElementById('search').value;
+        if(name === ''){
+            axios.get('http://localhost:8080/plants')
+                .then(response => setPlants(response.data));
+            return;
+        }
+        axios.get(`http://localhost:8080/plants/research/${name}`)
+            .then(response => {
+                setPlants(response.data);
+            })
+            .catch(() => {
+                setPlants([]);
+            });
+    }
+
     return(
         <div>
             <Header index={1}/>
@@ -21,7 +37,7 @@ function Herbarium(){
                 <div className='md:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-2' id='greenhouses'>
                     <div className='col-span-3 place-items-center'>
                         <div className='flex flex-row place-content-center'>
-                            <input type='text' placeholder='Search a Plant' className=' w-3/4 bg-green-200 p-1 rounded-md focus:outline-none text-green-900'></input>
+                            <input onChange={searchPlant} id='search' type='text' placeholder='Search a Plant' className=' w-3/4 bg-green-200 px-3 py-2 rounded-md focus:outline-none text-green-900'></input>
                         </div>
                     </div>
                     {plants.map((p, index) => <PlantCard key={index} plant={p} /> )}

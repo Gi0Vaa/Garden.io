@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Header from '../components/header.js';
-import PlantsGrid from '../components/plantsGrid.js';
+import PlantsGrid from '../components/greenhouse/plantsGrid.js';
 import Dashboard from '../components/greenhouse/dashboard.js';
 import Settings from '../components/greenhouse/settings.js';
 import axios from 'axios';
