@@ -11,6 +11,8 @@ function CreateGreenhouse({ message }) {
 
     const navigate = useNavigate();
 
+
+    //FIXME: Do not save te correct plant
     function next() {
         saveData();
         setStep(step + 1);
@@ -23,6 +25,7 @@ function CreateGreenhouse({ message }) {
                         plant_id: plant.plant_id,
                         greenhouse_id: response.data.greenhouse_id
                     }
+                    console.log(obj);
                     axios.post('http://localhost:8080/mapplants', obj)
                         .then(response => {
                             if (response.status === 201) {
