@@ -30,62 +30,8 @@ function CreateGreenhouse({ message, welcome = false }) {
                         const obj = {
                             plant_id: plant.plant_id,
                             greenhouse_id: response.data.greenhouse_id
-
-    //FIXME: Do not save te correct plant
-    function next() {
-        saveData();
-        setStep(step + 1);
-        if (step === 2) {
-            const obj = greenhouse;
-            obj.email = localStorage.getItem('email');
-            axios.post('http://localhost:8080/greenhouses', obj)
-                .then(response => {
-                    const obj = {
-                        plant_id: plant.plant_id,
-                        greenhouse_id: response.data.greenhouse_id
-                    }
-                    console.log(obj);
-                    axios.post('http://localhost:8080/mapplants', obj)
-                        .then(response => {
-                            if (response.status === 201) {
-                                navigate('/welcome');
-                            }
-                        })
-                })
-                .catch(error => {
-                    console.log(error);
-                    navigate('/error', {
-                        state: {
-                            code: error.response.status,
-                            status: error.response.statusText,
-                            message: error.response.data.message
                         }
-                        axios.post('http://localhost:8080/mapplants', obj)
-                            .then(response => {
-                                setTimeout(() => {
-                                    const obj = greenhouse;
-                                    obj.greenhouse_id = response.data.greenhouse_id;
-                                    if (welcome) {
-                                        navigate('/welcome');
-                                    }
-                                    else {
-                                        navigate('/greenhouse', { state: { greenhouse: obj } });
-                                    }
-                                }, 1000);
-                            })
                     })
-                    .catch(error => {
-                        console.log(error);
-                        navigate('/error', {
-                            state: {
-                                code: error.response.status,
-                                status: error.response.statusText,
-                                message: error.response.data.message
-                            }
-                        });
-                    });
-                    setContent(<div>Creating Greenhouse...</div>);
-                break;
             default:
                 setContent("<div>Not Found</div>");
                 break;
