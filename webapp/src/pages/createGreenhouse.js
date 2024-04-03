@@ -9,9 +9,7 @@ function CreateGreenhouse() {
 
     return (
         <div>
-            <div className="absolute w-screen">
-                <Header /> 
-            </div>
+            <Header /> 
             <div className='grid md:grid-cols-4 grid-cols-1 p-3 place-content-center h-screen'>
                 <div></div>
                 <div className='md:col-span-2'>

@@ -51,7 +51,7 @@ function Header({index, greenhouse}) {
     }
 
     return(
-        <header className='flex flex-row px-4 py-2 bg-green-300 text-green-800'>
+        <header className='fixed top-0 w-screen z-50 flex flex-row px-4 py-2 bg-green-300 text-green-800'>
             <div className="flex flex-row flex-grow items-center gap-1 md:gap-2">
                 <a href="/"><h2>Garden.io</h2></a>
                 {greenhouse !== undefined && (
