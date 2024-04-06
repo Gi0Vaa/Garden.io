@@ -25,15 +25,15 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
                 obj.email = localStorage.getItem('email');
-                axios.post('http://localhost:8080/greenhouses', obj)
+                axios.post('http://localhost:8080/api/v1/greenhouses', obj)
                     .then(response => {
-                        axios.post(`http://localhost:8080/mapplants`, {
+                        axios.post(`http://localhost:8080/api/v1/mapplants`, {
                             greenhouse_id: response.data.greenhouse_id,
                             plant_id: plant.plant_id
                         })
                         .then(() => {
                             setTimeout(() => {
-                                axios.get(`http://localhost:8080/greenhouses/${response.data.greenhouse_id}`)
+                                axios.get(`http://localhost:8080/api/v1/greenhouses/${response.data.greenhouse_id}`)
                                     .then(response => {
                                         navigate('/greenhouse', { state: { greenhouse: response.data } });
                                     });

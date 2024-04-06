@@ -3,13 +3,13 @@ const { Router } = require('express');
 const con = require('../db');
 
 const router = Router();
-router.post('/plants', (req, res) => {
+router.post('/api/v1/plants', (req, res) => {
     console.log(req.body);
     res.send('ok');
 });
 
 //get di tutte le piante
-router.get('/plants', async (req, res) => {
+router.get('/api/v1/plants', async (req, res) => {
     con.query('SELECT * FROM garden_plant', (err, result, fields) => {
         if (err) {
             res.status(500).json({
@@ -21,7 +21,7 @@ router.get('/plants', async (req, res) => {
 });
 
 //get di una singola pianta
-router.get('/plants/:id', (req, res) => {
+router.get('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     con.query('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
         if (err) {
@@ -41,7 +41,7 @@ router.get('/plants/:id', (req, res) => {
     })
 });
 
-router.put('/plants/:id', (req, res) => {
+router.put('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     con.query('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err, result, fields) => {
         if (err) {
@@ -56,7 +56,7 @@ router.put('/plants/:id', (req, res) => {
 
 });
 
-router.delete('/plants/:id', (req, res) => {
+router.delete('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     con.query('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
         if (err) {
@@ -75,7 +75,7 @@ router.delete('/plants/:id', (req, res) => {
 
 
 //ricerca di tutte le piante che contengono la stringa passata
-router.get('/plants/research/:name', (req, res) => {
+router.get('/api/v1/plants/research/:name', (req, res) => {
     const name = req.params.name;
     con.query('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, result, fields) => {
         if (err) {

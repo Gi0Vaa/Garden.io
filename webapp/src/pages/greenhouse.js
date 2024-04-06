@@ -69,7 +69,7 @@ function Greenhouse({ menuIndex = 0 }) {
         menu.children[index].classList.remove('border-green-500');
         menu.children[index].classList.add('border-green-100');
         if (i === 1) {
-            axios.get(`http://localhost:8080/mapplants/${greenhouse.greenhouse_id}`)
+            axios.get(`http://localhost:8080/api/v1/mapplants/${greenhouse.greenhouse_id}`)
                 .then(response => {
                     setData(response.data);
                 })

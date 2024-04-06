@@ -4,8 +4,8 @@ const con = require('../db');
 
 const router = Router();
 
-//USERS
-router.get('/users', (req, res) => {
+//api/v1/users
+router.get('/api/v1/users', (req, res) => {
     con.query('SELECT * FROM garden_user', (err, result, fields) => {
         if (err) {
             res.status(500).json({
@@ -22,7 +22,7 @@ router.get('/users', (req, res) => {
     });
 });
 
-router.get('/users/:email', (req, res) => {
+router.get('/api/v1/users/:email', (req, res) => {
     const email = req.params.email;
     con.query('SELECT * FROM garden_user WHERE email = ?', [email], (err, result, fields) => {
         if (err) {
@@ -42,7 +42,7 @@ router.get('/users/:email', (req, res) => {
     })
 })
 
-router.post('/users', (req, res) => {
+router.post('/api/v1/users', (req, res) => {
     const user = req.body;
     con.query('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, result, fields) => {
         if (err) {
@@ -80,7 +80,7 @@ router.post('/users', (req, res) => {
     });
 });
 
-router.put('/users/:email', (req, res) => {
+router.put('/api/v1/users/:email', (req, res) => {
     const email = req.params.email;
     const user = req.body;
     con.query('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err, result, fields) => {

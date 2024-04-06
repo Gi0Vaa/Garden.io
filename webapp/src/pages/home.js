@@ -10,7 +10,7 @@ function Home() {
     
     useEffect(() => {
         document.title = 'Home | Garden.io';
-        axios.get(`http://localhost:8080/mapgreenhouses/${email}`)
+        axios.get(`http://localhost:8080/api/v1/mapgreenhouses/${email}`)
         .then(response => {
             setGreenhouses(response.data);
         })

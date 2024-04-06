@@ -5,7 +5,7 @@ import axios from 'axios'
 function AddPlant({plant}) {
     let dataRef = useRef();
     useEffect(() => {
-        axios.get('http://localhost:8080/plants')
+        axios.get('http://localhost:8080/api/v1/plants')
             .then(response => {
                 const select = document.getElementById('plants');
                 select.innerHTML = '';

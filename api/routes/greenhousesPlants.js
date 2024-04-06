@@ -6,7 +6,7 @@ const router = Router();
 
 
 //MapPlant
-router.get('/mapplants/:greenhouse_id', (req, res) => {
+router.get('/api/v1/mapplants/:greenhouse_id', (req, res) => {
     const id = req.params.greenhouse_id;
     con.query('SELECT * FROM garden_plant_greenhouse WHERE greenhouse_id = ?', [id], (err, result, fields) => {
         if (err) {
@@ -25,7 +25,7 @@ router.get('/mapplants/:greenhouse_id', (req, res) => {
     });
 });
 
-router.post('/mapplants', (req, res) => {
+router.post('/api/v1/mapplants', (req, res) => {
     const map = req.body;
     con.query('INSERT INTO garden_plant_greenhouse (greenhouse_id, plant_id ) VALUES (?, ?)', [map.greenhouse_id, map.plant_id ], (err, result, fields) => {
         if (err) {
@@ -38,7 +38,7 @@ router.post('/mapplants', (req, res) => {
     });
 });
 
-router.put('/mapplants/:greenhouse_id/:plant_id', (req, res) => {
+router.put('/api/v1/mapplants/:greenhouse_id/:plant_id', (req, res) => {
     const greenhouse_id = req.params.greenhouse_id;
     const plant_id = req.params.plant_id;
     const map = req.body;
@@ -53,7 +53,7 @@ router.put('/mapplants/:greenhouse_id/:plant_id', (req, res) => {
     });
 });
 
-router.delete('/mapplants/:greenhouse_id/:plant_id', (req, res) => {
+router.delete('/api/v1/mapplants/:greenhouse_id/:plant_id', (req, res) => {
     const greenhouse_id = req.params.greenhouse_id;
     const plant_id = req.params.plant_id;
     con.query('DELETE FROM garden_plant_greenhouse WHERE greenhouse_id = ? AND plant_id = ?', [greenhouse_id, plant_id], (err, result, fields) => {

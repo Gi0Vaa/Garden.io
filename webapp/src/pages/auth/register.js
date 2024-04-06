@@ -27,7 +27,7 @@ function Register() {
             surname: data.family_name
         }
         console.log(user);
-        axios.post('http://localhost:8080/users', user).then((response) => {
+        axios.post('http://localhost:8080/api/v1/users', user).then((response) => {
             window.location.href = '/';
         }).catch((error) => {
             const data = error.response.data;            

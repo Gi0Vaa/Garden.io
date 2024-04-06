@@ -28,7 +28,7 @@ function Settings({greenhouse}){
             name: name,
             description: description
         }
-        axios.put(`http://localhost:8080/greenhouses/${greenhouse.greenhouse_id}`, obj)
+        axios.put(`http://localhost:8080/api/v1/greenhouses/${greenhouse.greenhouse_id}`, obj)
             .then(response => {
                 navigate('/');
             })

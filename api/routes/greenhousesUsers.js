@@ -6,7 +6,7 @@ const router = Router();
 
 
 //GREENHOUSE USERS
-router.get('/mapgreenhouses/:email', (req, res) => {
+router.get('/api/v1/mapgreenhouses/:email', (req, res) => {
     const email = req.params.email;
     con.query('SELECT * FROM garden_personal_greenhouse WHERE email = ?', [email], (err, result, fields) => {
         if (err) {
@@ -25,7 +25,7 @@ router.get('/mapgreenhouses/:email', (req, res) => {
     });
 });
 
-router.post('/mapgreenhouses', (req, res) => {
+router.post('/api/v1/mapgreenhouses', (req, res) => {
     const { email, greenhouse_id } = req.body;
     con.query('INSERT INTO garden_personal_greenhouse (email, greenhouse_id) VALUES (?, ?)', [email, greenhouse_id], (err, result, fields) => {
         if (err) {
@@ -41,7 +41,7 @@ router.post('/mapgreenhouses', (req, res) => {
     });
 });
 
-router.delete('/mapgreenhouses/:email/:greenhouse_id', (req, res) => {
+router.delete('/api/v1/mapgreenhouses/:email/:greenhouse_id', (req, res) => {
     const email = req.params.email;
     const greenhouse_id = req.params.greenhouse_id;
     con.query('DELETE FROM garden_personal_greenhouse WHERE email = ? AND greenhouse_id = ?', [email, greenhouse_id], (err, result, fields) => {
