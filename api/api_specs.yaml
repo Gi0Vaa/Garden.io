@@ -271,7 +271,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/user'
+                  $ref: '#/components/schemas/daoUser'
       
     post:
       summary: create a new user
@@ -284,14 +284,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/daoUser'
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/dtoUser'
         '409':
           description: Conflict
           content:
@@ -318,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/dtoUser'
         '404':
           description: Not Found
           content:
@@ -343,14 +343,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/daoUser'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/dtoUser'
         '404':
           description: Not Found
     delete:
@@ -649,8 +649,19 @@ components:
           type: integer
           format: int32
         
-    
-    user:
+    dtoUser:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        type:
+          type: string
+
+    daoUser:
       type: object
       properties:
         email:

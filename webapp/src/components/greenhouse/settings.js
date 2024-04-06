@@ -38,7 +38,7 @@ function Settings({greenhouse}){
     }
 
     function deleteGreenhouse(){
-        axios.delete(`http://localhost:8080/greenhouses/${greenhouse.greenhouse_id}`)
+        axios.delete(`http://localhost:8080/api/v1/greenhouses/${greenhouse.greenhouse_id}`)
             .then(response => {
                 navigate('/');
             })

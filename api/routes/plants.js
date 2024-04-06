@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const con = require('../db');
+const db = require('../db');
 
 const router = Router();
 router.post('/api/v1/plants', (req, res) => {
@@ -10,55 +10,77 @@ router.post('/api/v1/plants', (req, res) => {
 
 //get di tutte le piante
 router.get('/api/v1/plants', async (req, res) => {
-    con.query('SELECT * FROM garden_plant', (err, result, fields) => {
+    db.all('SELECT * FROM garden_plant', (err, rows) => {
         if (err) {
             res.status(500).json({
                 error: "Query failed"
             });
         }
-        res.status(200).json(result);
+        else {
+            res.status(200).json(rows);
+        }
     });
 });
 
 //get di una singola pianta
 router.get('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
-    con.query('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
+    db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
         if (err) {
             res.status(500).json({
                 error: "Query failed"
             });
         }
-        else if (result.length === 0) {
+        else if (!row) {
             res.status(404).json({
-                code: 404,
-                message: "Not found"
+                error: "Not found"
             });
         }
         else {
-            res.status(200).json(result[0]);
+            res.status(200).json(row);
         }
-    })
+    });
 });
+
+//ricerca di tutte le piante che contengono la stringa passata
+router.get('/api/v1/plants/research/:name', (req, res) => {
+    const name = req.params.name;
+    db.all('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, rows) => {
+        if (err) {
+            res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        else {
+            res.status(200).json(rows);
+        }
+    });
+})
 
 router.put('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
-    con.query('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err, result, fields) => {
+    db.run('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err) => {
         if (err) {
             res.status(500).json({
                 error: "Query failed"
             });
         }
-        else {
-            res.status(200).json(req.body);
-        }
+        db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
+            if (err) {
+                res.status(500).json({
+                    error: "Query failed"
+                });
+            }
+            else {
+                res.status(200).json(row);
+            }
+        });
     });
-
 });
 
 router.delete('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
-    con.query('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err, result, fields) => {
+    db.run('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err) => {
         if (err) {
             res.status(500).json({
                 error: "Query failed"
@@ -72,21 +94,5 @@ router.delete('/api/v1/plants/:id', (req, res) => {
         }
     });
 });
-
-
-//ricerca di tutte le piante che contengono la stringa passata
-router.get('/api/v1/plants/research/:name', (req, res) => {
-    const name = req.params.name;
-    con.query('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, result, fields) => {
-        if (err) {
-            res.status(500).json({
-                error: "Query failed"
-            });
-        }
-        else {
-            res.status(200).json(result);
-        }
-    });
-})
 
 module.exports = router;

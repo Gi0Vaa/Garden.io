@@ -14,7 +14,6 @@
     "express-openapi-validator": "^5.1.6",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
-    "mysql2": "^3.9.2",
     "sqlite3": "^5.1.7",
     "swagger-ui-express": "^5.0.0",
     "yamljs": "^0.3.0"
