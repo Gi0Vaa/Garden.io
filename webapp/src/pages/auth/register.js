@@ -55,7 +55,7 @@ function Register() {
                         }}
                     />
                 </GoogleOAuthProvider>
-                <h5 className=' font-normal'>Your account already exist? <a href='/login' className='text-violet-600 font-semibold'>Sign in</a></h5>
+                <h5 className=' font-normal'>Your account already exist? <a href='/' className='text-violet-600 font-semibold'>Sign in</a></h5>
             </div>
             <div></div>
         </div>

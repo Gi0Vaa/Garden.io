@@ -25,7 +25,7 @@ app.use(cors({  //CORS allowed all origin
 }));
 
 //Swagger UI
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(apiSpec));
+app.use('/api/v1/swagger', swaggerUi.serve, swaggerUi.setup(apiSpec));
 
 //Validatore API
 app.use(
@@ -87,7 +87,6 @@ app.listen(port, () => {
 
 process.on('SIGINT', () => {
     console.log('Server shutting down');
-    con.end();
     process.exit();
 });
 
