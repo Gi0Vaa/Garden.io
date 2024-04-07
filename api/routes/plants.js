@@ -13,7 +13,8 @@ router.get('/api/v1/plants', async (req, res) => {
     db.all('SELECT * FROM garden_plant', (err, rows) => {
         if (err) {
             res.status(500).json({
-                error: "Query failed"
+                code: 500,
+                message: "Query failed"
             });
         }
         else {
@@ -28,12 +29,14 @@ router.get('/api/v1/plants/:id', (req, res) => {
     db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
         if (err) {
             res.status(500).json({
-                error: "Query failed"
+                code: 500,
+                message: "Query failed"
             });
         }
         else if (!row) {
             res.status(404).json({
-                error: "Not found"
+                code: 404,
+                message: "Not found"
             });
         }
         else {
@@ -48,7 +51,8 @@ router.get('/api/v1/plants/research/:name', (req, res) => {
     db.all('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, rows) => {
         if (err) {
             res.status(500).json({
-                error: "Query failed"
+                code: 500,
+                message: "Query failed"
             });
         }
         else {
@@ -62,13 +66,15 @@ router.put('/api/v1/plants/:id', (req, res) => {
     db.run('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err) => {
         if (err) {
             res.status(500).json({
-                error: "Query failed"
+                code: 500,
+                message: "Query failed"
             });
         }
         db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
             if (err) {
                 res.status(500).json({
-                    error: "Query failed"
+                    code: 500,
+                    message: "Query failed"
                 });
             }
             else {
@@ -83,7 +89,8 @@ router.delete('/api/v1/plants/:id', (req, res) => {
     db.run('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err) => {
         if (err) {
             res.status(500).json({
-                error: "Query failed"
+                code: 500,
+                message: "Query failed"
             });
         }
         else {
