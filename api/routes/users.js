@@ -45,7 +45,7 @@ router.post('/api/v1/users', (req, res) => {
     const user = req.body;
     db.run('INSERT INTO garden_user (email, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
@@ -71,7 +71,7 @@ router.put('/api/v1/users/:email', (req, res) => {
     const user = req.body;
     db.run('UPDATE garden_user SET ? WHERE email = ? ', [user, email], (err) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 error: "Query failed"
             });
         }

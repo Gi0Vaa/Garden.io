@@ -65,7 +65,7 @@ router.put('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     db.run('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });

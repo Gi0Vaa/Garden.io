@@ -8,7 +8,7 @@ const router = Router();
 router.get('/api/v1/greenhouses', (req, res) => {
     db.all('SELECT * FROM garden_greenhouse', (err, rows) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
@@ -42,7 +42,7 @@ router.post('/api/v1/greenhouses', (req, res) => {
             }
             db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = (SELECT MAX(greenhouse_id) FROM garden_greenhouse)', (err, row) => {
                 if (err) {
-                    res.status(500).json({
+                    return res.status(500).json({
                         code: 500,
                         message: "Query failed"
                     });
@@ -81,14 +81,14 @@ router.put('/api/v1/greenhouses/:id', (req, res) => {
 
     db.run('UPDATE garden_greenhouse SET ? WHERE greenhouse_id = ?', [greenhouse, id], (err) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
         }
         db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, row) => {
             if (err) {
-                res.status(500).json({
+                return res.status(500).json({
                     code: 500,
                     message: "Query failed"
                 });
