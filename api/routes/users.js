@@ -68,7 +68,7 @@ router.post('/api/v1/users', (req, res) => {
 router.put('/api/v1/users/:email', (req, res) => {
     const email = req.params.email;
     const user = req.body;
-    db.run('UPDATE garden_user SET ? WHERE email = ? ', [user, email], (err) => {
+    db.run('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err) => {
         if (err) {
             return res.status(500).json({
                 error: "Query failed"

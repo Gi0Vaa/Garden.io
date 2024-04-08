@@ -79,22 +79,24 @@ router.put('/api/v1/greenhouses/:id', (req, res) => {
     const id = req.params.id;
     const greenhouse = req.body;
 
-    db.run('UPDATE garden_greenhouse SET ? WHERE greenhouse_id = ?', [greenhouse, id], (err) => {
+    db.run('UPDATE garden_greenhouse SET name = ?, description = ? WHERE greenhouse_id = ?', [greenhouse.name, greenhouse.description, id], (err) => {
         if (err) {
-            return res.status(500).json({
+            res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
         }
-        db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, row) => {
-            if (err) {
-                return res.status(500).json({
-                    code: 500,
-                    message: "Query failed"
-                });
-            }
-            res.status(200).json(row);
-        });
+        else {
+            db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, row) => {
+                if (err) {
+                    return res.status(500).json({
+                        code: 500,
+                        message: "Query failed"
+                    });
+                }
+                res.status(200).json(row);
+            });
+        }
     });
 });
 

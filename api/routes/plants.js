@@ -63,7 +63,9 @@ router.get('/api/v1/plants/research/:name', (req, res) => {
 
 router.put('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
-    db.run('UPDATE garden_plant SET ? WHERE plant_id = ?', [req.body, id], (err) => {
+    const plant = req.body;
+
+    db.run('UPDATE garden_plant SET name = ?, description = ?, image = ? WHERE plant_id = ?', [plant.name, plant.description, plant.image, id], (err) => {
         if (err) {
             return res.status(500).json({
                 code: 500,
