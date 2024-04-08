@@ -1,4 +1,5 @@
 import axios from 'axios';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 import Header from '../components/header';
@@ -25,7 +26,7 @@ function Home() {
 
 
     return (
-        <div>
+        <React.Fragment>
             <Header index={0}/>
             <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
@@ -34,7 +35,7 @@ function Home() {
                 </div>
                 <div></div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 

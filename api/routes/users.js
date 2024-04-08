@@ -22,7 +22,6 @@ router.get('/api/v1/users', (req, res) => {
 router.get('/api/v1/users/:email', (req, res) => {
     const email = req.params.email;
     db.get('SELECT * FROM garden_user WHERE email = ?', [email], (err, row) => {
-        console.log("Row:" + row);
         if (err) {
             res.status(500).json({
                 code: 404,

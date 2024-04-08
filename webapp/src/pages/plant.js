@@ -1,4 +1,5 @@
 import axios from 'axios'
+import React from 'react';
 import Header from "../components/header"
 import defaultImg from '../assets/img/plants/default.svg'
 import { useEffect, useState } from 'react';
@@ -47,7 +48,7 @@ function Plant(){
     }, [navigate, id, plant.name]);
 
     return(
-        <div>
+        <React.Fragment>
             <Header />
             <div className='grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
@@ -63,7 +64,7 @@ function Plant(){
                 </div>
                 <div></div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

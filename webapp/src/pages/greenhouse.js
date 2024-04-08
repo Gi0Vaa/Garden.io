@@ -5,6 +5,7 @@ import PlantsGrid from '../components/greenhouse/plantsGrid.js';
 import Dashboard from '../components/greenhouse/dashboard.js';
 import Settings from '../components/greenhouse/settings.js';
 import axios from 'axios';
+import React from 'react';
 
 function Greenhouse({ menuIndex = 0 }) {
     const location = useLocation();
@@ -83,7 +84,7 @@ function Greenhouse({ menuIndex = 0 }) {
     }
 
     return (
-        <div>
+        <React.Fragment>
             <Header greenhouse={greenhouse} />
             <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
@@ -97,7 +98,7 @@ function Greenhouse({ menuIndex = 0 }) {
                 </div>
                 <div></div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

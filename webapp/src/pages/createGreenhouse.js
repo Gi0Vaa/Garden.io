@@ -1,6 +1,7 @@
 import Header from "../components/header";
 import GreenhouseSteps from "../components/greenhouseSteps";
 import { useEffect } from "react";
+import React from "react";
 
 function CreateGreenhouse() {
     useEffect(() => {
@@ -8,7 +9,7 @@ function CreateGreenhouse() {
     }, []);
 
     return (
-        <div>
+        <React.Fragment>
             <Header /> 
             <div className='grid md:grid-cols-4 grid-cols-1 p-3 place-content-center h-screen'>
                 <div></div>
@@ -17,7 +18,7 @@ function CreateGreenhouse() {
                 </div>
                 <div></div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 

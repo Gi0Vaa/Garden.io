@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Header from "../components/header";
 import PlantCard from "../components/plantCard";
-
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 
@@ -30,7 +30,7 @@ function Herbarium(){
     }
 
     return(
-        <div>
+        <React.Fragment>
             <Header index={1}/>
             <div className=' mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
@@ -44,7 +44,7 @@ function Herbarium(){
                 </div>
                 <div></div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 
