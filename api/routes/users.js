@@ -87,4 +87,16 @@ router.put('/api/v1/users/:email', (req, res) => {
     });
 });
 
+router.delete('/api/v1/users/:email', (req, res) => {
+    const email = req.params.email;
+    db.run('DELETE FROM garden_user WHERE email = ?', [email], (err) => {
+        if (err) {
+            return res.status(500).json({
+                error: "Query failed"
+            });
+        }
+        res.status(204).send();
+    });
+});
+
 module.exports = router;
