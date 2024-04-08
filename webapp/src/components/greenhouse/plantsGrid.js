@@ -33,7 +33,7 @@ function PlantsGrid({ greenhouseMap }) {
             <ModalPlant isOpen={modalOpen} greenhouseId={greenhouseMap[0].greenhouse_id} onClose={() => setModalOpen(false)} />
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2' id='grid'>
                 {content}
-                <button className='col-span-2' onClick={addPlant}>
+                <button className='md:col-span-2' onClick={addPlant}>
                     <div className=" flex place-content-center gap-2 p-3 rounded-md border-2 hover:bg-green-200 border-amber-400 border-dashed hover:border-solid transition-all text-green-900">
                         <div className="flex flex-row place-content-between items-center">
                             <h3>Add Plant</h3>
