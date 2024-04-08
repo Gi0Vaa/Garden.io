@@ -10,7 +10,7 @@ function PlantsGrid({ greenhouseMap }) {
     useEffect(() => {
         setContent([]);
         greenhouseMap.forEach(p => {
-            axios.get(`http://localhost:8080/api/v1/plants/${p.plant_id}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/plants/${p.plant_id}`)
                 .then(response => {
                     setContent(prevContent => {
                         const newContent = <PlantCard key={p.plant_id} plant={response.data} />;

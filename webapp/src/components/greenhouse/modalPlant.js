@@ -10,7 +10,7 @@ function ModalPlant({ isOpen, onClose, greenhouseId }) {
     function searchPlant() {
         const name = document.getElementById('plants').value;
         const description = document.getElementById('plantDescription');
-        axios.get(`http://localhost:8080/api/v1/plants/research/${name}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/plants/research/${name}`)
             .then(response => {
                 setPlant(response.data[0]);
                 description.innerHTML = response.data[0].description;
@@ -21,7 +21,7 @@ function ModalPlant({ isOpen, onClose, greenhouseId }) {
     }
 
     function addPlant() {
-        axios.post('http://localhost:8080/api/v1/mapplants', {
+        axios.post(`${process.env.REACT_APP_API_URL}/mapplants`, {
             greenhouse_id: greenhouseId,
             plant_id: plant.plant_id
         })

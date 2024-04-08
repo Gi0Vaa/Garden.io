@@ -9,18 +9,18 @@ function Herbarium(){
     const [plants, setPlants] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/plants')
+        axios.get(`${process.env.REACT_APP_API_URL}/plants`)
             .then(response => setPlants(response.data));
     }, []);
 
     function searchPlant() {
         const name = document.getElementById('search').value;
         if(name === ''){
-            axios.get('http://localhost:8080/api/v1/plants')
+            axios.get(`${process.env.REACT_APP_API_URL}/plants`)
                 .then(response => setPlants(response.data));
             return;
         }
-        axios.get(`http://localhost:8080/api/v1/plants/research/${name}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/plants/research/${name}`)
             .then(response => {
                 setPlants(response.data);
             })

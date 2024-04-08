@@ -24,7 +24,7 @@ function Plant(){
             } );
         }
         else{
-            axios.get(`http://localhost:8080/api/v1/plants/${id}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/plants/${id}`)
                 .then(response => {
                     try{
                         setImageUrl(require(`../assets/img/plants/${plant.name.toLowerCase().replace(/\s/g, '')}.jpg`));

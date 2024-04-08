@@ -27,13 +27,13 @@ function CreateGreenhouse({ message, welcome = false }) {
                 obj.email = localStorage.getItem('email');
                 axios.post('http://localhost:8080/api/v1/greenhouses', obj)
                     .then(response => {
-                        axios.post(`http://localhost:8080/api/v1/mapplants`, {
+                        axios.post(`${process.env.REACT_APP_API_URL}/mapplants`, {
                             greenhouse_id: response.data.greenhouse_id,
                             plant_id: plant.plant_id
                         })
                         .then(() => {
                             setTimeout(() => {
-                                axios.get(`http://localhost:8080/api/v1/greenhouses/${response.data.greenhouse_id}`)
+                                axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${response.data.greenhouse_id}`)
                                     .then(response => {
                                         navigate('/greenhouse', { state: { greenhouse: response.data } });
                                     });

@@ -7,7 +7,7 @@ function GreenhouseCard({data}) {
     const [greenhouse, setGreenhouse] = useState({});
     const navigate = useNavigate();
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/v1/greenhouses/${data.greenhouse_id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${data.greenhouse_id}`)
             .then(response => {
                 setGreenhouse(response.data);
             });
