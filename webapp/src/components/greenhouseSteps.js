@@ -25,7 +25,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
                 obj.email = localStorage.getItem('email');
-                axios.post('http://localhost:8080/api/v1/greenhouses', obj)
+                axios.post(`${process.env.REACT_APP_API_URL}/greenhouses`, obj)
                     .then(response => {
                         axios.post(`${process.env.REACT_APP_API_URL}/mapplants`, {
                             greenhouse_id: response.data.greenhouse_id,
