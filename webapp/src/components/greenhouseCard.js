@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import plant from '../assets/img/wateringPlant.svg'
 
 function GreenhouseCard({ data }) {
     const [greenhouse, setGreenhouse] = useState({});
     const imageBGRef = useRef(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${data.greenhouse_id}`)
@@ -14,10 +12,6 @@ function GreenhouseCard({ data }) {
                 setGreenhouse(response.data);
             });
     }, [data]);
-
-    function handleClick() {
-        navigate('/greenhouse', { state: { greenhouse: greenhouse } });
-    }
 
     function handleMouseOver() {
         const imageBG = imageBGRef.current;
@@ -34,7 +28,7 @@ function GreenhouseCard({ data }) {
     }
 
     return (
-        <div onClick={handleClick} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-900 grid grid-cols-3 md:grid-cols-1 md:grid-rows-2 shadow-md hover:shadow-xl transition-all">
+        <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-900 grid grid-cols-3 md:grid-cols-1 md:grid-rows-2 shadow-md hover:shadow-xl transition-all">
             <div ref={imageBGRef} className='bg-violet-400 rounded-l-md md:rounded-bl-none md:rounded-t-md p-2'>
                 <img src={plant} alt='Plant' className='object-cover'></img>
             </div>

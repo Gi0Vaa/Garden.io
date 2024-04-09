@@ -9,7 +9,8 @@ import React from 'react';
 
 function Greenhouse({ menuIndex = 0 }) {
     const location = useLocation();
-    const [greenhouse] = useState(location.state.greenhouse);
+
+    const [greenhouse] = useState(location.state);
     const [data, setData] = useState([]);
     const [index, setIndex] = useState(menuIndex);
     const [content, setContent] = useState(<div></div>);
