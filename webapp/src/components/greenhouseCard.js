@@ -39,9 +39,6 @@ function GreenhouseCard({ data }) {
 
         </div>
     )
-
-
-
 }
 
 export default GreenhouseCard;

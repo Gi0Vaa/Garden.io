@@ -7,51 +7,64 @@ import Settings from '../components/greenhouse/settings.js';
 import axios from 'axios';
 import React from 'react';
 
-function Greenhouse({ menuIndex = 0 }) {
+const Greenhouse = () => {
     const location = useLocation();
-
-    const [greenhouse] = useState(location.state);
-    const [data, setData] = useState([]);
-    const [index, setIndex] = useState(menuIndex);
-    const [content, setContent] = useState(<div></div>);
     const navigate = useNavigate();
 
+    const [greenhouseId, setGreenhouseId] = useState(null);
+    const [greenhouse, setGreenhouse] = useState({});
+    const [index, setIndex] = useState(setFirstIndex());
+    const [content, setContent] = useState(<div></div>);
+
+    function setFirstIndex(){
+        if(window.location.hash === '#/dashboard') return 0;
+        else if(window.location.hash === '#/plants') return 1;
+        else if(window.location.hash === '#/settings') return 2;
+        else return 0;
+    }
 
     useEffect(() => {
-        const url = window.location.href;
-        if(url.includes('dashboard')) {
-            setIndex(0);
-        } 
-        else if(url.includes('plants')) {
-            setIndex(1);
+        if(location.state !== null){
+            setGreenhouseId(location.state.greenhouse_id);
         }
-        else if(url.includes('settings')) {
-            setIndex(2);
-        }
-    }, []);
+    }, [location.state, setGreenhouseId]);
+
+    useEffect(() => {
+        if(greenhouseId === null) return;
+        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouseId}`)
+            .then(response => {
+                setGreenhouse(response.data);
+            })
+    }, [greenhouseId, setGreenhouse])
 
     useEffect(() => {
         document.title = `${greenhouse.name} | Garden.io`;
+    }, [greenhouse]);
 
+    //change index
+    useEffect(() => {
+        if(index === undefined) return;
         const menu = document.getElementById('menu');
         menu.children[index].classList.remove('border-green-100');
         menu.children[index].classList.add('border-green-500');
-
+        
+        if(greenhouseId === null) return;
         switch (index) {
             case 0:
-                window.history.replaceState({}, '', '/greenhouse/#/dashboard');
+                navigate('/greenhouse/#/dashboard', { state: { greenhouse_id: greenhouseId } });
                 setContent(
                     <Dashboard greenhouse={greenhouse} />
                 );
                 break;
-            case 1:
-                window.history.replaceState({}, '', '/greenhouse/#/plants');
+             case 1:
+                navigate('/greenhouse/#/plants', { state: { greenhouse_id: greenhouseId } });
                 setContent(
-                    <PlantsGrid greenhouseMap={data} />
+                    <PlantsGrid id={greenhouseId} />
                 );
                 break;
+            
             case 2:
-                window.history.replaceState({}, '', '/greenhouse/#/settings');
+                navigate('/greenhouse/#/settings', { state: { greenhouse_id: greenhouseId } });
                 setContent(
                     <Settings greenhouse={greenhouse} />
                 );
@@ -59,32 +72,21 @@ function Greenhouse({ menuIndex = 0 }) {
             default:
                 setContent(
                     <div>
-                        <h1>Dashboard</h1>
+                        <h1>Not A Page</h1>
                     </div>
                 );
                 break;
         }
-    }, [greenhouse, index, data, navigate]);
+    }, [index, greenhouse, greenhouseId, navigate]);
 
     function handleClick(i) {
         const menu = document.getElementById('menu');
         menu.children[index].classList.remove('border-green-500');
         menu.children[index].classList.add('border-green-100');
-        if (i === 1) {
-            axios.get(`${process.env.REACT_APP_API_URL}/mapplants/${greenhouse.greenhouse_id}`)
-                .then(response => {
-                    setData(response.data);
-                })
-                .then(() => {
-                    setIndex(i);
-                });
-        }
-        else {
-            setIndex(i);
-        }
+        setIndex(i);
     }
 
-    return (
+    return(
         <React.Fragment>
             <Header greenhouse={greenhouse} />
             <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>

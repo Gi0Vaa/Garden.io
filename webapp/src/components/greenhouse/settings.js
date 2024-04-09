@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
-function Settings({greenhouse}){
+const Settings = ({greenhouse}) => {
     const navigate = useNavigate();
 
     function activeBtn(){
@@ -30,7 +30,7 @@ function Settings({greenhouse}){
         }
         axios.put(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouse.greenhouse_id}`, obj)
             .then(response => {
-                navigate('/');
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error);
