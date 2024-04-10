@@ -28,11 +28,11 @@ function GreenhouseCard({ data }) {
     }
 
     return (
-        <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-900 grid grid-cols-3 md:grid-cols-1 md:grid-rows-2 shadow-md hover:shadow-xl transition-all">
-            <div ref={imageBGRef} className='bg-violet-400 rounded-l-md md:rounded-bl-none md:rounded-t-md p-2'>
-                <img src={plant} alt='Plant' className='object-cover'></img>
+        <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-900 grid grid-rows-2 shadow-md hover:shadow-xl transition-all">
+            <div ref={imageBGRef} className='bg-violet-400 h-32 md:h-full rounded-t-md '>
+                <img src={plant} alt='Plant' className=' object-contain h-full w-full '></img>
             </div>
-            <div className='flex flex-col gap-1 p-2 col-span-2 md:col-span-1 rounded-r-md md:rounded-tr-none md:rounded-b-md'>
+            <div className='flex flex-col gap-1 p-2 md:col-span-1 rounded-b-md'>
                 <h3>{greenhouse.name}</h3>
                 <p>{greenhouse.description}</p>
             </div>

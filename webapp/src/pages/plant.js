@@ -50,7 +50,7 @@ function Plant(){
     return(
         <React.Fragment>
             <Header />
-            <div className='grid md:grid-cols-4 grid-cols-1 p-3'>
+            <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
                 <div className='md:col-span-2' id='greenhouses'>
                     <div className='flex flex-row place-content-between py-3 items-baseline'>
