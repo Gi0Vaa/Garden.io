@@ -2,7 +2,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import axios from 'axios';
 
-function Register() {
+const Register = () => {
 
     function generateBanner(code, message){
         const container = document.getElementById('container');
@@ -23,10 +23,9 @@ function Register() {
     function signup(data){
         const user = {
             email: data.email,
-            name: data.given_name,
-            surname: data.family_name
+            name: data.given_name || '',
+            surname: data.family_name || ''
         }
-        console.log(user);
         axios.post(`${process.env.REACT_APP_API_URL}/users`, user).then((response) => {
             window.location.href = '/';
         }).catch((error) => {
