@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import DropdownMenu from "./dropdownMenu";
 
@@ -54,11 +54,11 @@ const Header = ({index, greenhouse}) => {
     ];
 
     return(
-        <header className='fixed top-0 w-screen z-50 flex flex-row px-4 py-2 bg-green-300 text-green-800'>
-            <div className="flex flex-row flex-grow items-center gap-1 md:gap-2">
-                <a href="/"><h2>Garden.io</h2></a>
+        <header className='fixed top-0 w-screen z-50 flex flex-row p-2 md:px-4 md:py-2 bg-green-300 text-green-800'>
+            <div className="flex flex-col sm:flex-row flex-grow gap-1 md:gap-2 place-content-start">
+                <Link to="/"><h2>Garden.io</h2></Link>
                 {greenhouse !== undefined && (
-                    <button onClick={goToGreenhouse}><h3 className="font-medium">{greenhouse.name ? ` / ${greenhouse.name}` : "" }</h3></button>
+                    <button onClick={goToGreenhouse}><h3 className="hidden sm:block font-medium">{greenhouse.name ? ` / ${greenhouse.name}` : "" }</h3></button>
                 )}
             </div>
             <div className="flex flex-row flex-grow gap-5 md:gap-5 xl:gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">
