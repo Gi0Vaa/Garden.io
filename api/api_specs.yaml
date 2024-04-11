@@ -625,7 +625,19 @@ components:
           type: string
         description:
           type: string
-        
+    
+    dtoUpadateGreenhouse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        humidity:
+          type: string
+        temperature:
+          type: string
+            
     dtoMapPlant:
       type: object
       required:
