@@ -35,7 +35,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                             setTimeout(() => {
                                 axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${response.data.greenhouse_id}`)
                                     .then(response => {
-                                        navigate('/greenhouse', { state: { greenhouse: response.data } });
+                                        navigate('/greenhouse', { state: { greenhouse_id: response.data.greenhouse_id  } });
                                     });
                             }, 300);
                         });

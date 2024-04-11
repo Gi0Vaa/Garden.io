@@ -32,7 +32,7 @@ function GreenhouseCard({ data }) {
             <div ref={imageBGRef} className='bg-violet-400 h-32 md:h-full rounded-t-md '>
                 <img src={plant} alt='Plant' className=' object-contain h-full w-full '></img>
             </div>
-            <div className='flex flex-col gap-1 p-2 md:col-span-1 rounded-b-md'>
+            <div className='flex flex-col gap-1 p-2 md:col-span-1 rounded-b-md overflow-auto whitespace-normal'>
                 <h3>{greenhouse.name}</h3>
                 <p>{greenhouse.description}</p>
             </div>
