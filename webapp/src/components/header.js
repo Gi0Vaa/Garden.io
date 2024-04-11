@@ -1,19 +1,18 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import DropdownMenu from "./dropdownMenu";
 
-function Header({index, greenhouse}) {
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
+
+const Header = ({index, greenhouse}) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
 
     useEffect(() => {
-        const links = document.getElementById('pagesLinks');
-        if(index !== undefined){
-            links.children[index].classList.add('font-bold');
-        }
-
         function handleClickOutside(event) {
             const pfp = document.getElementById('pfp');
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -26,7 +25,7 @@ function Header({index, greenhouse}) {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [index]);
+    }, []);
 
     function goToGreenhouse() {
         navigate('/greenhouse', {state: {greenhouse: greenhouse}});
@@ -50,6 +49,10 @@ function Header({index, greenhouse}) {
         }
     }
 
+    const navclass = ({ isActive }) => [
+        isActive ? ' flex fle-row gap-2 items-center font-bold bg-green-100 p-1 rounded-full md:p-0 md:bg-inherit transition-all' : 'text-green-700 font-normal flex fle-row gap-2 p-1 md:p-0 items-center transition-all hover:bg-green-100 hover:rounded-full md:hover:bg-inherit md:hover:rounded-none',
+    ];
+
     return(
         <header className='fixed top-0 w-screen z-50 flex flex-row px-4 py-2 bg-green-300 text-green-800'>
             <div className="flex flex-row flex-grow items-center gap-1 md:gap-2">
@@ -58,9 +61,15 @@ function Header({index, greenhouse}) {
                     <button onClick={goToGreenhouse}><h3 className="font-medium">{greenhouse.name ? ` / ${greenhouse.name}` : "" }</h3></button>
                 )}
             </div>
-            <div className="flex flex-row flex-grow gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">
-                <a href="/" className="">Home</a>
-                <a href="/herbarium">Herbarium</a>
+            <div className="flex flex-row flex-grow gap-5 md:gap-5 xl:gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">
+                <NavLink to="/" className={navclass}>
+                    <FontAwesomeIcon icon={faHouse} />
+                    <p className="hidden md:block">Home</p>
+                </NavLink>
+                <NavLink to="/herbarium" className={navclass}>
+                    <FontAwesomeIcon icon={faPlantWilt} />
+                    <p className="hidden md:block">Herbarium</p>
+                </NavLink>
                 <div className="group relative flex flex-col items-center">
                     <button className="rounded-full transition-colors duration-200 hover:bg-green-100" id="pfp" onClick={openMenu}>
                         <img src={localStorage.getItem('picture')} className="w-10 h-10 rounded-full p-1" alt="profile"/>
