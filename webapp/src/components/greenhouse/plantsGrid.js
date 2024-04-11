@@ -10,7 +10,7 @@ const PlantsGrid = ({ id }) => {
     const [greenhouseMap, setGreenhouseMap] = useState([]);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/mapplants/${id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${id}/plants`)
             .then(response => {
                 setGreenhouseMap(response.data);
             });

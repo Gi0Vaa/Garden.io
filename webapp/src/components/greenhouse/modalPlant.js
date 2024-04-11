@@ -21,8 +21,7 @@ function ModalPlant({ isOpen, onClose, greenhouseId }) {
     }
 
     function addPlant() {
-        axios.post(`${process.env.REACT_APP_API_URL}/mapplants`, {
-            greenhouse_id: greenhouseId,
+        axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouseId}/plants`, {
             plant_id: plant.plant_id
         })
         .then(() => {

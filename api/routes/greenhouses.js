@@ -5,7 +5,6 @@ const db = require('../db');
 const router = Router();
 
 //GREENHOUSE
-
 router.get('/api/v1/greenhouses', (req, res) => {
     db.all('SELECT * FROM garden_greenhouse', (err, rows) => {
         if (err) {
@@ -103,7 +102,7 @@ router.put('/api/v1/greenhouses/:id', (req, res) => {
 
 router.delete('/api/v1/greenhouses/:id', (req, res) => {
     const id = req.params.id;
-    db.run('DELETE FROM garden_user_greenhouse WHERE greenhouse_id = ?', [id], (err) => {
+    db.run('DELETE FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -116,19 +115,6 @@ router.delete('/api/v1/greenhouses/:id', (req, res) => {
                 message: "Deleted"
             });
         }
-    });
-});
-
-//plants in a greenhouse
-router.get('/api/v1/greenhouses/plants', (req, res) => {
-    db.all('SELECT * FROM garden_plant_greenhouse', [], (err, rows) => {
-        if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        return res.status(200).json(rows);
     });
 });
 

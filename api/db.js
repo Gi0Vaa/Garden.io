@@ -3,6 +3,9 @@ const db = new sqlite3.Database('garden.sqlite3');
 
 //DDL
 db.serialize(() => {
+    //enable foreign keys
+    db.run('PRAGMA foreign_keys = ON');
+
     //greenhouse table
     db.run(`
         CREATE TABLE IF NOT EXISTS garden_greenhouse (
@@ -48,7 +51,7 @@ db.serialize(() => {
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
             type TEXT,
-            FOREIGN KEY (type) REFERENCES garden_type(type) ON DELETE SET NULL
+            FOREIGN KEY (type) REFERENCES garden_user_type(type) ON DELETE SET NULL
         )
     `);
 
