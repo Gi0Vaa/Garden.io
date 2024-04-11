@@ -30,7 +30,7 @@ db.serialize(() => {
 
     //type table
     db.run(`
-        CREATE TABLE IF NOT EXISTS garden_type (
+        CREATE TABLE IF NOT EXISTS garden_user_type (
             type TEXT PRIMARY KEY,
             session_time INTEGER NOT NULL --in milliseconds
         )
@@ -38,7 +38,7 @@ db.serialize(() => {
 
     //types of users
     db.run(`
-       INSERT OR IGNORE INTO garden_type (type, session_time) VALUES ('user', 60000)
+       INSERT OR IGNORE INTO garden_user_type (type, session_time) VALUES ('user', 60000)
    `);
 
     //user table
@@ -74,7 +74,43 @@ db.serialize(() => {
         )
     `);
 
-    //
+    //tabella dei tipi di valore (tipovalore, unitamisurata)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS garden_value_type (
+            type TEXT PRIMARY KEY,
+            data TEXT NOT NULL
+        )
+    `);
+
+    //tabella dei dati dei sensori (idsensore, tipovalore, valore, timestamp)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS garden_sensor_data (
+            sensor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            greenhouse_id INTEGER NOT NULL,
+            type TEXT NOT NULL,
+            value REAL NOT NULL,
+            timestamp INTEGER NOT NULL,
+            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE
+            FOREIGN KEY (type) REFERENCES garden_value_type(type) ON DELETE CASCADE
+            FOREIGN KEY (sensor_id) REFERENCES garden_sensor(sensor_id) ON DELETE CASCADE
+        )
+    `);
+    
+    //tabella dei sensori collegata ad una serra (idsensore, idserra, tipo, posizione )
+    db.run(`
+        CREATE TABLE IF NOT EXISTS garden_sensor (
+            sensor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            greenhouse_id INTEGER NOT NULL,
+            type TEXT NOT NULL,
+            position TEXT NOT NULL,
+            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE
+        )
+    `);
+
+    //tabella posizione (idposizione, x, y)
+    //tabella posizione di una pianta all'interno di una serra  (idpianta, idserra, idposizione)
+
+    
 
 })
 

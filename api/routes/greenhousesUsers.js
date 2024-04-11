@@ -4,8 +4,8 @@ const db = require('../db');
 
 const router = Router();
 
-//GREENHOUSE USERS
-router.get('/api/v1/mapgreenhouses/:email', (req, res) => {
+//GREENHOUSE USERS             prima era /api/v1/mapgreenhouses/:email
+router.get('/api/v1/users/:email/greenhouses', (req, res) => { 
     const email = req.params.email;
     db.all('SELECT * FROM garden_user_greenhouse WHERE email = ?', [email], (err, rows) => {
         if (err) {
@@ -24,7 +24,8 @@ router.get('/api/v1/mapgreenhouses/:email', (req, res) => {
     });
 });
 
-router.post('/api/v1/mapgreenhouses', (req, res) => {
+//prima era /api/v1/mapgreenhouses
+router.post('/api/v1/users/:email/greenhouses', (req, res) => { //ti riton
     const { email, greenhouse_id } = req.body;
     db.run('INSERT INTO garden_user_greenhouse (email, greenhouse_id) VALUES (?, ?)', [email, greenhouse_id], (err) => {
         if (err) {

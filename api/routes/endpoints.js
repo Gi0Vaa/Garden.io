@@ -16,8 +16,8 @@ module.exports = {
 
 /*
  TODO:
- tabella posizione (tipo, x, y)
- tabella posizione di una pianta all'interno di una serra  (idpianta, idserra, posizione)
+ tabella posizione (idposizione, x, y)
+ tabella posizione di una pianta all'interno di una serra  (idpianta, idserra, idposizione)
  tabella dei sensori collegata ad una serra    (idsensore, idserra, tipo, posizione )
  tabella dei dati dei sensori (idsensore, tipovalore, valore, timestamp)
  tabella dei tipi di valore (tipovalore, unitamisura)
