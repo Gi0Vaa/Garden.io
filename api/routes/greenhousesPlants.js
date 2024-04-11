@@ -5,7 +5,7 @@ const db = require('../db');
 const router = Router();
 
 //MapPlant
-router.get('/api/v1/mapplants/:greenhouse_id', (req, res) => {
+router.get('/api/v1/greenhouse/:greenhouse_id/plants', (req, res) => {
     const id = req.params.greenhouse_id;
     db.all('SELECT * FROM garden_plant_greenhouse WHERE greenhouse_id = ?', [id], (err, rows) => {
         if (err) {
