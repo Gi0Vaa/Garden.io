@@ -456,37 +456,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-
-
   
-  /api/v1/mapplants:
-    post:
-      summary: map a plant to a greenhouse
-      operationId: mapPlant
+  /api/v1/greenhouses/plants:
+    get:
+      summary: get all plants of all greenhouses
+      operationId: getAllGreenhousesPlants
       tags:
-        - plants of a greenhouse
-      requestBody:
-        description: Map to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/dtoMapPlant'
+        - plants of all greenhouses
       responses:
-        '201':
-          description: Created
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/dtoMapPlant'
-        '409':
-          description: Conflict
+                type: array
+                items:
+                  $ref: '#/components/schemas/dtoMapPlant'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  
-  /api/v1/mapplants/{greenhouse_id}:
+
+  /api/v1/greenhouses/{greenhouse_id}/plants:
     get:
       summary: get all plants of a greenhouse
       operationId: getAllGreenhousePlants
@@ -515,45 +508,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-  /api/v1/mapplants/{greenhouse_id}/{plant_id}:
-    put:
-      summary: update a plant of a greenhouse
-      operationId: updatePlantOfGreenhouse
+  /api/v1/greenhouses/{greenhouse_id}/plants/{plant_id}:
+    post:
+      summary: add a plant to a greenhouse
+      operationId: mapPlantToGreenhouse
       tags:
         - plants of a greenhouse
       parameters:
         - name: greenhouse_id
           in: path
-          description: id of the greenhouse to update
+          description: id of the greenhouse to map
           required: true
           schema:
             type: integer
             minimum: 1
         - name: plant_id
           in: query
-          description: id of the plant to update
+          description: id of the plant to map
           required: true
           schema:
             type: integer
             minimum: 1
-      requestBody:
-        description: Plant to update
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/dtoMapPlant'
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/dtoMapPlant'
-        '404':
-          description: Not Found
-
-
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     delete:
       summary: delete a plant from a greenhouse
       operationId: deletePlantFromGreenhouse
@@ -584,13 +572,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-              
-
-
-
 components:
   schemas:
-  
     plant:
       type: object
       properties:
