@@ -16,7 +16,7 @@ const Welcome = () => {
                     <h2>Congratulations!</h2>
                     <h3 className='font-normal'>Thank you for start using Garden.io</h3>
                 </div>
-                <Link to='/' className='bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded-md transition-colors'>Go to Login</Link>
+                <Link to='/' className='bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded-md transition-colors'>Go home</Link>
             </div>
             <div></div>
         </div>

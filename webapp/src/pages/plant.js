@@ -1,51 +1,19 @@
-import axios from 'axios'
 import React from 'react';
 import Header from "../components/header"
 import defaultImg from '../assets/img/plants/default.svg'
-import { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-function Plant(){
-    const navigate = useNavigate();
+const Plant = () => {
+    const location = useLocation();
 
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
-
-    const [imageUrl, setImageUrl] = useState('');
-    const [plant , setPlant] = useState({});
-
-    useEffect(() => {
-        if(id == null){
-            navigate('/error', {
-                state: {
-                    code: 404,
-                    status: "Page not Found",
-                    message: "Sorry this page doesn't exist :/"
-                }
-            } );
-        }
-        else{
-            axios.get(`${process.env.REACT_APP_API_URL}/plants/${id}`)
-                .then(response => {
-                    try{
-                        setImageUrl(require(`../assets/img/plants/${plant.name.toLowerCase().replace(/\s/g, '')}.jpg`));
-                    }
-                    catch(e){
-                        setImageUrl('');
-                    }
-                    setPlant(response.data)
-                })
-                .catch(() => {
-                    navigate('/error', {
-                        state: {
-                            code: 404,
-                            status: "Page not Found",
-                            message: "Sorry this page doesn't exist :/"
-                        }
-                    } );
-                });
-        }
-    }, [navigate, id, plant.name]);
+    const plant = location.state.plant;
+    let imgURL;
+    try{
+        imgURL = require(`../assets/img/plants/${plant.name.toLowerCase().replace(/\s/g, '')}.jpg`);
+    }
+    catch (e){
+        imgURL = defaultImg;
+    }
 
     return(
         <React.Fragment>
@@ -58,7 +26,7 @@ function Plant(){
                         <h3 className='font-normal'>#{plant.plant_id}</h3>
                     </div>
                     <div className='grid xl:grid-cols-2'>
-                        <img src={imageUrl === '' ? defaultImg : imageUrl } alt={plant.name} className='h-80 object-cover bg-orange-200 rounded-t-md xl:rounded-l-md xl:rounded-tr-none w-full' />
+                        <img src={ imgURL } alt={plant.name} className='h-80 object-cover bg-orange-200 rounded-t-md xl:rounded-l-md xl:rounded-tr-none w-full' />
                         <h3 className='font-normal p-3 bg-green-100 rounded-b-md xl:rounded-r-md xl:rounded-bl-none'>{plant.description}</h3>
                     </div>
                 </div>

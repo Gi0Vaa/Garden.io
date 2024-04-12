@@ -25,6 +25,7 @@ function ModalPlant({ isOpen, onClose, greenhouseId }) {
             plant_id: plant.plant_id
         })
         .then(() => {
+            window.location.reload();
             onClose();
         });
     }
