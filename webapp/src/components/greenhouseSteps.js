@@ -4,12 +4,14 @@ import axios from 'axios';
 import AddPlant from "./createGreenhouse/addPlant";
 import AddGreenhouse from "./createGreenhouse/addGreenhouse";
 import Loading from "../pages/status/loading";
+import { useCookies } from 'react-cookie';
 
 function CreateGreenhouse({ message, welcome = false }) {
     const [greenhouse, setGreenhouse] = useState({});
     const [plant, setPlant] = useState({ plant_id: 1 });
     const [content, setContent] = useState("");
     const [step, setStep] = useState(1);
+    const Cookie = useCookies(['user'])[0];
 
     const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ function CreateGreenhouse({ message, welcome = false }) {
             case 3:
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
-                obj.email = localStorage.getItem('email');
+                obj.email = Cookie.user.email;
                 axios.post(`${process.env.REACT_APP_API_URL}/greenhouses`, obj)
                     .then(response => {
                         axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${response.data.greenhouse_id}/plants`, {
@@ -48,7 +50,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<div>Not Found</div>);
                 break;
         }
-    }, [step, plant, message, greenhouse, navigate, welcome]);
+    }, [step, plant, message, greenhouse, navigate, welcome, Cookie]);
 
     function next() {
         switch (step) {
