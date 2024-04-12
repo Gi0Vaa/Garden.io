@@ -22,7 +22,7 @@ const PlantInGreenhouse = ({ plant, id }) => {
         <div className="flex flex-col gap-2 p-3 rounded-md bg-amber-200 text-green-900">
             <div className="flex flex-row w-full place-content-between items-center">
                 <h3>{plant.name}</h3>
-                <FontAwesomeIcon icon={faBook} onClick={goToInfoPlant} className="cursor-pointer p-2 hover:bg-green-900 text-green-900 hover:text-green-100 rounded-full transition-colors duration-300"/>
+                <FontAwesomeIcon icon={faBook} onClick={goToInfoPlant} className="cursor-pointer p-1 sm:p-2 hover:bg-green-900 text-green-900 hover:text-green-100 md:rounded-full transition-colors duration-300"/>
             </div>
             <div>
                 <p>{plant.description}</p>
@@ -33,7 +33,7 @@ const PlantInGreenhouse = ({ plant, id }) => {
                     <p className=' px-2 bg-green-50'>1</p>
                     <FontAwesomeIcon icon={faAdd} className=" p-1 text-white bg-sky-400 hover:bg-sky-600 transition-colors rounded-r-md"/>
                 </div>
-                <FontAwesomeIcon icon={faTrash} onClick={deletePlant} className="cursor-pointer p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-full transition-colors duration-300"/>
+                <FontAwesomeIcon icon={faTrash} onClick={deletePlant} className="cursor-pointer p-1 sm:p-2 text-red-400 hover:bg-red-400 hover:text-white md:rounded-full transition-colors duration-300"/>
             </div>
         </div>
     )
