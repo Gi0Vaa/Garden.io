@@ -1,9 +1,10 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Register = () => {
-
+    const navigate = useNavigate();
     function generateBanner(code, message){
         const container = document.getElementById('container');
         const banner = `
@@ -27,7 +28,7 @@ const Register = () => {
             surname: data.family_name || ''
         }
         axios.post(`${process.env.REACT_APP_API_URL}/users`, user).then((response) => {
-            window.location.href = '/';
+            navigate('/success');
         }).catch((error) => {
             const data = error.response.data;            
             generateBanner(data.code, data.message);

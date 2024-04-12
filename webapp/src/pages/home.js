@@ -2,40 +2,31 @@ import axios from 'axios';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import Header from '../components/header';
 import GreenhouseCard from '../components/greenhouseCard';
 
-function Home() {
-    const email = localStorage.getItem('email');
+const Home = () => {
+    const [Cookies] = useCookies(['user']);
     const [greenhouses, setGreenhouses] = useState([]);
 
     useEffect(() => {
+        const email = Cookies?.user?.email;
+        if(!email) return;
         document.title = 'Home | Garden.io';
 
-        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
             .then(response => {
-                axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
-                    .then(response => {
-                        setGreenhouses(response.data);
-                    })
-                    .catch(err => {
-                        if (err.response.data.code === 404) {
-                            window.location.href = '/start';
-                        }
-                    });
+                setGreenhouses(response.data);
             })
             .catch(err => {
                 if (err.response.data.code === 404) {
-                    localStorage.clear();
-                    window.location.href = '/register';
+                    window.location.href = '/start';
                 }
             });
 
-
-    }, [email]);
-
-
+    }, [Cookies]);
 
     return (
         <React.Fragment>

@@ -16,9 +16,15 @@ function CreateGreenhouse({ message, welcome = false }) {
     useEffect(() => {
         switch (step) {
             case 1:
+                document.getElementById('btnContainer').classList.remove('place-content-between');
+                document.getElementById('btnContainer').classList.add('place-content-end');
+                document.getElementById('backBtn').classList.add('hidden');
                 setContent(<AddGreenhouse message={message} greenhouse={greenhouse} />);
                 break;
             case 2:
+                document.getElementById('btnContainer').classList.remove('place-content-end');
+                document.getElementById('btnContainer').classList.add('place-content-between');
+                document.getElementById('backBtn').classList.remove('hidden');
                 setContent(<AddPlant plant={plant} />);
                 break;
             case 3:
@@ -80,7 +86,7 @@ function CreateGreenhouse({ message, welcome = false }) {
         <div className='md:col-span-2 flex flex-col gap-2 text-center'>
             <div className="p-2 rounded-md text-left  bg-green-300 shadow-md flex flex-col gap-2">
                 {content}
-                <div className='flex flex-row place-content-between p-3'>
+                <div id="btnContainer" className='flex flex-row p-3'>
                     <button id="backBtn" className="p-2 text-green-950 font-semibold hover:bg-green-200 rounded-md transition-colors" onClick={back}>Back</button>
                     <button id="nextBtn" className="p-2 bg-green-600 hover:bg-green-700 transition-colors text-white rounded-md" onClick={next}>Next</button>
                 </div>

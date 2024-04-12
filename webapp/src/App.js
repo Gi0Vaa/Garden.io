@@ -3,8 +3,10 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
+  Route
 } from "react-router-dom";
+
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 //pages
 import Home from './pages/home';
@@ -17,25 +19,29 @@ import Herbarium from './pages/herbarium';
 import Plant from './pages/plant';
 import Greenhouse from './pages/greenhouse';
 import CreateGreenhouse from './pages/createGreenhouse';
+import Registered from './pages/status/registered';
 
 function App() {
-  if (localStorage.getItem('email') !== null) {
+  const [Cookies] = useCookies(['user']);
+  if (Cookies.user !== undefined){
     return (
-      <Router>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/start' element={<FirstGreenhouse />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/welcome' element={<Welcome />} />
-          <Route path='/herbarium' element={<Herbarium />} />
-          <Route path='/plant' element={<Plant />} />
-          <Route path='/greenhouse' element={<Greenhouse />} />
-          <Route path='/createGreenhouse' element={<CreateGreenhouse />} />
-          <Route path='/error' element={<Error />} />
-          <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
-        </Routes>
-      </Router>
+      <CookiesProvider>
+        <Router>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/start' element={<FirstGreenhouse />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/welcome' element={<Welcome />} />
+            <Route path='/herbarium' element={<Herbarium />} />
+            <Route path='/plant' element={<Plant />} />
+            <Route path='/greenhouse' element={<Greenhouse />} />
+            <Route path='/createGreenhouse' element={<CreateGreenhouse />} />
+            <Route path='/error' element={<Error />} />
+            <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
+          </Routes>
+        </Router>
+      </CookiesProvider>
     );
   }
   else {
@@ -44,6 +50,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/success' element={<Registered />} />
         </Routes>
       </Router>
     );

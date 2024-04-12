@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-function Error({data}) {
+const Error = ({data}) => {
     const location = useLocation();
 
     useState(() =>{

@@ -1,14 +1,16 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
+import { useCookies } from 'react-cookie';
 import DropdownMenu from "./dropdownMenu";
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
 
-const Header = ({index, greenhouse}) => {
+const Header = ({greenhouse}) => {
     const navigate = useNavigate();
+    const [Cookies] = useCookies(['user']);
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
 
@@ -34,7 +36,6 @@ const Header = ({index, greenhouse}) => {
     function openMenu(){
         const pfp = document.getElementById('pfp');
         const dropMenu = document.getElementById('dropMenu');
-        console.log(open);
         //close
         if(open){
             pfp.classList.remove('bg-green-100');
@@ -72,7 +73,7 @@ const Header = ({index, greenhouse}) => {
                 </NavLink>
                 <div className="group relative flex flex-col items-center">
                     <button className="rounded-full transition-colors duration-200 hover:bg-green-100" id="pfp" onClick={openMenu}>
-                        <img src={localStorage.getItem('picture')} className="w-10 h-10 rounded-full p-1" alt="profile"/>
+                        <img src={Cookies?.user?.picture || ''} className="w-10 h-10 rounded-full p-1" alt="profile"/>
                     </button>
                     <div ref={menuRef} className="hidden absolute w-max mt-16 right-0 transition-all duration-300" id="dropMenu">
                         <Transition

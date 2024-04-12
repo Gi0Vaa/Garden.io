@@ -1,8 +1,11 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-function Login() {
+const Login = () => {
+    const setCookie = useCookies(['user'])[1];
+
     function generateBanner(code, message) {
         const container = document.getElementById('container');
         const banner = `
@@ -20,15 +23,13 @@ function Login() {
     }
 
     function sigin(data) {
-        localStorage.setItem('picture', data.picture);
         const email = data.email;
         axios.get(`${process.env.REACT_APP_API_URL}/users/${email}`).then((response) => {
-            console.log(response.data);
-            localStorage.setItem('email', response.data.email);
-            localStorage.setItem('name', response.data.name);
-            localStorage.setItem('surname', response.data.surname);
-            window.location.href = '/';
+            const user = response.data;
+            user.picture = data.picture;
+            setCookie('user', user, { path: '/' });
         }).catch((error) => {
+            console.log(error);
             const data = error.response.data;
             generateBanner(data.code, data.message);
         })
