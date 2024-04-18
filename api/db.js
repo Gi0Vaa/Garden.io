@@ -11,7 +11,9 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS garden_greenhouse (
             greenhouse_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            description TEXT
+            description TEXT,
+            temperature TEXT DEFAULT '0',
+            humidity INTEGER DEFAULT 0
         )
     `);
 

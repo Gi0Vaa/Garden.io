@@ -79,7 +79,7 @@ router.put('/api/v1/greenhouses/:id', (req, res) => {
     const id = req.params.id;
     const greenhouse = req.body;
 
-    db.run('UPDATE garden_greenhouse SET name = ?, description = ? WHERE greenhouse_id = ?', [greenhouse.name, greenhouse.description, id], (err) => {
+    db.run('UPDATE garden_greenhouse SET name = ?, description = ?, temperature = ?, humidity = ? WHERE greenhouse_id = ?', [greenhouse.name, greenhouse.description, greenhouse.temperature, greenhouse.humidity, id], (err) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -117,6 +117,5 @@ router.delete('/api/v1/greenhouses/:id', (req, res) => {
         }
     });
 });
-
 
 module.exports = router;

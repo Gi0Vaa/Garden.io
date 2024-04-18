@@ -219,7 +219,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/daoGreenhouse'
+              $ref: '#/components/schemas/dtoUpadateGreenhouse'
       responses:
         '200':
           description: OK
@@ -517,7 +517,10 @@ components:
           type: string
         description:
           type: string
-
+        temperature:
+          type: string
+        humidity:
+          type: integer
     dtoCreateGreenhouse:
       type: object
       required:
@@ -538,10 +541,11 @@ components:
           type: string
         description:
           type: string
-        humidity:
-          type: string
         temperature:
           type: string
+        humidity:
+          type: integer
+        
             
     dtoMapPlant:
       type: object
