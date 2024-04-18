@@ -4,10 +4,12 @@ const db = require('../db');
 
 const router = Router();
 
-//GREENHOUSE USERS             prima era /api/v1/mapgreenhouses/:email
 router.get('/api/v1/users/:email/greenhouses', (req, res) => { 
     const email = req.params.email;
-    db.all('SELECT * FROM garden_user_greenhouse WHERE email = ?', [email], (err, rows) => {
+    db.all(`SELECT g.* 
+            FROM garden_user_greenhouse u
+            JOIN garden_greenhouse g ON u.greenhouse_id = g.greenhouse_id
+            WHERE email = ?`, [email], (err, rows) => {
         if (err) {
             return res.status(500).json({
                 code: 500,

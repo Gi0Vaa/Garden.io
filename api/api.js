@@ -19,6 +19,9 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const port = 8080;
 
+//db
+const db = require('./db.js');
+
 app.use(express.json()); // JSON
 app.use(cors({  //CORS allowed all origin
     origin: '*'
@@ -78,6 +81,27 @@ app.use(routes.plants);
 app.use(routes.greenhouses);
 app.use(routes.greenhousesUsers);
 app.use(routes.greenhousesPlants);
+
+//auth
+app.post('/api/v1/login', (req, res) => {
+    const user = req.body;
+    db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
+        if (err) {
+            res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        } else if (!row) {
+            res.status(404).json({
+                code: 404,
+                message: "User does not exist"
+            });
+        } else {
+            const token = jwt.sign({ ...row }, 'CHIAVESEGRETA');
+            res.status(200).json({ token: token });
+        }
+    });
+});
 
 
 app.listen(port, () => {

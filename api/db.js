@@ -52,6 +52,7 @@ db.serialize(() => {
             email TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
+            token TEXT,
             type TEXT,
             FOREIGN KEY (type) REFERENCES garden_user_type(type) ON DELETE SET NULL
         )

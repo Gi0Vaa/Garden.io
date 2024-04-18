@@ -4,6 +4,32 @@ info:
   version: 1.0.0
   title: Garden.io
 paths:
+  /api/v1/login:
+    post:
+      summary: login
+      operationId: login
+      tags:
+        - login
+      requestBody:
+        description: User to login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/daoUser'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtoUser'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/v1/plants:
     get:
       summary: get all information of plants
@@ -350,7 +376,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/dtoUser'
+                $ref: '#/components/schemas/JWT'
         '404':
           description: Not Found
     delete:
@@ -392,7 +418,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/greenhouseUser'
+                  $ref: '#/components/schemas/daoGreenhouse'
         '404':
           description: Not Found
           content:
@@ -533,6 +559,19 @@ paths:
 
 components:
   schemas:
+    JWT:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT for user authentication
+        expiration:
+          type: string
+          format: date-time
+          description: Expiration date and time of the JWT
+      required:
+        - token
+  
     plant:
       type: object
       properties:
@@ -558,6 +597,7 @@ components:
           type: string
         humidity:
           type: integer
+
     dtoCreateGreenhouse:
       type: object
       required:
@@ -582,8 +622,7 @@ components:
           type: string
         humidity:
           type: integer
-        
-            
+  
     dtoMapPlant:
       type: object
       required:
@@ -604,7 +643,6 @@ components:
         description:
           type: string
         
-
     daoMapPlant:
       type: object
       properties:
@@ -635,18 +673,6 @@ components:
         name:
           type: string
         surname:
-          type: string
-
-    userJWT:
-      type: object
-      properties:
-        email:
-          type: string
-        name:
-          type: string
-        surname:
-          type: string
-        token:
           type: string
 
     greenhouseUser:

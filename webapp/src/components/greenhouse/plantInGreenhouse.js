@@ -20,7 +20,7 @@ const PlantInGreenhouse = ({ plant }) => {
     }
 
     function removePlant() {
-        if(quantity > 0) {
+        if(quantity > 1) {
             setQuantity(quantity - 1);
             updateQuantity(-1);
         }

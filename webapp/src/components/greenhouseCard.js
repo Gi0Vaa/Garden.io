@@ -1,17 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-import axios from 'axios'
+import { useRef } from 'react';
 import plant from '../assets/img/wateringPlant.svg'
 
-function GreenhouseCard({ data }) {
-    const [greenhouse, setGreenhouse] = useState({});
+const GreenhouseCard = ({ greenhouse }) => {
     const imageBGRef = useRef(null);
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${data.greenhouse_id}`)
-            .then(response => {
-                setGreenhouse(response.data);
-            });
-    }, [data]);
 
     function handleMouseOver() {
         const imageBG = imageBGRef.current;

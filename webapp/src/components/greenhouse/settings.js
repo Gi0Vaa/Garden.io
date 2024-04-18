@@ -39,7 +39,7 @@ const Settings = ({greenhouse}) => {
 
     function deleteGreenhouse(){
         axios.delete(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouse.greenhouse_id}`)
-            .then(response => {
+            .then(() => {
                 navigate('/');
             })
             .catch(error => {
