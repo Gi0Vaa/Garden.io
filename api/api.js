@@ -2,6 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 
+//environmet variables
+require('dotenv').config();
+
 //router
 const router = require('express').Router();
 
@@ -14,6 +17,8 @@ const openApiValidator = require('express-openapi-validator');
 
 //jwt
 const jwt = require('jsonwebtoken');
+//cookie parser
+const cookieParser = require('cookie-parser');
 
 //application
 const app = express();
@@ -23,8 +28,10 @@ const port = 8080;
 const db = require('./db.js');
 
 app.use(express.json()); // JSON
+app.use(cookieParser()); //cookie parser
 app.use(cors({  //CORS allowed all origin
-    origin: '*'
+    origin: true,
+    credentials: true
 }));
 
 //Swagger UI
@@ -38,6 +45,7 @@ app.use(
         validateResponses: true
     })
 )
+
 //Errori di validazione
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
@@ -46,30 +54,35 @@ app.use((err, req, res, next) => {
     });
 });
 
- //middleware jwt per verificare il token
-/*function verifyToken(req, res, next) {
-    const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
-        jwt.verify(req.token, 'CHIAVESEGRETA', (err, authData) => {
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                req.authData = authData;
-                next();
-            }
-        });
-    } else {
-        res.sendStatus(403);
-    }
-}
-*/
-
 app.use((req, res, next) => { //log delle richieste
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);
     next();
+});
+
+//check JWT
+app.use((req, res, next) => {
+    if(req.path === '/api/v1/login'){
+        next();
+    }
+    else{
+        const token = req.cookies.token;
+        if(!token){
+            return res.status(401).json({
+                code: 401,
+                message: "Unauthorized"
+            });
+        }
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            console.log(decoded);
+            next();
+        } catch (err) {
+            return res.status(401).json({
+                code: 401,
+                message: "Unauthorized"
+            });
+        }
+    }
 });
 
 
@@ -87,18 +100,25 @@ app.post('/api/v1/login', (req, res) => {
     const user = req.body;
     db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
         } else if (!row) {
-            res.status(404).json({
+            return res.status(404).json({
                 code: 404,
                 message: "User does not exist"
             });
         } else {
-            const token = jwt.sign({ ...row }, 'CHIAVESEGRETA');
-            res.status(200).json({ token: token });
+            //FIXME: contrtolla se è un metodo valido
+            const token = jwt.sign({ ...row }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.cookie('token', token, { httpOnly: true });
+            res.status(200).json(
+                {
+                    code: 200,
+                    message: "User logged in",
+                }
+            );
         }
     });
 });

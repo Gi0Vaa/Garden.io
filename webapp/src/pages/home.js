@@ -16,11 +16,12 @@ const Home = () => {
         if(!email) return;
         document.title = 'Home | Garden.io';
 
-        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
+        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`, { withCredentials: true })
             .then(response => {
                 setGreenhouses(response.data);
             })
             .catch(err => {
+                console.log(err);
                 if (err.response.data.code === 404) {
                     window.location.href = '/start';
                 }

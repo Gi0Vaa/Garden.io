@@ -1,2 +1,3 @@
 /node_modules
 garden.sqlite3
+.env

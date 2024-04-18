@@ -116,9 +116,6 @@ db.serialize(() => {
 
     //tabella posizione (idposizione, x, y)
     //tabella posizione di una pianta all'interno di una serra  (idpianta, idserra, idposizione)
-
-    
-
 })
 
 module.exports = db;

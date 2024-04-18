@@ -23,6 +23,17 @@ const Login = () => {
     }
 
     function sigin(data) {
+        axios.post(`${process.env.REACT_APP_API_URL}/login`, data).then((response) => {
+            console.log(response);
+            setCookie('user', data, { path: '/' });
+        }).catch((error) => {
+            console.log(error);
+            const data = error.response.data;
+            generateBanner(data.code, data.message);
+        });
+    }
+    /*
+    function sigin(data) {
         const email = data.email;
         axios.get(`${process.env.REACT_APP_API_URL}/users/${email}`).then((response) => {
             const user = response.data;
@@ -34,6 +45,7 @@ const Login = () => {
             generateBanner(data.code, data.message);
         })
     }
+    */
 
     return (
         <div className='grid md:grid-cols-3 p-3 h-screen'>
