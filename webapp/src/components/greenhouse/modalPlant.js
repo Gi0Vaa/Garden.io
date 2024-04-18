@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function ModalPlant({ isOpen, onClose, greenhouseId }) {
+const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
     const [plant, setPlant] = useState({ plant_id: 0, name: '', description: '' });
     useEffect(() => {
 
@@ -22,7 +22,8 @@ function ModalPlant({ isOpen, onClose, greenhouseId }) {
 
     function addPlant() {
         axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouseId}/plants`, {
-            plant_id: plant.plant_id
+            plant_id: plant.plant_id,
+            quantity: 1
         })
         .then(() => {
             window.location.reload();

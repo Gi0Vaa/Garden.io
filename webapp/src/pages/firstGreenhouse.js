@@ -1,7 +1,7 @@
 import { useCookies } from 'react-cookie';
 import GreenhouseSteps from "../components/greenhouseSteps";
 
-function FirstGreenhouse() {
+const FirstGreenhouse = () => {
     const [Cookie] = useCookies(['user']);
     return (
         <div className='grid md:grid-cols-4 place-content-center grid-cols-1 p-3 h-screen bg-green-100'>

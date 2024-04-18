@@ -7,30 +7,16 @@ import ModalPlant from './modalPlant';
 const PlantsGrid = ({ id }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [content, setContent] = useState([]);
-    const [greenhouseMap, setGreenhouseMap] = useState([]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${id}/plants`)
             .then(response => {
-                setGreenhouseMap(response.data);
+                setContent([]);
+                response.data.forEach(p => {
+                    setContent(content => [...content, <PlantInGreenhouse key={p.plant_id} plant={p} />]);
+                });
             });
     }, [id]);
-
-    useEffect(() => {
-        greenhouseMap.forEach(p => {
-            axios.get(`${process.env.REACT_APP_API_URL}/plants/${p.plant_id}`)
-                .then(response => {
-                    setContent(prevContent => {
-                        const newContent = <PlantInGreenhouse key={p.plant_id} plant={response.data} id={id} />;
-                        const isDuplicate = prevContent.some(item => item.key === newContent.key);
-                        if (!isDuplicate) {
-                            return [...prevContent, newContent];
-                        }
-                        return prevContent;
-                    })
-                });
-        });
-    }, [greenhouseMap, id]);
 
     return (
         <React.Fragment>

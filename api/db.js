@@ -62,6 +62,7 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS garden_plant_greenhouse (
             greenhouse_id INTEGER NOT NULL,
             plant_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL DEFAULT 1,
             PRIMARY KEY (greenhouse_id, plant_id),
             FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE,
             FOREIGN KEY (plant_id) REFERENCES garden_plant(plant_id) ON DELETE CASCADE

@@ -1,7 +1,7 @@
 import Bell from '../../assets/icons/bell';
 import Check from '../../assets/icons/check';
 
-function Dashboard({ greenhouse }) {
+const Dashboard = ({ greenhouse }) => {
     return (
         <div className="p-3 bg-slate-50 text-green-800 rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
@@ -14,11 +14,11 @@ function Dashboard({ greenhouse }) {
                 <div className="flex flex-col gap-1">
                     <div className="flex flex-row items-center gap-3">
                         <h4 className="font-normal">Temperature:</h4>
-                        <h4 className="font-bold">32°C</h4>
+                        <h4 className="font-bold">{greenhouse.temperature}°C</h4>
                     </div>
                     <div className="flex flex-row items-center gap-3">
                         <h4 className="font-normal">Humidity:</h4>
-                        <h4 className="font-bold">78%</h4>
+                        <h4 className="font-bold">{greenhouse.humidity}%</h4>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2 items-center">

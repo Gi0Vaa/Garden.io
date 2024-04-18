@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, NavLink, Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { useCookies } from 'react-cookie';
 import DropdownMenu from "./dropdownMenu";
@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
 
 const Header = ({greenhouse}) => {
-    const navigate = useNavigate();
     const [Cookies] = useCookies(['user']);
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
@@ -28,10 +27,6 @@ const Header = ({greenhouse}) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
-    function goToGreenhouse() {
-        navigate('/greenhouse', {state: {greenhouse: greenhouse}});
-    }
 
     function openMenu(){
         const pfp = document.getElementById('pfp');
@@ -59,7 +54,7 @@ const Header = ({greenhouse}) => {
             <div className="flex flex-col sm:flex-row flex-grow gap-1 md:gap-2 place-content-start">
                 <Link to="/"><h2>Garden.io</h2></Link>
                 {greenhouse !== undefined && (
-                    <button onClick={goToGreenhouse}><h3 className="hidden sm:block font-medium">{greenhouse.name ? ` / ${greenhouse.name}` : "" }</h3></button>
+                    <Link to="/greenhouse" state={greenhouse}><h3 className="hidden sm:block font-medium"> / {greenhouse.name}</h3></Link>
                 )}
             </div>
             <div className="flex flex-row flex-grow gap-5 md:gap-5 xl:gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">

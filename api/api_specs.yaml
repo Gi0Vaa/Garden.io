@@ -421,7 +421,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/dtoMapPlant'
+                  $ref: '#/components/schemas/plant'
         '404':
           description: Not Found
           content:
@@ -463,6 +463,43 @@ paths:
                 $ref: '#/components/schemas/error'
 
   /api/v1/greenhouses/{greenhouse_id}/plants/{plant_id}:
+    patch:
+      summary: update quantity plant in a greenhouse
+      operationId: updateQuantityPlantInGreenhouse
+      tags:
+        - plants in greenhouse
+      parameters:
+        - name: greenhouse_id
+          in: path
+          description: id of the greenhouse to update
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: plant_id
+          in: path
+          description: id of the plant to update
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        description: Quantity of plant to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/daoMapPlant'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtoMapPlant'
+        '404':
+          description: Not Found
+
     delete:
       summary: delete a plant from a greenhouse
       operationId: deletePlantFromGreenhouse
@@ -499,12 +536,12 @@ components:
     plant:
       type: object
       properties:
-        idPianta:
+        plant_id:
           type: integer
           format: int32
-        nomePianta:
+        name:
           type: string
-        descrizionePianta:
+        description:
           type: string
     
     daoGreenhouse:
@@ -559,11 +596,22 @@ components:
         plant_id:
           type: integer
           format: int32
+        quantity:
+          type: integer
+          format: int32
+        name:
+          type: string
+        description:
+          type: string
+        
 
     daoMapPlant:
       type: object
       properties:
         plant_id:
+          type: integer
+          format: int32
+        quantity:
           type: integer
           format: int32
         

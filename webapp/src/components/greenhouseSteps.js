@@ -36,7 +36,8 @@ function CreateGreenhouse({ message, welcome = false }) {
                 axios.post(`${process.env.REACT_APP_API_URL}/greenhouses`, obj)
                     .then(response => {
                         axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${response.data.greenhouse_id}/plants`, {
-                            plant_id: plant.plant_id
+                            plant_id: plant.plant_id,
+                            quantity: 1
                         })
                         .then(() => {
                             setTimeout(() => {
