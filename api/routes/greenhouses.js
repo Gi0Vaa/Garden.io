@@ -1,11 +1,27 @@
 const { Router } = require('express');
+const jwt = require('jsonwebtoken');
 
 const db = require('../db'); 
 
 const router = Router();
 
+const validateRequests = (requiredRoles) => {
+    return (req, res, next) => {
+        const accessToken = jwt.decode(req.cookies.accessToken);
+        if(requiredRoles.includes(accessToken.role)){
+            next();
+        }
+        else{
+            res.status(401).json({
+                code: 401,
+                message: "Unauthorized"
+            });
+        }
+    }
+}
+
 //GREENHOUSE
-router.get('/api/v1/greenhouses', (req, res) => {
+router.get('/api/v1/greenhouses', validateRequests(['admin']), (req, res) => {
     db.all('SELECT * FROM garden_greenhouse', (err, rows) => {
         if (err) {
             return res.status(500).json({
@@ -17,7 +33,7 @@ router.get('/api/v1/greenhouses', (req, res) => {
     });
 });
 
-router.post('/api/v1/greenhouses', (req, res) => {
+router.post('/api/v1/greenhouses', validateRequests(['user', 'admin']), (req, res) => {
     const greenhouse = req.body;
     
     db.run('INSERT INTO garden_greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err) => {
@@ -54,7 +70,7 @@ router.post('/api/v1/greenhouses', (req, res) => {
 
 });
 
-router.get('/api/v1/greenhouses/:id', (req, res) => {
+router.get('/api/v1/greenhouses/:id', validateRequests(['user', 'admin']), (req, res) => {
     const id = req.params.id;
     db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, row) => {
         if (err) {
@@ -75,7 +91,7 @@ router.get('/api/v1/greenhouses/:id', (req, res) => {
     });
 });
 
-router.put('/api/v1/greenhouses/:id', (req, res) => {
+router.put('/api/v1/greenhouses/:id', validateRequests(['user', 'admin']), (req, res) => {
     const id = req.params.id;
     const greenhouse = req.body;
 

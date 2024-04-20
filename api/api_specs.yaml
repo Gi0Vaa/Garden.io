@@ -4,14 +4,42 @@ info:
   version: 1.0.0
   title: Garden.io
 paths:
+  /api/v1/register:
+    post:
+      security: []
+      summary: register
+      operationId: register
+      tags:
+        - auth
+      requestBody:
+        description: User to register
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/daoUser'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtoUser'
+        '409':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/v1/login:
     post:
+      security: []
       summary: login
       operationId: login
       tags:
-        - login
+        - auth
       requestBody:
-        description: User to login
+        description: User to login return accessToken and refreshToken
         required: true
         content:
           application/json:
@@ -45,6 +73,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/plant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     post:
       summary: create a new plant
       operationId: createPlant
@@ -64,6 +98,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/plant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/v1/plants/{id}:
     get:
       summary: get a plant by id
@@ -90,6 +130,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'       
     put:
       summary: update a plant
       operationId: updatePlant
@@ -119,6 +165,12 @@ paths:
                 $ref: '#/components/schemas/plant'
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     delete:
       summary: delete a plant
       operationId: deletePlant
@@ -137,6 +189,12 @@ paths:
           description: No Content
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/v1/plants/research/{name}:
     get:
       summary: get a plant by name
@@ -165,6 +223,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
   /api/v1/greenhouses:
     get:
@@ -181,6 +245,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/daoGreenhouse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     post:
       summary: create a new greenhouse
       operationId: createGreenhouse
@@ -200,6 +270,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/daoGreenhouse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/v1/greenhouses/{id}: 
     get:
       summary: get a greenhouse by id
@@ -222,6 +298,12 @@ paths:
                 $ref: '#/components/schemas/daoGreenhouse'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -255,6 +337,12 @@ paths:
                 $ref: '#/components/schemas/daoGreenhouse'
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     delete:
       summary: delete a greenhouse
       operationId: deleteGreenhouse
@@ -281,6 +369,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
 
   /api/v1/users:
@@ -298,6 +392,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/daoUser'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
       
     post:
       summary: create a new user
@@ -320,6 +420,12 @@ paths:
                 $ref: '#/components/schemas/dtoUser'
         '409':
           description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -351,6 +457,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     put:
       summary: update a user
       operationId: updateUser
@@ -376,9 +488,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JWT'
+                $ref: '#/components/schemas/dtoUser'
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     delete:
       summary: delete a user
       operationId: deleteUser
@@ -396,6 +514,12 @@ paths:
           description: No Content
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
           
   /api/v1/users/{email}/greenhouses:
     get:
@@ -421,6 +545,12 @@ paths:
                   $ref: '#/components/schemas/daoGreenhouse'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -454,6 +584,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     post:
       summary: add a plant to a greenhouse
       operationId: mapPlantToGreenhouse
@@ -483,6 +619,12 @@ paths:
                 $ref: '#/components/schemas/dtoMapPlant'
         '409':
           description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -525,6 +667,12 @@ paths:
                 $ref: '#/components/schemas/dtoMapPlant'
         '404':
           description: Not Found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
     delete:
       summary: delete a plant from a greenhouse
@@ -556,22 +704,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: accessToken
   schemas:
-    JWT:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT for user authentication
-        expiration:
-          type: string
-          format: date-time
-          description: Expiration date and time of the JWT
-      required:
-        - token
-  
     plant:
       type: object
       properties:
@@ -662,7 +808,7 @@ components:
           type: string
         surname:
           type: string
-        type:
+        role:
           type: string
 
     daoUser:
@@ -696,3 +842,5 @@ components:
         message:
           type: string
 
+security:
+  - cookieAuth: []

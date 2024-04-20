@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
     const [plant, setPlant] = useState({ plant_id: 0, name: '', description: '' });
     useEffect(() => {

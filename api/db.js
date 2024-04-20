@@ -35,15 +35,17 @@ db.serialize(() => {
 
     //type table
     db.run(`
-        CREATE TABLE IF NOT EXISTS garden_user_type (
-            type TEXT PRIMARY KEY,
+        CREATE TABLE IF NOT EXISTS garden_role (
+            role TEXT PRIMARY KEY,
             session_time INTEGER NOT NULL --in milliseconds
         )
     `);
 
     //types of users
     db.run(`
-       INSERT OR IGNORE INTO garden_user_type (type, session_time) VALUES ('user', 60000)
+       INSERT OR IGNORE INTO garden_role (role, session_time) VALUES 
+        ('user', 60000),
+        ('admin', 60000)
    `);
 
     //user table
@@ -53,8 +55,8 @@ db.serialize(() => {
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
             token TEXT,
-            type TEXT,
-            FOREIGN KEY (type) REFERENCES garden_user_type(type) ON DELETE SET NULL
+            role TEXT,
+            FOREIGN KEY (role) REFERENCES garden_role(role) ON DELETE SET NULL
         )
     `);
 

@@ -1,10 +1,13 @@
+import axios from 'axios';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faTrash, faAdd, faMinus } from '@fortawesome/free-solid-svg-icons'
+
+axios.defaults.withCredentials = true;
 
 const PlantInGreenhouse = ({ plant }) => {
     const navigate = useNavigate();

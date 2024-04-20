@@ -1,33 +1,37 @@
-import axios from 'axios';
 import React from 'react';
+import axios from 'axios';
+
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 
 import Header from '../components/header';
 import GreenhouseCard from '../components/greenhouseCard';
 
+axios.defaults.withCredentials = true;
+
 const Home = () => {
-    const [Cookies] = useCookies(['user']);
+    const { user } = React.useContext(UserContext);
     const [greenhouses, setGreenhouses] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const email = Cookies?.user?.email;
+        const email = user.email;
         if(!email) return;
         document.title = 'Home | Garden.io';
 
-        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`, { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
             .then(response => {
                 setGreenhouses(response.data);
             })
             .catch(err => {
                 console.log(err);
                 if (err.response.data.code === 404) {
-                    window.location.href = '/start';
+                    navigate('/start');
                 }
             });
 
-    }, [Cookies]);
+    }, [user.email, navigate]);
 
     return (
         <React.Fragment>

@@ -1,16 +1,19 @@
+import React from 'react';
+
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
+
 import User from '../assets/icons/user.js'
 import Add from '../assets/icons/add.js'
 import Logout from '../assets/icons/logout.js';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 
 const DropdownMenu = () => {
     const navigate = useNavigate();
-    const Cookies = useCookies(['user'])[0];
-    const removeCookie = useCookies(['user'])[2];
+    const { user, setUser } = React.useContext(UserContext);
 
     function logout(){
-        removeCookie('user', {path: '/'});
+        localStorage.removeItem('user');
+        setUser(null);
         navigate('/');
     }
 
@@ -20,7 +23,7 @@ const DropdownMenu = () => {
                 <div className='w-7 h-7'>
                     <User />
                 </div>
-                <p>{Cookies?.user?.name || ''} {Cookies?.user?.surname || ''}</p>
+                <p>{user.name || ''} {user.surname || ''}</p>
             </button>
             <a href='/createGreenhouse' className='flex flex-row gap-3 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
                 <div className='w-7 h-7'>

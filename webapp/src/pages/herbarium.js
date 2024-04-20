@@ -4,6 +4,7 @@ import PlantCard from "../components/plantCard";
 import React from 'react';
 import { useEffect, useState } from 'react';
 
+axios.defaults.withCredentials = true;
 
 function Herbarium(){
     const [plants, setPlants] = useState([]);

@@ -1,8 +1,11 @@
-import { useEffect, useRef } from 'react';
-import plantsImg from '../../assets/img/Potted-plants.svg'
 import axios from 'axios'
 
-function AddPlant({plant}) {
+import { useEffect, useRef } from 'react';
+import plantsImg from '../../assets/img/Potted-plants.svg'
+
+axios.defaults.withCredentials = true;
+
+const AddPlant = ({plant}) => {
     let dataRef = useRef();
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/plants`)

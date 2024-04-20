@@ -1,12 +1,13 @@
 import './App.css';
+
+import React from 'react';
+
 //Router
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from "react-router-dom";
-
-import { CookiesProvider, useCookies } from 'react-cookie';
 
 //pages
 import Home from './pages/home';
@@ -21,11 +22,15 @@ import Greenhouse from './pages/greenhouse';
 import CreateGreenhouse from './pages/createGreenhouse';
 import Registered from './pages/status/registered';
 
+//context
+import { UserContext } from './context/userContext';
+
 function App() {
-  const [Cookies] = useCookies(['user']);
-  if (Cookies.user !== undefined){
+  const [user, setUser] = React.useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
+
+  if (user) {
     return (
-      <CookiesProvider>
+      <UserContext.Provider value={{ user, setUser }}>
         <Router>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -38,21 +43,23 @@ function App() {
             <Route path='/greenhouse' element={<Greenhouse />} />
             <Route path='/createGreenhouse' element={<CreateGreenhouse />} />
             <Route path='/error' element={<Error />} />
-            <Route path='*' element={<Error data={{code: 404, status: "Page Not Found", message: "This page doesn't exist"}} />} />
+            <Route path='*' element={<Error data={{ code: 404, status: "Page Not Found", message: "This page doesn't exist" }} />} />
           </Routes>
         </Router>
-      </CookiesProvider>
+      </UserContext.Provider>
     );
   }
   else {
     return (
-      <Router>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/success' element={<Registered />} />
-        </Routes>
-      </Router>
+      <UserContext.Provider value={{ setUser }}>
+        <Router>
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/success' element={<Registered />} />
+          </Routes>
+        </Router>
+      </UserContext.Provider>
     );
   }
 }
