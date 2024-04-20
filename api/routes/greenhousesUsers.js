@@ -1,10 +1,26 @@
 const { Router } = require('express');
+const jwt = require('jsonwebtoken');
 
 const db = require('../db');
 
 const router = Router();
 
-router.get('/api/v1/users/:email/greenhouses', (req, res) => { 
+const validateRequests = (requiredRoles) => {
+    return (req, res, next) => {
+        const accessToken = jwt.decode(req.cookies.accessToken);
+        if(requiredRoles.includes(accessToken.role)){
+            next();
+        }
+        else{
+            res.status(401).json({
+                code: 401,
+                message: "Unauthorized"
+            });
+        }
+    }
+}
+
+router.get('/api/v1/users/:email/greenhouses', validateRequests(['user', 'admin']), (req, res) => { 
     const email = req.params.email;
     db.all(`SELECT g.* 
             FROM garden_user_greenhouse u

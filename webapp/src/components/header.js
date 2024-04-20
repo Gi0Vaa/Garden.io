@@ -1,7 +1,10 @@
+import React from "react";
+
 import { useEffect, useState, useRef } from "react";
 import { NavLink, Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
-import { useCookies } from 'react-cookie';
+import { UserContext } from '../context/userContext';
+
 import DropdownMenu from "./dropdownMenu";
 
 //icons
@@ -9,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
 
 const Header = ({greenhouse}) => {
-    const [Cookies] = useCookies(['user']);
+    const { user } = React.useContext(UserContext);
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
 
@@ -68,7 +71,7 @@ const Header = ({greenhouse}) => {
                 </NavLink>
                 <div className="group relative flex flex-col items-center">
                     <button className="rounded-full transition-colors duration-200 hover:bg-green-100" id="pfp" onClick={openMenu}>
-                        <img src={Cookies?.user?.picture || ''} className="w-10 h-10 rounded-full p-1" alt="profile"/>
+                        <img src={user.picture || ''} className="w-10 h-10 rounded-full p-1" alt="profile"/>
                     </button>
                     <div ref={menuRef} className="hidden absolute w-max mt-16 right-0 transition-all duration-300" id="dropMenu">
                         <Transition

@@ -1,11 +1,35 @@
 const { Router } = require('express');
+const jwt = require('jsonwebtoken');
 
 const db = require('../db');
 
 const router = Router();
 
+const validateRequests = (requiredRoles) => {
+    return (req, res, next) => {
+        const accessToken = jwt.decode(req.cookies.accessToken);
+        if(requiredRoles.includes(accessToken.role)){
+            if(accessToken.role === 'admin' || accessToken.email === req.params.email){
+                next();
+            }
+            else{
+                res.status(401).json({
+                    code: 401,
+                    message: "Unauthorized"
+                });
+            }
+        }
+        else{
+            res.status(401).json({
+                code: 401,
+                message: "Unauthorized"
+            });
+        }
+    }
+}
+
 //api/v1/users
-router.get('/api/v1/users', (req, res) => {
+router.get('/api/v1/users', validateRequests(['admin']), (req, res) => {
     db.all('SELECT * FROM garden_user', (err, rows) => {
         if (err) {
             res.status(500).json({
@@ -19,7 +43,7 @@ router.get('/api/v1/users', (req, res) => {
     });
 });
 
-router.get('/api/v1/users/:email', (req, res) => {
+router.get('/api/v1/users/:email', validateRequests(['user', 'admin']), (req, res) => {
     const email = req.params.email;
     db.get('SELECT * FROM garden_user WHERE email = ?', [email], (err, row) => {
         if (err) {
@@ -40,9 +64,9 @@ router.get('/api/v1/users/:email', (req, res) => {
     });
 })
 
-router.post('/api/v1/users', (req, res) => {
+router.post('/api/v1/users', validateRequests(['user', 'admin']), (req, res) => {
     const user = req.body;
-    db.run('INSERT INTO garden_user (email, name, surname, type) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
+    db.run('INSERT INTO garden_user (email, name, surname, role) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -66,7 +90,7 @@ router.post('/api/v1/users', (req, res) => {
 
 });
 
-router.put('/api/v1/users/:email', (req, res) => {
+router.put('/api/v1/users/:email', validateRequests(['user', 'admin']), (req, res) => {
     const email = req.params.email;
     const user = req.body;
     db.run('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err) => {
@@ -88,7 +112,7 @@ router.put('/api/v1/users/:email', (req, res) => {
     });
 });
 
-router.delete('/api/v1/users/:email', (req, res) => {
+router.delete('/api/v1/users/:email', validateRequests(['admin']), (req, res) => {
     const email = req.params.email;
     db.run('DELETE FROM garden_user WHERE email = ?', [email], (err) => {
         if (err) {

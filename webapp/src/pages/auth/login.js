@@ -1,10 +1,13 @@
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
-import { useCookies } from 'react-cookie';
+import React from 'react';
 import axios from 'axios';
 
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
+import { UserContext } from '../../context/userContext';
+
 const Login = () => {
-    const setCookie = useCookies(['user'])[1];
+    const { setUser } = React.useContext(UserContext);
 
     function generateBanner(code, message) {
         const container = document.getElementById('container');
@@ -23,29 +26,18 @@ const Login = () => {
     }
 
     function sigin(data) {
-        axios.post(`${process.env.REACT_APP_API_URL}/login`, data).then((response) => {
-            console.log(response);
-            setCookie('user', data, { path: '/' });
+        axios.post(`${process.env.REACT_APP_API_URL}/login`, data, { withCredentials: true })
+        .then((response) => {
+            const user = response.data;
+            user.picture = data.picture;
+            setUser(user);
+            localStorage.setItem('user', JSON.stringify(user));
         }).catch((error) => {
             console.log(error);
             const data = error.response.data;
             generateBanner(data.code, data.message);
         });
     }
-    /*
-    function sigin(data) {
-        const email = data.email;
-        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}`).then((response) => {
-            const user = response.data;
-            user.picture = data.picture;
-            setCookie('user', user, { path: '/' });
-        }).catch((error) => {
-            console.log(error);
-            const data = error.response.data;
-            generateBanner(data.code, data.message);
-        })
-    }
-    */
 
     return (
         <div className='grid md:grid-cols-3 p-3 h-screen'>

@@ -1,17 +1,23 @@
+import React from 'react';
+import axios from 'axios';
+
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { UserContext } from '../context/userContext';
+
 import AddPlant from "./createGreenhouse/addPlant";
 import AddGreenhouse from "./createGreenhouse/addGreenhouse";
 import Loading from "../pages/status/loading";
-import { useCookies } from 'react-cookie';
+
+axios.defaults.withCredentials = true;
 
 function CreateGreenhouse({ message, welcome = false }) {
+    const { user } = React.useContext(UserContext);
+
     const [greenhouse, setGreenhouse] = useState({});
     const [plant, setPlant] = useState({ plant_id: 1 });
     const [content, setContent] = useState("");
     const [step, setStep] = useState(1);
-    const Cookie = useCookies(['user'])[0];
 
     const navigate = useNavigate();
 
@@ -32,7 +38,7 @@ function CreateGreenhouse({ message, welcome = false }) {
             case 3:
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
-                obj.email = Cookie.user.email;
+                obj.email = user.email;
                 axios.post(`${process.env.REACT_APP_API_URL}/greenhouses`, obj)
                     .then(response => {
                         axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${response.data.greenhouse_id}/plants`, {
@@ -51,7 +57,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<div>Not Found</div>);
                 break;
         }
-    }, [step, plant, message, greenhouse, navigate, welcome, Cookie]);
+    }, [step, plant, message, greenhouse, navigate, welcome, user.email]);
 
     function next() {
         switch (step) {

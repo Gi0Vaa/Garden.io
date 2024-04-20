@@ -1,5 +1,8 @@
 import axios from "axios";
+
 import { useNavigate } from 'react-router-dom';
+
+axios.defaults.withCredentials = true;
 
 const Settings = ({greenhouse}) => {
     const navigate = useNavigate();
@@ -24,9 +27,12 @@ const Settings = ({greenhouse}) => {
     function save(){
         const name = document.getElementById('name').value;
         const description = document.getElementById('description').value;
+        console.log(greenhouse);
         const obj = {
             name: name,
-            description: description
+            description: description,
+            temperature: greenhouse.temperature,
+            humidity: greenhouse.humidity
         }
         axios.put(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouse.greenhouse_id}`, obj)
             .then(response => {

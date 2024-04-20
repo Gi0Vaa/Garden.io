@@ -59,33 +59,6 @@ app.use((req, res, next) => { //log delle richieste
     next();
 });
 
-//check JWT
-app.use((req, res, next) => {
-    if(req.path === '/api/v1/login'){
-        next();
-    }
-    else{
-        const token = req.cookies.token;
-        if(!token){
-            return res.status(401).json({
-                code: 401,
-                message: "Unauthorized"
-            });
-        }
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decoded);
-            next();
-        } catch (err) {
-            return res.status(401).json({
-                code: 401,
-                message: "Unauthorized"
-            });
-        }
-    }
-});
-
-
 //ROUTES
 const routes = require('./routes/endpoints.js');
 
@@ -96,6 +69,45 @@ app.use(routes.greenhousesUsers);
 app.use(routes.greenhousesPlants);
 
 //auth
+app.post('/api/v1/register', (req, res) => {
+    const user = req.body;
+    db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
+        if (err) {
+            return res.status(500).json({
+                code: 500,
+                message: "Query failed"
+            });
+        }
+        if (row) {
+            return res.status(409).json({
+                code: 409,
+                message: "User already exists"
+            });
+        }
+        else {
+            const refreshToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+                algorithm: 'HS256',
+                expiresIn: '30d',
+                issuer: 'garden.io',
+                subject: user.email
+            });
+            db.run('INSERT INTO garden_user (email, name, surname, token, role) VALUES (?, ?, ?, ?, ?)', [user.email, user.name, user.surname, refreshToken, 'user'], (err) => {
+                if (err) {
+                    return res.status(500).json({
+                        code: 500,
+                        message: "Query failed"
+                    });
+                }
+                else{
+                    db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
+                        res.status(201).json(row);
+                    });
+                }
+            });
+        }
+    });
+});
+
 app.post('/api/v1/login', (req, res) => {
     const user = req.body;
     db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
@@ -104,21 +116,43 @@ app.post('/api/v1/login', (req, res) => {
                 code: 500,
                 message: "Query failed"
             });
-        } else if (!row) {
+        }
+        else if (!row) {
             return res.status(404).json({
                 code: 404,
                 message: "User does not exist"
             });
-        } else {
-            //FIXME: contrtolla se è un metodo valido
-            const token = jwt.sign({ ...row }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.cookie('token', token, { httpOnly: true });
-            res.status(200).json(
-                {
-                    code: 200,
-                    message: "User logged in",
-                }
-            );
+        }
+        else {
+            const refreshToken = row.token;
+            delete row.token;
+
+            const accessToken = jwt.sign({ ...row }, process.env.JWT_SECRET, {
+                algorithm: 'HS256',
+                expiresIn: '1h',
+                issuer: 'garden.io',
+                subject: row.email
+            });
+
+            //save refresh token in db
+            db.run('UPDATE garden_user SET token = ? WHERE email = ?', [refreshToken, row.email]);
+
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+                maxAge: 60 * 60 * 1000
+            });
+
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+                maxAge: 30 * 24 * 60 * 60 * 1000
+            });
+
+            res.status(200).json(row);
         }
     });
 });

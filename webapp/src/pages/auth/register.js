@@ -27,7 +27,7 @@ const Register = () => {
             name: data.given_name || '',
             surname: data.family_name || ''
         }
-        axios.post(`${process.env.REACT_APP_API_URL}/users`, user).then((response) => {
+        axios.post(`${process.env.REACT_APP_API_URL}/register`, user).then((response) => {
             navigate('/success');
         }).catch((error) => {
             const data = error.response.data;            

@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
 import React from 'react';
-import PlantInGreenhouse from './plantInGreenhouse';
 import axios from 'axios';
+
+import { useEffect, useState } from 'react';
+
+import PlantInGreenhouse from './plantInGreenhouse';
 import ModalPlant from './modalPlant';
+
+axios.defaults.withCredentials = true;
 
 const PlantsGrid = ({ id }) => {
     const [modalOpen, setModalOpen] = useState(false);

@@ -1,11 +1,15 @@
+import React from 'react';
+import axios from 'axios';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
 import Header from '../components/header.js';
 import PlantsGrid from '../components/greenhouse/plantsGrid.js';
 import Dashboard from '../components/greenhouse/dashboard.js';
 import Settings from '../components/greenhouse/settings.js';
-import axios from 'axios';
-import React from 'react';
+
+axios.defaults.withCredentials = true;
 
 const Greenhouse = () => {
     const location = useLocation();
