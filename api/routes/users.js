@@ -2,15 +2,28 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const db = require('../db');
+const refreshAccessToken = require('../middlewares/refreshAccessToken');
 
 const router = Router();
 
 const validateRequests = (requiredRoles) => {
     return (req, res, next) => {
-        const accessToken = jwt.decode(req.cookies.accessToken);
-        if(requiredRoles.includes(accessToken.role)){
-            if(accessToken.role === 'admin' || accessToken.email === req.params.email){
-                next();
+        const { exp } = jwt.decode(req.cookies.accessToken);
+        if(exp < Date.now() / 1000){
+            refreshAccessToken(req, res, next);
+        }
+        else{
+            const accessToken = jwt.decode(req.cookies.accessToken);
+            if(requiredRoles.includes(accessToken.role)){
+                if(accessToken.role === 'admin' || accessToken.email === req.params.email){
+                    next();
+                }
+                else{
+                    res.status(401).json({
+                        code: 401,
+                        message: "Unauthorized"
+                    });
+                }
             }
             else{
                 res.status(401).json({
@@ -18,12 +31,6 @@ const validateRequests = (requiredRoles) => {
                     message: "Unauthorized"
                 });
             }
-        }
-        else{
-            res.status(401).json({
-                code: 401,
-                message: "Unauthorized"
-            });
         }
     }
 }
