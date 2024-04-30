@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from "../components/header"
 import defaultImg from '../assets/img/plants/default.svg'
 import { useLocation } from 'react-router-dom';
 
 const Plant = () => {
     const location = useLocation();
+
+    useEffect(() => {
+        document.title = `${location.state.plant.name} | ${process.env.REACT_APP_NAME}`;
+    }, [location.state.plant.name]);
 
     const plant = location.state.plant;
     let imgURL;

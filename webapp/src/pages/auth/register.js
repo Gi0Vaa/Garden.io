@@ -2,9 +2,15 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const Register = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = `Register | ${process.env.REACT_APP_NAME}`;
+    }, []);
+
     function generateBanner(code, message){
         const container = document.getElementById('container');
         const banner = `

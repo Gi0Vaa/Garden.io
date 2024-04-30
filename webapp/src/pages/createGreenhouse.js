@@ -5,7 +5,7 @@ import React from "react";
 
 function CreateGreenhouse() {
     useEffect(() => {
-        document.title = 'Create Greenhouse | Garden.io';
+        document.title = `Create Greenhouse | ${process.env.REACT_APP_NAME}`;
     }, []);
 
     return (

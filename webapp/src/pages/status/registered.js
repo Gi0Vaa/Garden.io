@@ -4,7 +4,7 @@ import registeredImg from '../../assets/img/registered.svg';
 
 const Registered = () => {
     useEffect(() =>{
-        document.title = 'Success | Garden.io';
+        document.title = `Success | ${process.env.REACT_APP_NAME}`;
     }, []);
 
     return (
@@ -14,7 +14,7 @@ const Registered = () => {
                 <img src={registeredImg} alt="thank you for registration" className="h-80 w-80 object-fit" />
                 <div className='text-center'>
                     <h2>Thank You!</h2>
-                    <h3 className='font-normal'>You have been registered to Garden.io</h3>
+                    <h3 className='font-normal'>You have been registered to {process.env.REACT_APP_NAME}</h3>
                 </div>
                 <Link to='/' className='bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded-md transition-colors'>Go to Login</Link>
             </div>

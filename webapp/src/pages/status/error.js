@@ -5,7 +5,7 @@ const Error = ({data}) => {
     const location = useLocation();
 
     useState(() =>{
-        document.title = 'Error | Garden.io';
+        document.title = `Error | ${process.env.REACT_APP_NAME}`;
     });
 
     return(

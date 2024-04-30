@@ -14,7 +14,7 @@ const Welcome = () => {
                 <img src={checkImg} alt="check" className="h-80 w-80 object-fit" />
                 <div className='text-center'>
                     <h2>Congratulations!</h2>
-                    <h3 className='font-normal'>Thank you for start using Garden.io</h3>
+                    <h3 className='font-normal'>Thank you for start using {process.env.REACT_APP_NAME}</h3>
                 </div>
                 <Link to='/' className='bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded-md transition-colors'>Go home</Link>
             </div>

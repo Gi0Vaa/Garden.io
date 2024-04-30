@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
@@ -8,6 +8,10 @@ import { UserContext } from '../../context/userContext';
 
 const Login = () => {
     const { setUser } = React.useContext(UserContext);
+
+    useEffect(() => {
+        document.title = `Login | ${process.env.REACT_APP_NAME}`;
+    }, []);
 
     function generateBanner(code, message) {
         const container = document.getElementById('container');

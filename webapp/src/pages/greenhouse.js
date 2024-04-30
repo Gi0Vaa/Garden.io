@@ -42,7 +42,7 @@ const Greenhouse = () => {
     }, [greenhouseId, setGreenhouse])
 
     useEffect(() => {
-        document.title = `${greenhouse.name} | Garden.io`;
+        document.title = `${greenhouse.name} | ${process.env.REACT_APP_NAME}`;
     }, [greenhouse]);
 
     //change index

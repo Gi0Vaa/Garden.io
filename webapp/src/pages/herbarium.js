@@ -6,10 +6,12 @@ import { useEffect, useState } from 'react';
 
 axios.defaults.withCredentials = true;
 
-function Herbarium(){
+const Herbarium = () => {
     const [plants, setPlants] = useState([]);
 
     useEffect(() => {
+        document.title = `Herbarium | ${process.env.REACT_APP_NAME}`;
+
         axios.get(`${process.env.REACT_APP_API_URL}/plants`)
             .then(response => setPlants(response.data));
     }, []);

@@ -18,7 +18,7 @@ const Home = () => {
     useEffect(() => {
         const email = user.email;
         if(!email) return;
-        document.title = 'Home | Garden.io';
+        document.title = `Home | ${process.env.REACT_APP_NAME}`;
 
         axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
             .then(response => {
