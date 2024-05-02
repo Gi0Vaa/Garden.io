@@ -49,7 +49,7 @@ const Login = () => {
             <div className="flex flex-col h-full p-3 place-content-center text-center items-center gap-8" id='container'>
                 <div className="text-green-400 p-8 border-b-green-900 border-b-2">
                     <h4 className=' font-normal'>sign in</h4>
-                    <h1>Garden.io</h1>
+                    <h1>{process.env.REACT_APP_NAME}</h1>
                 </div>
                 <GoogleOAuthProvider clientId="72101962094-ki6ncu1pgmq7tr564v12q40udvgactsm.apps.googleusercontent.com">
                     <GoogleLogin

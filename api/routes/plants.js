@@ -8,6 +8,7 @@ const router = Router();
 
 const validateRequests = (requiredRoles) => {
     return (req, res, next) => {
+        if(!req.cookies.accessToken) return refreshAccessToken(req, res, next);
         const { exp } = jwt.decode(req.cookies.accessToken);
         if(exp < Date.now() / 1000){
             refreshAccessToken(req, res, next);

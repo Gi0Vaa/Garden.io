@@ -12,10 +12,25 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
     function searchPlant() {
         const name = document.getElementById('plants').value;
         const description = document.getElementById('plantDescription');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        searchSuggestions.innerHTML = '';
         axios.get(`${process.env.REACT_APP_API_URL}/plants/research/${name}`)
             .then(response => {
-                setPlant(response.data[0]);
-                description.innerHTML = response.data[0].description;
+                response.data.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerHTML = p.name;
+                    li.classList.add('hover:bg-gray-200', 'rounded-sm', 'p-2');
+                    li.addEventListener('click', () => {
+                        setPlant(p);
+                        document.getElementById('plants').value = p.name;
+                        description.innerHTML = p.description;
+                        searchSuggestions.innerHTML = '';
+                    });
+                    searchSuggestions.appendChild(li);
+                });
+                if(response.data.length === 1){
+                    description.innerHTML = response.data[0].description;
+                }
             })
             .catch(() => {
                 description.innerHTML = 'No plant found';
@@ -27,10 +42,10 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
             plant_id: plant.plant_id,
             quantity: 1
         })
-        .then(() => {
-            window.location.reload();
-            onClose();
-        });
+            .then(() => {
+                window.location.reload();
+                onClose();
+            });
     }
 
     if (!isOpen) {
@@ -48,8 +63,12 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
                             <button onClick={onClose} className="px-3 py-2 text-white bg-red-500 hover:bg-red-600 transition-colors rounded-md font-semibold">Exit</button>
                         </div>
                         <div className='flex flex-col gap-3'>
-                            <input type="text" name='plants' id='plants' placeholder="Search a Plant" className=' focus:outline-none p-1 rounded-md' onChange={searchPlant} />
-                            <div className=" h-56" id='plantDescription'></div>
+                            <div className="relative flex flex-col gap-1 bg-white rounded-t-md p-2 z-30">
+                                <input type="text" name='plants' id='plants' placeholder="Search a Plant" className=' outline-4 p-2 outline-offset-2 rounded-xl outline-green-500' onChange={searchPlant} />
+                                <ul id="searchSuggestions" className=" bg-white absolute mt-12 w-full left-0 p-1 rounded-b-md">
+                                </ul>
+                            </div>
+                            <div className=" h-56" id='plantDescription'>Test test test test</div>
                         </div>
                         <div className="flex flex-row place-content-between items-center">
                             <div></div>

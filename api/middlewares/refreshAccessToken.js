@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../db.js');
 
 function refreshAccessToken(req, res, next) {
-    const accessToken = req.cookies.accessToken;
     const refreshToken = req.cookies.refreshToken;
-    if (!accessToken && !refreshToken) {
+    if (!refreshToken) {
         return res.status(401).json({
             code: 401,
             message: "Unauthorized"

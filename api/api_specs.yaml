@@ -716,7 +716,7 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: accessToken
+      name: refreshToken
   schemas:
     plant:
       type: object
