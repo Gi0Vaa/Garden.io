@@ -67,7 +67,7 @@ router.get('/api/v1/plants/:id', validateRequests(['user', 'admin']), (req, res)
 //ricerca di tutte le piante che contengono la stringa passata
 router.get('/api/v1/plants/research/:name', validateRequests(['user', 'admin']), (req, res) => {
     const name = req.params.name;
-    db.all('SELECT * FROM garden_plant WHERE name LIKE ?', ['%' + name + '%'], (err, rows) => {
+    db.all('SELECT * FROM garden_plant WHERE name LIKE ? LIMIT 3', ['%' + name + '%'], (err, rows) => {
         if (err) {
             res.status(500).json({
                 code: 500,
