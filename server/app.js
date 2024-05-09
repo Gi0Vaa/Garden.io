@@ -3,7 +3,12 @@ const cors = require('cors');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+    origin: 'https://greenhortus.life',
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 
 const port = 3001;
 
