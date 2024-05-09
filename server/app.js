@@ -9,11 +9,11 @@ const port = 3001;
 
 //only localhost can access
 app.use((req, res, next) => {
-    if(req.hostname === 'localhost'){
+    if (req.ip !== '127.0.0.1') {
+        res.status(403).send('Accesso Negato');
+    } 
+    else {
         next();
-    }
-    else{
-        res.status(403).send('Forbidden');
     }
 });
 
