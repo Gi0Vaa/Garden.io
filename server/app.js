@@ -13,16 +13,6 @@ app.use((req, res, next) => {
     next();
 });
 
-//only localhost can access
-app.use((req, res, next) => {
-    if (req.ip !== '127.0.0.1') {
-        res.status(403).send('Accesso Negato');
-    } 
-    else {
-        next();
-    }
-});
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

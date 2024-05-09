@@ -35,7 +35,7 @@ app.use(cors({  //CORS allowed all origin
 }));
 
 //Swagger UI
-app.use('/api/v1/swagger', swaggerUi.serve, swaggerUi.setup(apiSpec));
+app.use('/', swaggerUi.serve, swaggerUi.setup(apiSpec));
 
 //Validatore API
 app.use(
