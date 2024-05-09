@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SearchPlant from "../searchPlant";
 
 axios.defaults.withCredentials = true;
 
@@ -63,12 +64,8 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
                             <button onClick={onClose} className="px-3 py-2 text-white bg-red-500 hover:bg-red-600 transition-colors rounded-md font-semibold">Exit</button>
                         </div>
                         <div className='flex flex-col gap-3'>
-                            <div className="relative flex flex-col gap-1 bg-white rounded-t-md p-2 z-30">
-                                <input type="text" name='plants' id='plants' placeholder="Search a Plant" className=' outline-4 p-2 outline-offset-2 rounded-xl outline-green-500' onChange={searchPlant} />
-                                <ul id="searchSuggestions" className=" bg-white absolute mt-12 w-full left-0 p-1 rounded-b-md">
-                                </ul>
-                            </div>
-                            <div className=" h-56" id='plantDescription'>Test test test test</div>
+                            <SearchPlant />
+                            <div className=" h-56" id='plantDescription'></div>
                         </div>
                         <div className="flex flex-row place-content-between items-center">
                             <div></div>

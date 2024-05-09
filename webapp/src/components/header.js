@@ -54,7 +54,7 @@ const Header = ({greenhouse}) => {
 
     return(
         <header className='fixed top-0 w-screen z-50 flex flex-row p-2 md:px-4 md:py-2 bg-green-300 text-green-800'>
-            <div className="flex flex-col sm:flex-row flex-grow gap-1 md:gap-2 place-content-start">
+            <div className="flex flex-row flex-grow gap-1 md:gap-2 place-content-start items-center">
                 <Link to="/"><h2>{process.env.REACT_APP_NAME}</h2></Link>
                 {greenhouse !== undefined && (
                     <Link to="/greenhouse" state={greenhouse}><h3 className="hidden sm:block font-medium"> / {greenhouse.name}</h3></Link>
