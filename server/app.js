@@ -10,7 +10,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const port = 3001;
+const port = 5000;
 
 //log delle richieste
 app.use((req, res, next) => {
