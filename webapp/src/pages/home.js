@@ -20,7 +20,7 @@ const Home = () => {
         if(!email) return;
         document.title = `Home | ${process.env.REACT_APP_NAME}`;
 
-        axios.get(`${process.env.REACT_APP_API_URL}/users/${email}/greenhouses`)
+        axios.get(`/api/greenhouses`)
             .then(response => {
                 setGreenhouses(response.data);
             })

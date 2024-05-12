@@ -2,33 +2,10 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const db = require('../db');
-const refreshAccessToken = require('../middlewares/refreshAccessToken');
 
 const router = Router();
 
-const validateRequests = (requiredRoles) => {
-    return (req, res, next) => {
-        if(!req.cookies.accessToken) return refreshAccessToken(req, res, next);
-        const { exp } = jwt.decode(req.cookies.accessToken);
-        if(exp < Date.now() / 1000){
-            refreshAccessToken(req, res, next);
-        }
-        else{
-            const accessToken = jwt.decode(req.cookies.accessToken);
-            if(requiredRoles.includes(accessToken.role)){
-                next();
-            }
-            else{
-                res.status(401).json({
-                    code: 401,
-                    message: "Unauthorized"
-                });
-            }
-        }
-    }
-}
-
-router.get('/api/v1/users/:email/greenhouses', validateRequests(['user', 'admin']), (req, res) => { 
+router.get('/api/v1/users/:email/greenhouses', (req, res) => { 
     const email = req.params.email;
     db.all(`SELECT g.* 
             FROM garden_user_greenhouse u

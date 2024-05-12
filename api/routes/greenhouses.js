@@ -5,32 +5,8 @@ const db = require('../db');
 
 const router = Router();
 
-const refreshAccessToken = require('../middlewares/refreshAccessToken');
-
-const validateRequests = (requiredRoles) => {
-    return (req, res, next) => {
-        if(!req.cookies.accessToken) return refreshAccessToken(req, res, next);
-        const { exp } = jwt.decode(req.cookies.accessToken);
-        if(exp < Date.now() / 1000){
-            refreshAccessToken(req, res, next);
-        }
-        else{
-            const accessToken = jwt.decode(req.cookies.accessToken);
-            if(requiredRoles.includes(accessToken.role)){
-                next();
-            }
-            else{
-                res.status(401).json({
-                    code: 401,
-                    message: "Unauthorized"
-                });
-            }
-        }
-    }
-}
-
 //GREENHOUSE
-router.get('/api/v1/greenhouses', validateRequests(['admin']), (req, res) => {
+router.get('/api/v1/greenhouses', (req, res) => {
     db.all('SELECT * FROM garden_greenhouse', (err, rows) => {
         if (err) {
             return res.status(500).json({
@@ -42,7 +18,7 @@ router.get('/api/v1/greenhouses', validateRequests(['admin']), (req, res) => {
     });
 });
 
-router.post('/api/v1/greenhouses', validateRequests(['user', 'admin']), (req, res) => {
+router.post('/api/v1/greenhouses', (req, res) => {
     const greenhouse = req.body;
     
     db.run('INSERT INTO garden_greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err) => {
@@ -79,7 +55,7 @@ router.post('/api/v1/greenhouses', validateRequests(['user', 'admin']), (req, re
 
 });
 
-router.get('/api/v1/greenhouses/:id', validateRequests(['user', 'admin']), (req, res) => {
+router.get('/api/v1/greenhouses/:id', (req, res) => {
     const id = req.params.id;
     db.get('SELECT * FROM garden_greenhouse WHERE greenhouse_id = ?', [id], (err, row) => {
         if (err) {
@@ -100,7 +76,7 @@ router.get('/api/v1/greenhouses/:id', validateRequests(['user', 'admin']), (req,
     });
 });
 
-router.put('/api/v1/greenhouses/:id', validateRequests(['user', 'admin']), (req, res) => {
+router.put('/api/v1/greenhouses/:id', (req, res) => {
     const id = req.params.id;
     const greenhouse = req.body;
 

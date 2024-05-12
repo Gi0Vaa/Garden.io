@@ -3,7 +3,7 @@ const plants = require('./plants');
 const greenhouses = require('./greenhouses');
 const greenhousesUsers = require('./greenhousesUsers');
 const greenhousesPlants = require('./greenhousesPlants');
-const sensors = require('./sensors');
+const auth = require('./auth/auth');
 
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     greenhouses,
     greenhousesUsers,
     greenhousesPlants,
-    sensors
+    auth
 }
 
 

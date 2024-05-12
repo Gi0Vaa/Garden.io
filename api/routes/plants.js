@@ -2,34 +2,15 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const db = require('../db');
-const refreshAccessToken = require('../middlewares/refreshAccessToken');
 
 const router = Router();
 
-const validateRequests = (requiredRoles) => {
-    return (req, res, next) => {
-        if(!req.cookies.accessToken) return refreshAccessToken(req, res, next);
-        const { exp } = jwt.decode(req.cookies.accessToken);
-        if(exp < Date.now() / 1000){
-            refreshAccessToken(req, res, next);
-        }
-        else{
-            const accessToken = jwt.decode(req.cookies.accessToken);
-            if(requiredRoles.includes(accessToken.role)){
-                next();
-            }
-            else{
-                return res.status(401).json({
-                    code: 401,
-                    message: "Unauthorized"
-                });
-            }
-        }
-    }
+function isLogged(req, res, next){
+    req.user ? next() : res.sendStatus(401);
 }
 
 //get di tutte le piante
-router.get('/api/v1/plants', validateRequests(['user', 'admin']), async (req, res) => {
+router.get('/api/v1/plants', isLogged, async (req, res) => {
     db.all('SELECT * FROM garden_plant', (err, rows) => {
         if (err) {
             res.status(500).json({
@@ -44,7 +25,7 @@ router.get('/api/v1/plants', validateRequests(['user', 'admin']), async (req, re
 });
 
 //get di una singola pianta
-router.get('/api/v1/plants/:id', validateRequests(['user', 'admin']), (req, res) => {
+router.get('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
         if (err) {
@@ -66,7 +47,7 @@ router.get('/api/v1/plants/:id', validateRequests(['user', 'admin']), (req, res)
 });
 
 //ricerca di tutte le piante che contengono la stringa passata
-router.get('/api/v1/plants/research/:name', validateRequests(['user', 'admin']), (req, res) => {
+router.get('/api/v1/plants/research/:name', (req, res) => {
     const name = req.params.name;
     db.all('SELECT * FROM garden_plant WHERE name LIKE ? LIMIT 3', ['%' + name + '%'], (err, rows) => {
         if (err) {
@@ -81,12 +62,12 @@ router.get('/api/v1/plants/research/:name', validateRequests(['user', 'admin']),
     });
 })
 
-router.post('/api/v1/plants', validateRequests(['admin']), (req, res) => {
+router.post('/api/v1/plants', (req, res) => {
     console.log(req.body);
     res.send('ok');
 });
 
-router.put('/api/v1/plants/:id', validateRequests(['admin']), (req, res) => {
+router.put('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     const plant = req.body;
 
@@ -111,7 +92,7 @@ router.put('/api/v1/plants/:id', validateRequests(['admin']), (req, res) => {
     });
 });
 
-router.delete('/api/v1/plants/:id', validateRequests(['admin']), (req, res) => {
+router.delete('/api/v1/plants/:id', (req, res) => {
     const id = req.params.id;
     db.run('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err) => {
         if (err) {

@@ -2,34 +2,11 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const db = require('../db');
-const refreshAccessToken = require('../middlewares/refreshAccessToken');
 
 const router = Router();
 
-const validateRequests = (requiredRoles) => {
-    return (req, res, next) => {
-        if(!req.cookies.accessToken) return refreshAccessToken(req, res, next);
-        const { exp } = jwt.decode(req.cookies.accessToken);
-        if(exp < Date.now() / 1000){
-            refreshAccessToken(req, res, next);
-        }
-        else{
-            const accessToken = jwt.decode(req.cookies.accessToken);
-            if(requiredRoles.includes(accessToken.role)){
-                next();
-            }
-            else{
-                res.status(401).json({
-                    code: 401,
-                    message: "Unauthorized"
-                });
-            }
-        }
-    }
-}
-
 //plants in a greenhouse
-router.get('/api/v1/greenhouses/:greenhouseId/plants', validateRequests(['user', 'admin']), (req, res) => {
+router.get('/api/v1/greenhouses/:greenhouseId/plants', (req, res) => {
     const id = req.params.greenhouseId;
     db.all('SELECT * FROM garden_plant_greenhouse g JOIN garden_plant p ON p.plant_id=g.plant_id  WHERE greenhouse_id = ?', [id], (err, rows) => {
         if (err) {
@@ -48,7 +25,7 @@ router.get('/api/v1/greenhouses/:greenhouseId/plants', validateRequests(['user',
     });
 });
 
-router.post('/api/v1/greenhouses/:greenhouseId/plants', validateRequests(['user', 'admin']), (req, res) => {
+router.post('/api/v1/greenhouses/:greenhouseId/plants', (req, res) => {
     const greenhouseId = parseInt(req.params.greenhouseId);
     const plantId = parseInt(req.body.plant_id);
     const quantity = parseInt(req.body.quantity);
@@ -66,7 +43,7 @@ router.post('/api/v1/greenhouses/:greenhouseId/plants', validateRequests(['user'
     });
 });
 
-router.patch('/api/v1/greenhouses/:greenhouseId/plants/:plantId', validateRequests(['user', 'admin']), (req, res) => {
+router.patch('/api/v1/greenhouses/:greenhouseId/plants/:plantId', (req, res) => {
     const greenhouseId = req.params.greenhouseId;
     const plantId = req.params.plantId;
     const quantity = req.body.quantity;
@@ -101,7 +78,7 @@ router.patch('/api/v1/greenhouses/:greenhouseId/plants/:plantId', validateReques
     });
 });
 
-router.delete('/api/v1/greenhouses/:greenhouseId/plants/:plantId', validateRequests(['user', 'admin']), (req, res) => {
+router.delete('/api/v1/greenhouses/:greenhouseId/plants/:plantId', (req, res) => {
     const greenhouseId = req.params.greenhouseId;
     const plantId = req.params.plantId;
     db.run('DELETE FROM garden_plant_greenhouse WHERE greenhouse_id = ? AND plant_id = ?', [greenhouseId, plantId], (err, result, fields) => {

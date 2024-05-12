@@ -54,7 +54,6 @@ db.serialize(() => {
             email TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
-            token TEXT,
             role TEXT,
             FOREIGN KEY (role) REFERENCES garden_role(role) ON DELETE SET NULL
         )
@@ -82,42 +81,6 @@ db.serialize(() => {
             FOREIGN KEY (email) REFERENCES garden_user(email) ON DELETE CASCADE
         )
     `);
-
-    //tabella dei tipi di valore (tipovalore, unitamisurata)
-    db.run(`
-        CREATE TABLE IF NOT EXISTS garden_value_type (
-            type TEXT PRIMARY KEY,
-            data TEXT NOT NULL
-        )
-    `);
-
-    //tabella dei dati dei sensori (idsensore, tipovalore, valore, timestamp)
-    db.run(`
-        CREATE TABLE IF NOT EXISTS garden_sensor_data (
-            sensor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            greenhouse_id INTEGER NOT NULL,
-            type TEXT NOT NULL,
-            value REAL NOT NULL,
-            timestamp INTEGER NOT NULL,
-            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE
-            FOREIGN KEY (type) REFERENCES garden_value_type(type) ON DELETE CASCADE
-            FOREIGN KEY (sensor_id) REFERENCES garden_sensor(sensor_id) ON DELETE CASCADE
-        )
-    `);
-    
-    //tabella dei sensori collegata ad una serra (idsensore, idserra, tipo, posizione )
-    db.run(`
-        CREATE TABLE IF NOT EXISTS garden_sensor (
-            sensor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            greenhouse_id INTEGER NOT NULL,
-            type TEXT NOT NULL,
-            position TEXT NOT NULL,
-            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE
-        )
-    `);
-
-    //tabella posizione (idposizione, x, y)
-    //tabella posizione di una pianta all'interno di una serra  (idpianta, idserra, idposizione)
 })
 
 module.exports = db;

@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
-
 import { UserContext } from '../../context/userContext';
 
 const Login = () => {
@@ -51,18 +48,7 @@ const Login = () => {
                     <h4 className=' font-normal'>sign in</h4>
                     <h1>{process.env.REACT_APP_NAME}</h1>
                 </div>
-                <GoogleOAuthProvider clientId="72101962094-ki6ncu1pgmq7tr564v12q40udvgactsm.apps.googleusercontent.com">
-                    <GoogleLogin
-                        onSuccess={credentialResponse => {
-                            const token = credentialResponse.credential;
-                            const decodedToken = jwtDecode(token);
-                            sigin(decodedToken);
-                        }}
-                        onError={() => {
-                            generateBanner(500, 'Login Google Fallito');
-                        }}
-                    />
-                </GoogleOAuthProvider>
+                <a href={`/auth/google`} className='bg-red-400 p-3 rounded-md text-white w-[30rem]'>Sign in with Google</a>
                 <h5 className=' font-normal'>You don't have an account? <a href='/register' className='text-violet-600 font-semibold'>Signup</a></h5>
             </div>
             <div></div>

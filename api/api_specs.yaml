@@ -4,60 +4,58 @@ info:
   version: 1.0.0
   title: Green Hortus
 paths:
-  /api/v1/register:
-    post:
-      security: []
-      summary: register
-      operationId: register
-      tags:
-        - auth
-      requestBody:
-        description: User to register
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/daoUser'
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/dtoUser'
-        '409':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-  /api/v1/login:
-    post:
-      security: []
-      summary: login
-      operationId: login
-      tags:
-        - auth
-      requestBody:
-        description: User to login return accessToken and refreshToken
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/daoUser'
+  /api/v1/auth/google:
+      get:
+        summary: Start google authentication
+        operationId: startGoogleAuth
+        security:
+          - GoogleOAuth: []
+        responses:
+          '302':
+            description: Reindirizza l'utente alla pagina di login di Google
+          '401':
+            description: Non autorizzato
+  /api/v1/auth/google/callback:
+    get:
+      summary: Callback for google authentication
+      operationId: googleAuthCallback
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          allowReserved: true
+        - in: query
+          name: scope
+          schema:
+            type: string
+          allowReserved: true
+        - in: query
+          name: authuser
+          schema:
+            type: string
+          allowReserved: true
+        - in: query
+          name: prompt
+          schema:
+            type: string
+          allowReserved: true
+      security:
+        - GoogleOAuth: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/dtoUser'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
+          description: Autenticazione riuscita
+        '401':
+          description: Non autorizzato
+  /api/v1/auth/logout:
+    get:
+      summary: Logout
+      operationId: logout
+      responses:
+        '200':
+          description: Logout effettuato
+        '401':
+          description: Non autorizzato
   /api/v1/plants:
     get:
       summary: get all information of plants
@@ -710,302 +708,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  
-  /api/v1/sensors:
-    get:
-      summary: get all information of sensors
-      operationId: getSensors
-      tags:
-        - sensor
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/sensor'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    post:
-      summary: create a new sensor
-      operationId: createSensor
-      tags:
-        - sensor
-      requestBody:
-        description: Sensors to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/sensor'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sensor'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-  /api/v1/sensors/{id}: 
-
-    get:
-      summary: get a sensor by id
-      operationId: getSensorById
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to return
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sensor'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    put:
-      summary: update a sensor
-      operationId: updateSensor
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to update
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      requestBody:
-        description: Sensor to update
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/sensor'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sensor'
-        '404':
-          description: Not Found
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      summary: delete a sensor
-      operationId: deleteSensor
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to delete
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '204':
-          description: No Content
-        '404':
-          description: Not Found
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-  /api/v1/sensors/{id}/data :
-    get:
-      summary: get all data of a sensor
-      operationId: getDataOfSensor
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to return
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/data'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-  /api/v1/sensors/{id}/data/{data_id}: 
-    get:
-      summary: get a data of a sensor by id
-      operationId: getDataOfSensorById
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to return
-          required: true
-          schema:
-            type: integer
-        - name: data_id
-          in: path
-          description: id of the data to return
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/data'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    put:
-      summary: update a data of a sensor
-      operationId: updateDataOfSensor
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to update
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-        - name: data_id
-          in: path
-          description: id of the data to update
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      requestBody:
-        description: Data to update
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/data'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/data'
-        '404':
-          description: Not Found
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      summary: delete a data of a sensor
-      operationId: deleteDataOfSensor
-      tags:
-        - sensor
-      parameters:
-        - name: id
-          in: path
-          description: id of the sensor to delete
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-        - name: data_id
-          in: path
-          description: id of the data to delete
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '204':
-          description: No Content
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-                
-
 components:
   securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: refreshToken
+    GoogleOAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+          tokenUrl: https://oauth2.googleapis.com/token
+          scopes:
+            openid: openid
+            email: email
+            profile: profile
   schemas:
     plant:
       type: object
@@ -1159,6 +873,3 @@ components:
           format: int32
         message:
           type: string
-
-security:
-  - cookieAuth: []
