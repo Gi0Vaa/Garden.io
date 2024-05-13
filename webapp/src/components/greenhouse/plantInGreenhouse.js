@@ -12,6 +12,14 @@ axios.defaults.withCredentials = true;
 const PlantInGreenhouse = ({ plant }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
+    const [plantInfo, setPlantInfo] = useState({name: '', description: ''});
+
+    useState(() => {
+        axios.get(`/api/plants/${plant.plant_id}`)
+            .then(response => {
+                setPlantInfo(response.data);
+            });
+    }, []);
 
     function goToInfoPlant() {
         navigate('/plant', {state: {plant}});
@@ -30,11 +38,11 @@ const PlantInGreenhouse = ({ plant }) => {
     }
 
     function updateQuantity(value) {
-        axios.patch(`${process.env.REACT_APP_API_URL}/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`, {quantity: value})
+        axios.patch(`/api/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`, {quantity: value})
     }
 
     function deletePlant() {
-        axios.delete(`${process.env.REACT_APP_API_URL}/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`)
+        axios.delete(`/api/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`)
             .then(() => {
                 window.location.reload();
             });
@@ -43,11 +51,11 @@ const PlantInGreenhouse = ({ plant }) => {
     return(
         <div className="flex flex-col gap-2 p-3 rounded-md bg-amber-200 text-green-900">
             <div className="flex flex-row w-full place-content-between items-center">
-                <h3>{plant.name}</h3>
+                <h3>{plantInfo.name}</h3>
                 <FontAwesomeIcon icon={faBook} onClick={goToInfoPlant} className="cursor-pointer p-1 sm:p-2 hover:bg-green-900 text-green-900 hover:text-green-100 rounded-md md:rounded-full transition-colors duration-300"/>
             </div>
             <div>
-                <p>{plant.description}</p>
+                <p>{plantInfo.description}</p>
             </div>
             <div className="flex flex-row w-full place-content-between items-center">
                 <div className='flex flex-row '>

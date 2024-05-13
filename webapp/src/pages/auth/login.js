@@ -60,7 +60,7 @@ const Login = () => {
                     <h1>{process.env.REACT_APP_NAME}</h1>
                 </div>
                 <a href={`http://localhost:3001/api/auth/google`}
-                    className=' bg-green-50 outline outline-2 hover:outline-green-400 transition-all p-3 rounded-md text-green-700 w-max'>
+                    className=' bg-green-50 outline outline-2 hover:outline-green-700 transition-all p-3 rounded-md text-green-950 w-max'>
                     <FontAwesomeIcon icon={faGoogle} className='mr-2' />
                     Sign in with Google
                 </a>

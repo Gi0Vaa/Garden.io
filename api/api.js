@@ -64,9 +64,6 @@ const routes = require('./routes/endpoints.js');
 
 app.use(routes.users);
 app.use(routes.plants);
-app.use(routes.greenhouses);
-app.use(routes.greenhousesUsers);
-app.use(routes.greenhousesPlants);
 
 app.listen(port, () => {
     console.log(`Server listening on 127.0.0.1:${port}`);

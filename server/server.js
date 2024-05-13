@@ -37,7 +37,9 @@ const routes = require('./routes/endpoints');
 
 app.use(routes.auth);
 app.use(routes.greenhouses);
+app.use(routes.greenhousesUsers);
 app.use(routes.plants);
+app.use(routes.greenhousesPlants);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

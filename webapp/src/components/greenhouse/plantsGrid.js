@@ -13,7 +13,7 @@ const PlantsGrid = ({ id }) => {
     const [content, setContent] = useState([]);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${id}/plants`)
+        axios.get(`/api/greenhouses/${id}/plants`)
             .then(response => {
                 setContent([]);
                 response.data.forEach(p => {

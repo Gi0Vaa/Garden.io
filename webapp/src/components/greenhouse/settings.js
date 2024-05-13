@@ -34,7 +34,7 @@ const Settings = ({greenhouse}) => {
             temperature: greenhouse.temperature,
             humidity: greenhouse.humidity
         }
-        axios.put(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouse.greenhouse_id}`, obj)
+        axios.put(`/api/greenhouses/${greenhouse.greenhouse_id}`, obj)
             .then(response => {
                 window.location.reload();
             })
@@ -44,7 +44,7 @@ const Settings = ({greenhouse}) => {
     }
 
     function deleteGreenhouse(){
-        axios.delete(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouse.greenhouse_id}`)
+        axios.delete(`/api/greenhouses/${greenhouse.greenhouse_id}`)
             .then(() => {
                 navigate('/');
             })

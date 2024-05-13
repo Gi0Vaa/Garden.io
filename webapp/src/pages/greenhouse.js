@@ -35,7 +35,7 @@ const Greenhouse = () => {
 
     useEffect(() => {
         if(greenhouseId === null) return;
-        axios.get(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouseId}`)
+        axios.get(`/api/greenhouses/${greenhouseId}`)
             .then(response => {
                 setGreenhouse(response.data);
             })

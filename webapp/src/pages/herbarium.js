@@ -19,7 +19,7 @@ const Herbarium = () => {
     function searchPlant() {
         const name = document.getElementById('search').value;
         if(name === ''){
-            axios.get(`${process.env.REACT_APP_API_URL}/plants`)
+            axios.get(`/api/plants`)
                 .then(response => setPlants(response.data));
             return;
         }

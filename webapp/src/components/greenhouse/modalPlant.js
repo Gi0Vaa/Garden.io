@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SearchPlant from "../searchPlant";
+//import SearchPlant from "../searchPlant";
 
 axios.defaults.withCredentials = true;
 
@@ -15,7 +15,7 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
         const description = document.getElementById('plantDescription');
         const searchSuggestions = document.getElementById('searchSuggestions');
         searchSuggestions.innerHTML = '';
-        axios.get(`${process.env.REACT_APP_API_URL}/plants/research/${name}`)
+        axios.get(`/api/plants/research/${name}`)
             .then(response => {
                 response.data.forEach(p => {
                     const li = document.createElement('li');
@@ -29,7 +29,7 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
                     });
                     searchSuggestions.appendChild(li);
                 });
-                if(response.data.length === 1){
+                if (response.data.length === 1) {
                     description.innerHTML = response.data[0].description;
                 }
             })
@@ -39,7 +39,7 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
     }
 
     function addPlant() {
-        axios.post(`${process.env.REACT_APP_API_URL}/greenhouses/${greenhouseId}/plants`, {
+        axios.post(`/api/greenhouses/${greenhouseId}/plants`, {
             plant_id: plant.plant_id,
             quantity: 1
         })
@@ -64,7 +64,11 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
                             <button onClick={onClose} className="px-3 py-2 text-white bg-red-500 hover:bg-red-600 transition-colors rounded-md font-semibold">Exit</button>
                         </div>
                         <div className='flex flex-col gap-3'>
-                            <SearchPlant />
+                            <div className="relative flex flex-col gap-1 bg-white rounded-t-md p-2 z-30">
+                                <input type="text" name='plants' id='plants' placeholder="Search a Plant" className=' outline-4 p-2 outline-offset-2 rounded-xl outline-green-500' onChange={searchPlant} />
+                                <ul id="searchSuggestions" className=" bg-white absolute mt-12 w-full left-0 p-1 rounded-b-md">
+                                </ul>
+                            </div>
                             <div className=" h-56" id='plantDescription'></div>
                         </div>
                         <div className="flex flex-row place-content-between items-center">

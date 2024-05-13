@@ -39,7 +39,7 @@ db.serialize(() => {
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
             role TEXT,
-            FOREIGN KEY (role) REFERENCES garden_role(role) ON DELETE SET NULL
+            FOREIGN KEY (role) REFERENCES role(role) ON DELETE SET NULL
         )
     `);
 
@@ -50,8 +50,7 @@ db.serialize(() => {
             plant_id INTEGER NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 1,
             PRIMARY KEY (greenhouse_id, plant_id),
-            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE,
-            FOREIGN KEY (plant_id) REFERENCES garden_plant(plant_id) ON DELETE CASCADE
+            FOREIGN KEY (greenhouse_id) REFERENCES greenhouse(greenhouse_id) ON DELETE CASCADE
         )
     `);
 
@@ -61,8 +60,8 @@ db.serialize(() => {
             greenhouse_id INTEGER NOT NULL,
             email TEXT NOT NULL,
             PRIMARY KEY (greenhouse_id, email),
-            FOREIGN KEY (greenhouse_id) REFERENCES garden_greenhouse(greenhouse_id) ON DELETE CASCADE,
-            FOREIGN KEY (email) REFERENCES garden_user(email) ON DELETE CASCADE
+            FOREIGN KEY (greenhouse_id) REFERENCES greenhouse(greenhouse_id) ON DELETE CASCADE,
+            FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE
         )
     `);
 })

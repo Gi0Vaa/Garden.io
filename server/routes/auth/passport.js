@@ -12,12 +12,15 @@ passport.use(
         callbackURL: 'http://localhost:3001/api/auth/google/callback',
         passReqToCallback: true
     },(request, accessToken, refreshToken, profile, done) => {
-        db.run("INSERT OR IGNORE INTO user (email, name, surname, role) VALUES (?, ?, ?, ?)", [profile.emails[0].value, profile.name.givenName, profile.name.familyName, "user"], (err) => {
-            if (err) {
-                return done(err);
+        db.run(`INSERT OR IGNORE INTO user (email, name, surname, role) VALUES (?, ?, ?, ?)`,
+            [profile.emails[0].value, profile.name.givenName, profile.name.familyName, "user"],
+            (err) => {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, profile);
             }
-            return done(null, profile);
-        });
+        );
     })
 );
 

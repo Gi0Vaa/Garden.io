@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 const AddPlant = ({plant}) => {
     let dataRef = useRef();
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/plants`)
+        axios.get(`/api/plants`)
             .then(response => {
                 const select = document.getElementById('plants');
                 select.innerHTML = '';
