@@ -6,7 +6,7 @@ import { UserContext } from '../../context/userContext';
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
-import logo from "../../assets/img/Green Hortus.svg"
+import Logo from '../../assets/icons/logo';
 
 const Login = () => {
     const { setUser } = React.useContext(UserContext);
@@ -54,17 +54,21 @@ const Login = () => {
         <div className='grid md:grid-cols-3 p-3 h-screen'>
             <div></div>
             <div className="flex flex-col h-full p-3 place-content-center text-center items-center gap-8" id='container'>
-                <div className="text-green-400 p-8 border-b-green-900 border-b-2 flex flex-col gap-1 items-center">
-                    <img src={logo} alt='logo' className='h-32' />
-                    <h4 className=' font-normal'>sign in</h4>
-                    <h1>{process.env.REACT_APP_NAME}</h1>
+                <div className='flex flex-col gap-10 items-center'>
+                    <div className="text-green-400 p-8 border-b-green-900 border-b-2 flex flex-col gap-1 items-center">
+                        <div className=' h-48 w-48'>
+                            <Logo stroke={"#1F482E"} />
+                        </div>
+
+                        <h4 className=' font-normal'>sign in</h4>
+                        <h1>{process.env.REACT_APP_NAME}</h1>
+                    </div>
+                    <a href={`/api/auth/google`}
+                        className=' bg-green-50 outline outline-2 hover:outline-green-700 transition-all p-3 rounded-md text-green-950 w-max'>
+                        <FontAwesomeIcon icon={faGoogle} className='mr-2' />
+                        Sign in with Google
+                    </a>
                 </div>
-                <a href={`http://localhost:3001/api/auth/google`}
-                    className=' bg-green-50 outline outline-2 hover:outline-green-700 transition-all p-3 rounded-md text-green-950 w-max'>
-                    <FontAwesomeIcon icon={faGoogle} className='mr-2' />
-                    Sign in with Google
-                </a>
-                <h5 className=' font-normal'>You don't have an account? <a href='/register' className='text-violet-600 font-semibold'>Signup</a></h5>
             </div>
             <div></div>
         </div>
