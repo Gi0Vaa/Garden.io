@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { UserContext } from '../context/userContext';
 import Header from '../components/header';
 import GreenhouseCard from '../components/greenhouseCard';
 
-axios.defaults.withCredentials = true;
+import { getGreenhouses } from '../services/greenhouses'
 
 const Home = () => {
     const { user } = React.useContext(UserContext);
@@ -20,17 +19,15 @@ const Home = () => {
         if(!email) return;
         document.title = `Home | ${process.env.REACT_APP_NAME}`;
 
-        axios.get(`/api/users/${user.email}/greenhouses`)
-            .then(response => {
-                setGreenhouses(response.data);
+        getGreenhouses(user.email)
+            .then(res => {
+                setGreenhouses(res.data);
             })
             .catch(err => {
-                console.log(err);
-                if (err.response.data.code === 404) {
-                    navigate('/start');
+                if (err.response.status === 404) {
+                    navigate('/createGreenhouse', { state: { first: true } });
                 }
             });
-
     }, [user.email, navigate]);
 
     return (

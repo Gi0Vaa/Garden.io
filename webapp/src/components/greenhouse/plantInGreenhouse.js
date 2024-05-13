@@ -1,28 +1,26 @@
-import axios from 'axios';
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getPlantById } from '../../services/plants';
+import { deletePlantInGreenhouse, patchPlantInGreenhouse  } from '../../services/greenhouses';
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faTrash, faAdd, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-axios.defaults.withCredentials = true;
-
-const PlantInGreenhouse = ({ plant }) => {
+const PlantInGreenhouse = ({ plant, deleteCallback }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
-    const [plantInfo, setPlantInfo] = useState({name: '', description: ''});
+    const [plantInfo, setPlantInfo] = useState({});
 
     useState(() => {
-        axios.get(`/api/plants/${plant.plant_id}`)
+        getPlantById(plant.plant_id)
             .then(response => {
                 setPlantInfo(response.data);
             });
     }, []);
 
     function goToInfoPlant() {
-        navigate('/plant', {state: {plant}});
+        navigate('/plant', {state: {plant: plantInfo}});
     }
 
     function addPlant() {
@@ -38,13 +36,13 @@ const PlantInGreenhouse = ({ plant }) => {
     }
 
     function updateQuantity(value) {
-        axios.patch(`/api/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`, {quantity: value})
+        patchPlantInGreenhouse(plant.greenhouse_id, plant.plant_id, value)
     }
 
     function deletePlant() {
-        axios.delete(`/api/greenhouses/${plant.greenhouse_id}/plants/${plant.plant_id}`)
+        deletePlantInGreenhouse(plant.greenhouse_id, plant.plant_id)
             .then(() => {
-                window.location.reload();
+                deleteCallback(plant.plant_id);
             });
     }
 

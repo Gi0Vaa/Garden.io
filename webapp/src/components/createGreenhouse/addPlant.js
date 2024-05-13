@@ -1,14 +1,12 @@
-import axios from 'axios'
-
 import { useEffect, useRef } from 'react';
-import plantsImg from '../../assets/img/Potted-plants.svg'
+import {getPlants} from '../../services/plants'
 
-axios.defaults.withCredentials = true;
+import plantsImg from '../../assets/img/Potted-plants.svg'
 
 const AddPlant = ({plant}) => {
     let dataRef = useRef();
     useEffect(() => {
-        axios.get(`/api/plants`)
+        getPlants()
             .then(response => {
                 const select = document.getElementById('plants');
                 select.innerHTML = '';

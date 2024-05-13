@@ -18,7 +18,6 @@ router.get('/api/auth/google/callback',
 );
 
 router.get('/api/auth/user', (req, res) => {
-    console.log(req);
     res.json(req.user);
 });
 

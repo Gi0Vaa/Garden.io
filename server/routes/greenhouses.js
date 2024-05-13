@@ -23,10 +23,7 @@ router.post('/api/greenhouses', isLogged, (req, res) => {
     
     db.run('INSERT INTO greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description], (err) => {
         if (err) {
-            return res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
+            return res.sendStatus(500);
         }
     });
     
@@ -36,17 +33,11 @@ router.post('/api/greenhouses', isLogged, (req, res) => {
             ?
         )`, [greenhouse.email], (err) => {
             if(err){
-                return res.status(500).json({
-                    code: 500,
-                    message: "Query failed"
-                });
+                return res.sendStatus(500);
             }
             db.get('SELECT * FROM greenhouse WHERE greenhouse_id = (SELECT MAX(greenhouse_id) FROM greenhouse)', (err, row) => {
                 if (err) {
-                    return res.status(500).json({
-                        code: 500,
-                        message: "Query failed"
-                    });
+                    return res.sendStatus(500);
                 }
                 res.status(201).json(row);
             });

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import { createGreenhouse, addPlantInGreenhouse } from '../services/greenhouses';
 
 import AddPlant from "./createGreenhouse/addPlant";
 import AddGreenhouse from "./createGreenhouse/addGreenhouse";
@@ -39,12 +40,9 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
                 obj.email = user.email;
-                axios.post(`/api/greenhouses`, obj)
+                createGreenhouse(obj)
                     .then(response => {
-                        axios.post(`/api/greenhouses/${response.data.greenhouse_id}/plants`, {
-                            plant_id: plant.plant_id,
-                            quantity: 1
-                        })
+                        addPlantInGreenhouse(response.data.greenhouse_id, plant.plant_id, 1)
                         .then(() => {
                             setTimeout(() => {
                                 if(welcome) navigate('/welcome');

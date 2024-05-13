@@ -1,4 +1,3 @@
-import Bell from '../../assets/icons/bell';
 import Check from '../../assets/icons/check';
 
 const Dashboard = ({ greenhouse }) => {
@@ -6,9 +5,6 @@ const Dashboard = ({ greenhouse }) => {
         <div className="p-3 bg-slate-50 text-green-800 rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
                 <h3>{greenhouse.name}</h3>
-                <div className='w-6 h-6 transition duration-300 fill-current text-sky-400 hover:text-sky-600'>
-                    <Bell />
-                </div>
             </div>
             <div className="grid grid-cols-2">
                 <div className="flex flex-col gap-1">

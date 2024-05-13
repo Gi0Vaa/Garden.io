@@ -1,10 +1,10 @@
-import axios from 'axios'
+import React from 'react';
+
+import { useEffect, useState } from 'react';
+import { getPlants, getPlantsByName } from '../services/plants'
+
 import Header from "../components/header";
 import PlantCard from "../components/plantCard";
-import React from 'react';
-import { useEffect, useState } from 'react';
-
-axios.defaults.withCredentials = true;
 
 const Herbarium = () => {
     const [plants, setPlants] = useState([]);
@@ -12,20 +12,20 @@ const Herbarium = () => {
     useEffect(() => {
         document.title = `Herbarium | ${process.env.REACT_APP_NAME}`;
 
-        axios.get(`/api/plants`)
-            .then(response => setPlants(response.data));
+        getPlants()
+            .then(res => setPlants(res.data));
     }, []);
 
     function searchPlant() {
         const name = document.getElementById('search').value;
         if(name === ''){
-            axios.get(`/api/plants`)
-                .then(response => setPlants(response.data));
+            getPlants() 
+                .then(res => setPlants(res.data));
             return;
         }
-        axios.get(`/api/plants/research/${name}`)
-            .then(response => {
-                setPlants(response.data);
+        getPlantsByName(name)
+            .then(res => {
+                setPlants(res.data);
             })
             .catch(() => {
                 setPlants([]);

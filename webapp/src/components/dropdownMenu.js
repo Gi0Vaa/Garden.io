@@ -4,41 +4,35 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 
-import User from '../assets/icons/user.js'
-import Add from '../assets/icons/add.js'
-import Logout from '../assets/icons/logout.js';
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 const DropdownMenu = () => {
     const navigate = useNavigate();
     const { user, setUser } = React.useContext(UserContext);
 
-    function logout(){
+    function logout() {
         axios.get('/api/auth/logout')
-        .then(() => {
-            localStorage.removeItem('user');
-            setUser(null);
-            navigate('/');
-        })
+            .then(() => {
+                localStorage.removeItem('user');
+                setUser(null);
+                navigate('/');
+            })
     }
 
     return (
-        <div className="p-1 bg-green-800 rounded-md text-white flex flex-col gap-2 text-lg font-semibold">
-            <button className='flex flex-row gap-3 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
-                <div className='w-7 h-7'>
-                    <User />
-                </div>
+        <div className="p-1 bg-green-800 rounded-md text-white flex flex-col gap-1 text-lg font-semibold">
+            <button className='flex flex-row gap-2 w-full items-center hover:bg-green-700 transition-colors rounded-md p-2'>
+                <FontAwesomeIcon icon={faUser} />
                 <p>{user.name || ''} {user.surname || ''}</p>
             </button>
-            <a href='/createGreenhouse' className='flex flex-row gap-3 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
-                <div className='w-7 h-7'>
-                    <Add />
-                </div>
+            <a href='/createGreenhouse' className='flex flex-row gap-2 items-center hover:bg-green-700 transition-colors rounded-md p-2'>
+                <FontAwesomeIcon icon={faPlus} />
                 <p>Add Greenhouse</p>
             </a>
-            <button onClick={logout} className='flex flex-row gap-3 items-center hover:bg-red-500 transition-colors rounded-md p-2'>
-                <div className='w-7 h-7'>
-                    <Logout />
-                </div>
+            <button onClick={logout} className='flex flex-row gap-2 items-center hover:bg-red-500 transition-colors rounded-md p-2'>
+                <FontAwesomeIcon icon={faSignOutAlt} />
                 <p>Logout</p>
             </button>
         </div>

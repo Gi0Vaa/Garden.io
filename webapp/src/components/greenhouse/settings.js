@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { useNavigate } from 'react-router-dom';
+import { deleteGreenhouse, updateGreenhouse } from "../../services/greenhouses";
 
 axios.defaults.withCredentials = true;
 
@@ -34,22 +35,22 @@ const Settings = ({greenhouse}) => {
             temperature: greenhouse.temperature,
             humidity: greenhouse.humidity
         }
-        axios.put(`/api/greenhouses/${greenhouse.greenhouse_id}`, obj)
-            .then(response => {
+        updateGreenhouse(greenhouse.greenhouse_id, obj)
+            .then(() => {
                 window.location.reload();
             })
             .catch(error => {
-                console.log(error);
+                navigate('/error', {state: {code: error.response.status, message: error.response.data.message}});
             });
     }
 
-    function deleteGreenhouse(){
-        axios.delete(`/api/greenhouses/${greenhouse.greenhouse_id}`)
+    function removeGreenhouse(){
+        deleteGreenhouse(greenhouse.greenhouse_id)
             .then(() => {
                 navigate('/');
             })
             .catch(error => {
-                console.log(error);
+                navigate('/error', {state: {code: error.response.status, message: error.response.data.message}});
             });
     }
 
@@ -67,7 +68,7 @@ const Settings = ({greenhouse}) => {
                     <h5 className="font-normal">Once you delete a greenhouse, there is no going back. Please be certain.</h5>
                 </div>
                 <div className="flex items-center">
-                    <button onClick={deleteGreenhouse} className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-semibold transition-colors">DELETE</button>
+                    <button onClick={removeGreenhouse} className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-semibold transition-colors">DELETE</button>
                 </div>
             </div>
         </div>
