@@ -12,7 +12,7 @@ const Herbarium = () => {
     useEffect(() => {
         document.title = `Herbarium | ${process.env.REACT_APP_NAME}`;
 
-        axios.get(`${process.env.REACT_APP_API_URL}/plants`)
+        axios.get(`/api/plants`)
             .then(response => setPlants(response.data));
     }, []);
 
@@ -23,7 +23,7 @@ const Herbarium = () => {
                 .then(response => setPlants(response.data));
             return;
         }
-        axios.get(`${process.env.REACT_APP_API_URL}/plants/research/${name}`)
+        axios.get(`/api/plants/research/${name}`)
             .then(response => {
                 setPlants(response.data);
             })

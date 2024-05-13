@@ -1,11 +1,15 @@
 const { Router } = require('express');
 const axios = require('axios');
-require('dotenv').config();
+const passport = require('passport');
+require('express-session');
+require('./auth/passport');
 
 const router = Router();
 
-router.get(`/auth/google`, (req, res) => {
-    return axios.get(`${process.env.GH_API_URL}/auth/google`)
+const isLogged = require('../middleware/isLogged');
+
+router.get(`/api/plants`, isLogged, (req, res) => {
+    return axios.get(`${process.env.GH_API_URL}/plants`)
         .then(response => {
             res.status(200).json(response.data);
         })
@@ -17,4 +21,6 @@ router.get(`/auth/google`, (req, res) => {
                 res.status(500).json(err);
             }
         });
-})
+});
+
+module.exports = router;

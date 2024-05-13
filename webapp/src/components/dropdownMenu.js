@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
@@ -12,9 +13,12 @@ const DropdownMenu = () => {
     const { user, setUser } = React.useContext(UserContext);
 
     function logout(){
-        localStorage.removeItem('user');
-        setUser(null);
-        navigate('/');
+        axios.get('/api/auth/logout')
+        .then(() => {
+            localStorage.removeItem('user');
+            setUser(null);
+            navigate('/');
+        })
     }
 
     return (

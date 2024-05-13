@@ -1,8 +1,6 @@
 //express
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
-const passport = require('passport');
 
 //environmet variables
 require('dotenv').config();
@@ -64,17 +62,6 @@ app.use((req, res, next) => { //log delle richieste
 //ROUTES
 const routes = require('./routes/endpoints.js');
 
-//auth
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-//enbdpoints
-app.use(routes.auth);
 app.use(routes.users);
 app.use(routes.plants);
 app.use(routes.greenhouses);

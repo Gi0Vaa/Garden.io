@@ -5,12 +5,8 @@ const db = require('../db');
 
 const router = Router();
 
-function isLogged(req, res, next){
-    req.user ? next() : res.sendStatus(401);
-}
-
 //get di tutte le piante
-router.get('/api/v1/plants', isLogged, async (req, res) => {
+router.get('/api/v1/plants', async (req, res) => {
     db.all('SELECT * FROM garden_plant', (err, rows) => {
         if (err) {
             res.status(500).json({

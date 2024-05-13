@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express'); 
 const cors = require('cors');
 const router = require('express').Router();
+const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 
@@ -11,6 +13,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+app.use(express.json());
 
 const port = 3001;
 
@@ -20,9 +23,21 @@ app.use((req, res, next) => {
     next();
 });
 
+//auth
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 //routes
 const routes = require('./routes/endpoints');
+
+app.use(routes.auth);
 app.use(routes.greenhouses);
+app.use(routes.plants);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

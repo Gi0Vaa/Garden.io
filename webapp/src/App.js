@@ -12,7 +12,6 @@ import {
 //pages
 import Home from './pages/home';
 import Login from './pages/auth/login';
-import Register from './pages/auth/register';
 import FirstGreenhouse from './pages/firstGreenhouse';
 import Welcome from './pages/status/welcome';
 import Error from './pages/status/error';
@@ -35,8 +34,6 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/start' element={<FirstGreenhouse />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
             <Route path='/welcome' element={<Welcome />} />
             <Route path='/herbarium' element={<Herbarium />} />
             <Route path='/plant' element={<Plant />} />
@@ -55,7 +52,6 @@ function App() {
         <Router>
           <Routes>
             <Route path='/' element={<Login />} />
-            <Route path='/register' element={<Register />} />
             <Route path='/success' element={<Registered />} />
           </Routes>
         </Router>
