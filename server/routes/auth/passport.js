@@ -9,7 +9,7 @@ passport.use(
     new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: 'http://localhost:3001/api/auth/google/callback',
+        callbackURL: process.env.CALLBACK_URL,
         passReqToCallback: true
     },(request, accessToken, refreshToken, profile, done) => {
         db.run(`INSERT OR IGNORE INTO user (email, name, surname, role) VALUES (?, ?, ?, ?)`,
