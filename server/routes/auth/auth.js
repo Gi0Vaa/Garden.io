@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const passport = require('passport');
+require('dotenv').config();
 require('express-session');
 require('./passport');
 
@@ -11,8 +12,8 @@ router.get('/api/auth/google',
 
 router.get('/api/auth/google/callback', 
     passport.authenticate('google', {
-        successRedirect: 'http://localhost:3000/?success=true',
-        failureRedirect: 'http://localhost:3000/'
+        successRedirect: `${process.env.REDIRECT_URL}/?success=true`,
+        failureRedirect: `${process.env.REDIRECT_URL}/`
     })
 );
 
