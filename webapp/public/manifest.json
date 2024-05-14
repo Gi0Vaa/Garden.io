@@ -1,5 +1,5 @@
 {
-  "short_name": "GH.life",
+  "short_name": "Green Hortus",
   "name": "Green Hortus",
   "icons": [
     {
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1F482E",
+  "background_color": "#B8DB9E"
 }
