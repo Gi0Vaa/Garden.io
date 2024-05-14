@@ -1,13 +1,13 @@
 const { Router } = require('express');
-const jwt = require('jsonwebtoken');
+const { isAuthenticated } = require('../middlewares/isAuthenticated');
 
 const db = require('../db');
 
 const router = Router();
 
 //get di tutte le piante
-router.get('/api/v1/plants', async (req, res) => {
-    db.all('SELECT * FROM garden_plant', (err, rows) => {
+router.get('/v1/plants', isAuthenticated(["user", "partner", "admin"]), async (req, res) => {
+    db.all('SELECT * FROM plant', (err, rows) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -21,9 +21,9 @@ router.get('/api/v1/plants', async (req, res) => {
 });
 
 //get di una singola pianta
-router.get('/api/v1/plants/:id', (req, res) => {
+router.get('/v1/plants/:id', isAuthenticated(["user", "partner", "admin"]), (req, res) => {
     const id = req.params.id;
-    db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
+    db.get('SELECT * FROM plant WHERE plant_id = ?', [id], (err, row) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -43,9 +43,9 @@ router.get('/api/v1/plants/:id', (req, res) => {
 });
 
 //ricerca di tutte le piante che contengono la stringa passata
-router.get('/api/v1/plants/research/:name', (req, res) => {
+router.get('/v1/plants/research/:name', isAuthenticated(["user", "partner", "admin"]), (req, res) => {
     const name = req.params.name;
-    db.all('SELECT * FROM garden_plant WHERE name LIKE ? LIMIT 3', ['%' + name + '%'], (err, rows) => {
+    db.all('SELECT * FROM plant WHERE name LIKE ? LIMIT 3', ['%' + name + '%'], (err, rows) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -58,23 +58,23 @@ router.get('/api/v1/plants/research/:name', (req, res) => {
     });
 })
 
-router.post('/api/v1/plants', (req, res) => {
+router.post('/v1/plants', isAuthenticated(["partner", "admin"]), (req, res) => {
     console.log(req.body);
     res.send('ok');
 });
 
-router.put('/api/v1/plants/:id', (req, res) => {
+router.put('/v1/plants/:id', isAuthenticated(["partner", "admin"]), (req, res) => {
     const id = req.params.id;
     const plant = req.body;
 
-    db.run('UPDATE garden_plant SET name = ?, description = ? WHERE plant_id = ?', [plant.name, plant.description, id], (err) => {
+    db.run('UPDATE plant SET name = ?, description = ? WHERE plant_id = ?', [plant.name, plant.description, id], (err) => {
         if (err) {
             return res.status(500).json({
                 code: 500,
                 message: "Query failed"
             });
         }
-        db.get('SELECT * FROM garden_plant WHERE plant_id = ?', [id], (err, row) => {
+        db.get('SELECT * FROM plant WHERE plant_id = ?', [id], (err, row) => {
             if (err) {
                 res.status(500).json({
                     code: 500,
@@ -88,9 +88,9 @@ router.put('/api/v1/plants/:id', (req, res) => {
     });
 });
 
-router.delete('/api/v1/plants/:id', (req, res) => {
+router.delete('/v1/plants/:id', isAuthenticated(["partner", "admin"]), (req, res) => {
     const id = req.params.id;
-    db.run('DELETE FROM garden_plant WHERE plant_id = ?', [id], (err) => {
+    db.run('DELETE FROM plant WHERE plant_id = ?', [id], (err) => {
         if (err) {
             res.status(500).json({
                 code: 500,

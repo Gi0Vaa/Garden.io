@@ -3,8 +3,100 @@ info:
   description:  REST API CRUD of Green Hortus plants
   version: 1.0.0
   title: Green Hortus
+servers:
+  - url: '{environment}/v1'
+    variables:
+      environment:
+        default: https://api.greenhortus.life
+        enum:
+          - https://api.greenhortus.life
+          - http://localhost:8080
 paths:
-  /api/v1/plants:
+  /auth/register:
+    post:
+      summary: register a new user
+      operationId: registerUser
+      tags:
+        - auth
+      security: []
+      requestBody:
+        description: User to register
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/daoUser'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /auth/login:
+    post:
+      summary: login a user
+      operationId: loginUser
+      tags:
+        - auth
+      security: []
+      requestBody:
+        description: User to login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/daoUser'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /auth/refresh:
+    post:
+      summary: refresh a token
+      operationId: refreshToken
+      tags:
+        - auth
+      security: []
+      requestBody:
+        description: User to refresh token
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /plants:
     get:
       summary: get all information of plants
       operationId: getPlants
@@ -50,7 +142,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/v1/plants/{id}:
+  /plants/{id}:
     get:
       summary: get a plant by id
       operationId: getPlantById
@@ -141,7 +233,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/v1/plants/research/{name}:
+  /plants/research/{name}:
     get:
       summary: get a plant by name
       operationId: getPlantByName
@@ -175,7 +267,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/v1/users:
+  /users:
     get:
       summary: get all information of users
       operationId: getUsers
@@ -229,7 +321,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
       
-  /api/v1/users/{email}:
+  /users/{email}:
     get:
       summary: get a user by email
       operationId: getUserByemail
@@ -320,7 +412,23 @@ paths:
                 $ref: '#/components/schemas/error'
           
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    authUser:
+      type: object
+      properties:
+        email:
+          type: string
+        role:
+          type: string
+        access_token:
+          type: string
+        refresh_token:
+          type: string
     plant:
       type: object
       properties:
@@ -336,10 +444,6 @@ components:
       properties:
         email:
           type: string
-        name:
-          type: string
-        surname:
-          type: string
         role:
           type: string
     daoUser:
@@ -347,10 +451,8 @@ components:
       properties:
         email:
           type: string
-        name:
-          type: string
-        surname:
-          type: string
+        password:
+          type: string 
     error:
       type: object
       required:
@@ -362,3 +464,6 @@ components:
           format: int32
         message:
           type: string
+
+security:
+  - bearerAuth: []

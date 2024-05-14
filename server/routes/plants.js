@@ -5,15 +5,21 @@ const router = Router();
 
 const isLogged = require('../middleware/isLogged');
 
+const keys = require('../apiKeys.json')['api.greenhortus.life'];
+
 //get di tutte le piante
-router.get(`/api/plants`, isLogged, (req, res) => {
-    return axios.get(`${process.env.GH_API_URL}/plants`)
+router.get(`/api/plants`,  (req, res) => {
+    return axios.get(`${process.env.GH_API_URL}/plants`, {
+        headers: {
+            'authorization': "Bearer " + keys['authorization']
+        }
+    })
         .then(response => {
             res.status(200).json(response.data);
         })
         .catch(err => {
-            if(err?.response?.data?.code) {
-                res.status(err.response.data.code).json(err);
+            if(err?.response?.status) {
+                res.status(err.response.status).json(err);
             }
             else {
                 res.status(500).json(err);

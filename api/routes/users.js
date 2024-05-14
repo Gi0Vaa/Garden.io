@@ -1,13 +1,13 @@
 const { Router } = require('express');
-const jwt = require('jsonwebtoken');
+const { isAuthenticated } = require('../middlewares/isAuthenticated');
 
 const db = require('../db');
 
 const router = Router();
 
-//api/v1/users
-router.get('/api/v1/users', (req, res) => {
-    db.all('SELECT * FROM garden_user', (err, rows) => {
+//v1/users
+router.get('/v1/users', isAuthenticated(["admin"]), (req, res) => {
+    db.all('SELECT * FROM api_user', (err, rows) => {
         if (err) {
             res.status(500).json({
                 code: 500,
@@ -20,9 +20,9 @@ router.get('/api/v1/users', (req, res) => {
     });
 });
 
-router.get('/api/v1/users/:email', (req, res) => {
+router.get('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
     const email = req.params.email;
-    db.get('SELECT * FROM garden_user WHERE email = ?', [email], (err, row) => {
+    db.get('SELECT * FROM api_user WHERE email = ?', [email], (err, row) => {
         if (err) {
             res.status(500).json({
                 code: 404,
@@ -41,9 +41,9 @@ router.get('/api/v1/users/:email', (req, res) => {
     });
 })
 
-router.post('/api/v1/users', (req, res) => {
+router.post('/v1/users', isAuthenticated(["admin"]), (req, res) => {
     const user = req.body;
-    db.run('INSERT INTO garden_user (email, name, surname, role) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
+    db.run('INSERT INTO api_user (email, name, surname, role) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -51,7 +51,7 @@ router.post('/api/v1/users', (req, res) => {
                 message: "Query failed"
             });
         }
-        db.get('SELECT * FROM garden_user WHERE email = ?', [user.email], (err, row) => {
+        db.get('SELECT * FROM api_user WHERE email = ?', [user.email], (err, row) => {
             if (err) {
                 res.status(500).json({
                     code: 500,
@@ -67,16 +67,16 @@ router.post('/api/v1/users', (req, res) => {
 
 });
 
-router.put('/api/v1/users/:email', (req, res) => {
+router.put('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
     const email = req.params.email;
     const user = req.body;
-    db.run('UPDATE garden_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err) => {
+    db.run('UPDATE api_user SET name = ?, surname = ? WHERE email = ?', [user.name, user.surname, email], (err) => {
         if (err) {
             return res.status(500).json({
                 error: "Query failed"
             });
         }
-        db.get('SELECT * FROM garden_user WHERE email = ?', [email], (err, row) => {
+        db.get('SELECT * FROM api_user WHERE email = ?', [email], (err, row) => {
             if (err) {
                 res.status(500).json({
                     error: "Query failed"
@@ -89,9 +89,9 @@ router.put('/api/v1/users/:email', (req, res) => {
     });
 });
 
-router.delete('/api/v1/users/:email', (req, res) => {
+router.delete('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
     const email = req.params.email;
-    db.run('DELETE FROM garden_user WHERE email = ?', [email], (err) => {
+    db.run('DELETE FROM api_user WHERE email = ?', [email], (err) => {
         if (err) {
             return res.status(500).json({
                 error: "Query failed"

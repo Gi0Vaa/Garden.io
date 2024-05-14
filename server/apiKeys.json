@@ -1,0 +1,6 @@
+{
+    "api.greenhortus.life": {
+        "accessToken": "YOUR_ACCESS",
+        "refreshToken": "YOUR_REFRESH"
+    }
+}

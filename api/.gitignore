@@ -1,3 +1,3 @@
 /node_modules
-garden.sqlite3
+api_garden.sqlite3
 .env
