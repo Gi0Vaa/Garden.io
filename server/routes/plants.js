@@ -1,64 +1,108 @@
-const { Router } = require('express');
-const axios = require('axios');
+const { Router, response } = require('express');
 
 const router = Router();
 
 const isLogged = require('../middleware/isLogged');
+const apiGreenHortus = require('../services/apigreenhortus');
 
-const keys = require('../apiKeys.json')['api.greenhortus.life'];
+const updateTokenFile = require('../utils/updateTokenFile');
 
 //get di tutte le piante
-router.get(`/api/plants`,  (req, res) => {
-    return axios.get(`${process.env.GH_API_URL}/plants`, {
-        headers: {
-            'authorization': "Bearer " + keys['authorization']
-        }
-    })
+router.get(`/api/plants`, isLogged, (req, res) => {
+    apiGreenHortus.getPlants()
         .then(response => {
             res.status(200).json(response.data);
         })
-        .catch(err => {
-            if(err?.response?.status) {
-                res.status(err.response.status).json(err);
+        .catch(async (err) => {
+            const code = err.response.status;
+            if (code === 401) {
+                apiGreenHortus.refreshToken()
+                    .then(response => {
+                        updateTokenFile('apiGreenHortus', response.data);
+                    })
+                    .then(() => {
+                        apiGreenHortus.getPlants()
+                            .then(response => {
+                                res.status(200).json(response.data);
+                            })
+                            .catch(err => {
+                                res.status(err.response.status).json(err.response.data);
+                            })
+                    })
+                    .catch(err => {
+                        res.status(err.response.status).json(err.response.data);
+                    });
             }
             else {
-                res.status(500).json(err);
+                res.status(code).json(err.response.data);
             }
-        });
+        })
 });
 
 //get di una singola pianta
 router.get('/api/plants/:id', isLogged, (req, res) => {
     const id = req.params.id;
-    return axios.get(`${process.env.GH_API_URL}/plants/${id}`)
+    apiGreenHortus.getPlantById(id)
         .then(response => {
             res.status(200).json(response.data);
         })
-        .catch(err => {
-            if(err?.response?.data?.code) {
-                res.status(err.response.data.code).json(err);
+        .catch(async (err) => {
+            const code = err.response.status;
+            if (code === 401) {
+                apiGreenHortus.refreshToken()
+                    .then(response => {
+                        updateTokenFile('apiGreenHortus', response.data);
+                    })
+                    .then(() => {
+                        apiGreenHortus.getPlants()
+                            .then(response => {
+                                res.status(200).json(response.data);
+                            })
+                            .catch(err => {
+                                res.status(err.response.status).json(err.response.data);
+                            })
+                    })
+                    .catch(err => {
+                        res.status(err.response.status).json(err.response.data);
+                    });
             }
             else {
-                res.status(500).json(err);
+                res.status(code).json(err.response.data);
             }
-        });
+        })
 });
 
 //ricerca di tutte le piante che contengono la stringa passata
 router.get('/api/plants/research/:name', isLogged, (req, res) => {
     const name = req.params.name;
-    return axios.get(`${process.env.GH_API_URL}/plants/research/${name}`)
+    apiGreenHortus.getPlantsByName(name)
         .then(response => {
             res.status(200).json(response.data);
         })
-        .catch(err => {
-            if(err?.response?.data?.code) {
-                res.status(err.response.data.code).json(err);
+        .catch(async (err) => {
+            const code = err.response.status;
+            if (code === 401) {
+                apiGreenHortus.refreshToken()
+                    .then(response => {
+                        updateTokenFile('apiGreenHortus', response.data);
+                    })
+                    .then(() => {
+                        apiGreenHortus.getPlants()
+                            .then(response => {
+                                res.status(200).json(response.data);
+                            })
+                            .catch(err => {
+                                res.status(err.response.status).json(err.response.data);
+                            })
+                    })
+                    .catch(err => {
+                        res.status(err.response.status).json(err.response.data);
+                    });
             }
             else {
-                res.status(500).json(err);
+                res.status(code).json(err.response.data);
             }
-        });
+        })
 });
 
 module.exports = router;

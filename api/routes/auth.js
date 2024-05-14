@@ -42,7 +42,6 @@ router.post('/v1/auth/register', (req, res) => {
                 [req.body.email, hashedPassword, salt, refreshToken, "user"],
                 (err) => {
                     if (err) {
-                        console.log(err);
                         return res.status(500).json({
                             code: 500,
                             message: "Query failed"
@@ -174,11 +173,11 @@ router.post('/v1/auth/refresh', (req, res) => {
                 }
             });
             const accessToken = jwt.sign(
-                { email: email },
+                { email: email, role: user.role},
                 process.env.ACCESS_TOKEN_SECRET,
                 {
                     algorithm: 'HS256',
-                    expiresIn: '1h',
+                    expiresIn: user.tokenExp,
                     issuer: 'api.greenhortus.life'
                 });
             res.status(200).json({

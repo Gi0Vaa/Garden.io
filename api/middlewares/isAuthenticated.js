@@ -10,6 +10,12 @@ const isAuthenticated = (requiredRole) => {
             if(iss === "api.greenhortus.life" && exp < Date.now() && requiredRole.includes(role)){
                 next();
             }
+            else{
+                return res.status(401).json({
+                    code: 401,
+                    message: "Unauthorized"
+                });
+            }
         }
         catch(err){
             return res.status(401).json({

@@ -1,6 +1,6 @@
 {
-    "api.greenhortus.life": {
-        "accessToken": "YOUR_ACCESS",
-        "refreshToken": "YOUR_REFRESH"
-    }
+  "apiGreenHortus": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpdGVAZ3JlZW5ob3J0dXMubGlmZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzE1NzEzNDE4LCJleHAiOjE3MTU3OTk4MTgsImlzcyI6ImFwaS5ncmVlbmhvcnR1cy5saWZlIn0.28RxXs66TJthBoL61j6sNaIZY6awOm_8ZX6bPzv1hIc",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpdGVAZ3JlZW5ob3J0dXMubGlmZSIsImlhdCI6MTcxNTcxMzQxOCwiaXNzIjoiYXBpLmdyZWVuaG9ydHVzLmxpZmUifQ.Xkv_V0PQQLAl2vK1nUbkmoZTzOSpX0FIbsyEyJI_yks"
+  }
 }
