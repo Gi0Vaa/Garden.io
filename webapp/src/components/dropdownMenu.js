@@ -22,7 +22,7 @@ const DropdownMenu = () => {
     }
 
     return (
-        <div className="p-1 bg-green-800 rounded-md text-white flex flex-col gap-1 text-lg font-semibold">
+        <div className="p-1 bg-green-dark rounded-md text-white flex flex-col gap-1 text-lg font-semibold">
             <button className='flex flex-row gap-2 w-full items-center hover:bg-green-700 transition-colors rounded-md p-2'>
                 <FontAwesomeIcon icon={faUser} />
                 <p>{user.name || ''} {user.surname || ''}</p>

@@ -47,7 +47,7 @@ const PlantInGreenhouse = ({ plant, deleteCallback }) => {
     }
 
     return(
-        <div className="flex flex-col gap-2 p-3 rounded-md bg-amber-200 text-green-900">
+        <div className="flex flex-col gap-2 p-3 rounded-md bg-amber-200 text-green-dark">
             <div className="flex flex-row w-full place-content-between items-center">
                 <h3>{plantInfo.name}</h3>
                 <FontAwesomeIcon icon={faBook} onClick={goToInfoPlant} className="cursor-pointer p-1 sm:p-2 hover:bg-green-900 text-green-900 hover:text-green-100 rounded-md md:rounded-full transition-colors duration-300"/>

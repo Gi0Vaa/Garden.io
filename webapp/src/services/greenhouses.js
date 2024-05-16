@@ -4,6 +4,10 @@ export const getGreenhouses = async (email) => {
     return await axios.get(`/api/users/${email}/greenhouses`);
 }
 
+export const getGreenhouse = async (greenhouse_id) => {
+    return await axios.get(`/api/greenhouses/${greenhouse_id}`);
+}
+
 export const createGreenhouse = async (greenhouse) => {
     return await axios.post('/api/greenhouses', greenhouse);
 }

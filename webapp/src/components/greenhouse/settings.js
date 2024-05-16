@@ -55,7 +55,7 @@ const Settings = ({greenhouse}) => {
     }
 
     return(
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-green-dark">
             <div className="flex flex-col gap-1 p-3 rounded-md shadow-md">
                 <h3>Greenhouse info:</h3>
                 <input type="text" onChange={activeBtn} id="name" defaultValue={greenhouse.name} className="p-1 rounded-md border-2 border-green-300 focus:border-green-600 focus:outline-none transition-colors"/>

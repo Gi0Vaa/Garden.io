@@ -55,8 +55,8 @@ const Login = () => {
             <div></div>
             <div className="flex flex-col h-full p-3 place-content-center text-center items-center gap-8" id='container'>
                 <div className='flex flex-col gap-10 items-center'>
-                    <div className="text-green-400 p-8 border-b-green-900 border-b-2 flex flex-col gap-1 items-center">
-                        <div className=' h-48 w-48'>
+                    <div className="text-green-500 p-8 border-b-green-900 border-b-2 flex flex-col gap-1 items-center">
+                        <div className=' h-40 w-40'>
                             <Logo stroke={"#1F482E"} />
                         </div>
 
@@ -64,7 +64,7 @@ const Login = () => {
                         <h1>{process.env.REACT_APP_NAME}</h1>
                     </div>
                     <a href={`/api/auth/google`}
-                        className=' bg-green-50 outline outline-2 hover:outline-green-700 transition-all p-3 rounded-md text-green-950 w-max'>
+                        className=' bg-green-light outline outline-2 hover:outline-green-700 hover:bg-green-100 transition-all p-3 rounded-md text-green-950 w-max'>
                         <FontAwesomeIcon icon={faGoogle} className='mr-2' />
                         Sign in with Google
                     </a>

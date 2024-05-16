@@ -8,9 +8,8 @@ const router = Router();
 //greenhouse of a user
 router.get('/api/users/:email/greenhouses', isLogged, (req, res) => { 
     const email = req.params.email;
-    db.all(`SELECT g.* 
-            FROM user_greenhouse u
-            JOIN greenhouse g ON u.greenhouse_id = g.greenhouse_id
+    db.all(`SELECT * 
+            FROM user_greenhouse
             WHERE email = ?`, 
             [email], 
             (err, rows) => {

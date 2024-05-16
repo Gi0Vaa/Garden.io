@@ -1,8 +1,24 @@
-import { useRef } from 'react';
-import plant from '../assets/img/wateringPlant.svg'
+import { useRef, useState, useEffect } from 'react';
+import plant from '../../assets/img/wateringPlant.svg'
+import { getGreenhouse } from '../../services/greenhouses';
+import SkeletonCard from './skeletonCard';
 
-const GreenhouseCard = ({ greenhouse }) => {
+const GreenhouseCard = ({ id }) => {
     const imageBGRef = useRef(null);
+    const [greenhouse, setGreenhouse] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getGreenhouse(id)
+            .then(res => {
+                setGreenhouse(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+            }
+        );
+    }, [id]);
 
     function handleMouseOver() {
         const imageBG = imageBGRef.current;
@@ -18,8 +34,10 @@ const GreenhouseCard = ({ greenhouse }) => {
         imageBG.classList.add('bg-violet-400');
     }
 
+    if (loading) return <SkeletonCard />;
+
     return (
-        <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-900 grid grid-rows-2 shadow-md hover:shadow-xl transition-all">
+        <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} className="rounded-md text-green-dark grid grid-rows-2 shadow-md hover:shadow-xl transition-all">
             <div ref={imageBGRef} className='bg-violet-400 h-32 md:h-full rounded-t-md '>
                 <img src={plant} alt='Plant' className=' object-contain h-full w-full '></img>
             </div>

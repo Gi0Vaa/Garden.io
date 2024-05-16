@@ -50,7 +50,7 @@ const Greenhouse = () => {
         if(index === undefined) return;
         const menu = document.getElementById('menu');
         menu.children[index].classList.remove('border-green-100');
-        menu.children[index].classList.add('border-green-500');
+        menu.children[index].classList.add('border-green-light');
         
         if(greenhouseId === null) return;
         switch (index) {
@@ -85,7 +85,7 @@ const Greenhouse = () => {
 
     function handleClick(i) {
         const menu = document.getElementById('menu');
-        menu.children[index].classList.remove('border-green-500');
+        menu.children[index].classList.remove('border-green-light');
         menu.children[index].classList.add('border-green-100');
         setIndex(i);
     }
@@ -96,10 +96,10 @@ const Greenhouse = () => {
             <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
                 <div className='md:col-span-2' id='greenhouses'>
-                    <div className='flex flex-row gap-2 my-2 text-green-900 text-lg' id='menu'>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-700 transition-colors' onClick={() => handleClick(0)}>Dashboard</button>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-700 transition-colors' onClick={() => handleClick(1)}>Plants</button>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-700 transition-colors' onClick={() => handleClick(2)}>Settings</button>
+                    <div className='flex flex-row gap-2 my-2 text-green-dark text-lg' id='menu'>
+                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(0)}>Dashboard</button>
+                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(1)}>Plants</button>
+                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(2)}>Settings</button>
                     </div>
                     {content}
                 </div>

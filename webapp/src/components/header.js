@@ -11,6 +11,9 @@ import DropdownMenu from "./dropdownMenu";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
 
+//logo
+import Logo from '../assets/icons/logo';
+
 const Header = ({greenhouse}) => {
     const { user } = React.useContext(UserContext);
     const [open, setOpen] = useState(false);
@@ -53,11 +56,17 @@ const Header = ({greenhouse}) => {
     ];
 
     return(
-        <header className='fixed top-0 w-screen z-50 flex flex-row p-2 md:px-4 md:py-2 bg-green-300 text-green-800'>
+        <header className='fixed top-0 w-screen z-50 flex flex-row p-2 md:px-4 md:py-2 bg-green-light text-green-dark'>
             <div className="flex flex-row flex-grow gap-1 md:gap-2 place-content-start items-center">
-                <Link to="/"><h2>{process.env.REACT_APP_NAME}</h2></Link>
+                <div className="hidden md:block place-content-center">
+                    <Link to="/"><h2>{process.env.REACT_APP_NAME}</h2></Link>
+                </div>
+                <div className="block md:hidden w-12 h-12 place-content-center">
+                    <Logo stroke={"#1F482E"} width={"28px"} />
+                </div>
+                
                 {greenhouse !== undefined && (
-                    <Link to="/greenhouse" state={greenhouse}><h3 className="hidden sm:block font-medium"> / {greenhouse.name}</h3></Link>
+                    <Link to="/greenhouse" state={greenhouse}><h3 className="font-medium"> / {greenhouse.name}</h3></Link>
                 )}
             </div>
             <div className="flex flex-row flex-grow gap-5 md:gap-5 xl:gap-10 place-content-end items-center font-normal text-2xl" id="pagesLinks">
