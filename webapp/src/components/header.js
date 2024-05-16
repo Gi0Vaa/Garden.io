@@ -71,7 +71,7 @@ const Header = ({greenhouse}) => {
                 </NavLink>
                 <div className="group relative flex flex-col items-center">
                     <button className="rounded-full transition-colors duration-200 hover:bg-green-100" id="pfp" onClick={openMenu}>
-                        <img src={user.picture || ''} className="w-10 h-10 rounded-full p-1" alt="profile"/>
+                        <img src={user.pfp || ''} className="w-10 h-10 rounded-full p-1" alt="profile"/>
                     </button>
                     <div ref={menuRef} className="hidden absolute w-max mt-16 right-0 transition-all duration-300" id="dropMenu">
                         <Transition

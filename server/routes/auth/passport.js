@@ -12,22 +12,34 @@ passport.use(
         callbackURL: process.env.CALLBACK_URI,
         passReqToCallback: true
     },(request, accessToken, refreshToken, profile, done) => {
-        db.run(`INSERT OR IGNORE INTO user (email, name, surname, role) VALUES (?, ?, ?, ?)`,
-            [profile.emails[0].value, profile.name.givenName, profile.name.familyName, "user"],
-            (err) => {
-                if (err) {
-                    return done(err);
-                }
-                return done(null, profile);
+        db.get("SELECT * FROM user WHERE g_id = ?", [profile.id], (err, user) => {
+            if(err){
+                return done(err);
             }
-        );
+            if(user){
+                return done(null, user);
+            }
+            else{
+                db.run("INSERT INTO user (email, g_id, name, surname, pfp, role) VALUES (?, ?, ?, ?, ?, ?)", [profile.emails[0].value, profile.id, profile.name.givenName, profile.name.familyName, profile.photos[0].value, "user"], (err) => {
+                    if(err){
+                        return done(err);
+                    }
+                    else{
+                        return done(null, {email: profile.emails[0].value, g_id: profile.id, name: profile.name.givenName, surname: profile.name.familyName, pfp: profile.photos[0].value, role: this.user});
+                    }
+                });
+            }
+        });
     })
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.email);
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser((email, done) => {
+    db.get('SELECT * FROM user WHERE email = ?', [email], (err, user) => {
+        if (err) return done(err);
+        done(null, user);
+    });
 });

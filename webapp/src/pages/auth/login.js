@@ -14,7 +14,7 @@ const Login = () => {
     const setUserData = useCallback(() => {
         axios.get('/api/auth/user')
         .then(res => {
-            const user = res.data._json;
+            const user = res.data;
             localStorage.setItem('user', JSON.stringify(user));
             setUser(user);
             window.history.replaceState({}, document.title, "/");

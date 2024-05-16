@@ -36,8 +36,10 @@ db.serialize(() => {
     db.run(`
         CREATE TABLE IF NOT EXISTS user (
             email TEXT PRIMARY KEY,
+            g_id TEXT,
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
+            pfp TEXT,
             role TEXT,
             FOREIGN KEY (role) REFERENCES role(role) ON DELETE SET NULL
         )
