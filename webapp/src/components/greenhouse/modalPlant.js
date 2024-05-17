@@ -1,56 +1,49 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-//import SearchPlant from "../searchPlant";
 
-axios.defaults.withCredentials = true;
+import { addPlantInGreenhouse, patchPlantInGreenhouse } from "../../services/greenhouses";
+import { getPlantById } from "../../services/plants";
 
-const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
+import SearchbarProp from "../input/search/searchbarProp";
+
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+
+const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
     const [plant, setPlant] = useState({ plant_id: 0, name: '', description: '' });
+    const [selectedProp, setSelectedProp] = useState({ id: null, name: null });
+
     useEffect(() => {
-
-    }, [plant]);
-
-    function searchPlant() {
-        const name = document.getElementById('plants').value;
-        const description = document.getElementById('plantDescription');
-        const searchSuggestions = document.getElementById('searchSuggestions');
-        searchSuggestions.innerHTML = '';
-        axios.get(`/api/plants/research/${name}`)
-            .then(response => {
-                response.data.forEach(p => {
-                    const li = document.createElement('li');
-                    li.innerHTML = p.name;
-                    li.classList.add('hover:bg-gray-200', 'rounded-sm', 'p-2');
-                    li.addEventListener('click', () => {
-                        setPlant(p);
-                        document.getElementById('plants').value = p.name;
-                        description.innerHTML = p.description;
-                        searchSuggestions.innerHTML = '';
-                    });
-                    searchSuggestions.appendChild(li);
-                });
-                if (response.data.length === 1) {
-                    description.innerHTML = response.data[0].description;
-                }
-            })
-            .catch(() => {
-                description.innerHTML = 'No plant found';
-            });
-    }
+        if (selectedProp.id === null) return;
+        getPlantById(selectedProp.id)
+            .then(res => setPlant(res.data));
+    }, [selectedProp]);
 
     function addPlant() {
-        axios.post(`/api/greenhouses/${greenhouseId}/plants`, {
-            plant_id: plant.plant_id,
-            quantity: 1
-        })
-            .then(() => {
-                window.location.reload();
-                onClose();
-            });
-    }
-
-    if (!isOpen) {
-        return null;
+        const p = plants.find(p => p.plant_id === plant.plant_id)
+        if (p) {
+            patchPlantInGreenhouse(greenhouseId, plant.plant_id, 1)
+                .then(() => {
+                    setSelectedProp({ id: null, name: null });
+                    setPlant({ plant_id: 0, name: '', description: '' });
+                    setIsModalOpen(false);
+                    setPlants(plants.map(p => {
+                        if (p.plant_id === plant.plant_id) {
+                            return { ...p, quantity: p.quantity + 1 };
+                        }
+                        return p;
+                    }));
+                });
+        }
+        else {
+            addPlantInGreenhouse(greenhouseId, plant.plant_id, 1)
+                .then(() => {
+                    setSelectedProp({ id: null, name: null });
+                    setPlant({ plant_id: 0, name: '', description: '' });
+                    setPlants([...plants, { plant_id: plant.plant_id, greenhouse_id: greenhouseId, quantity: 1 }]);
+                    setIsModalOpen(false);
+                });
+        }
     }
 
     return (
@@ -58,22 +51,24 @@ const ModalPlant = ({ isOpen, onClose, greenhouseId }) => {
             <div className="grid md:grid-cols-3">
                 <div></div>
                 <div className="p-3 flex place-content-center items-center h-screen">
-                    <div className="bg-green-500 rounded-md flex flex-col gap-4 p-3 w-full text-green-950">
-                        <div className="flex flex-row place-content-between items-center">
-                            <h3>Add Plant</h3>
-                            <button onClick={onClose} className="px-3 py-2 text-white bg-red-500 hover:bg-red-600 transition-colors rounded-md font-semibold">Exit</button>
-                        </div>
-                        <div className='flex flex-col gap-3'>
-                            <div className="relative flex flex-col gap-1 bg-white rounded-t-md p-2 z-30">
-                                <input type="text" name='plants' id='plants' placeholder="Search a Plant" className=' outline-4 p-2 outline-offset-2 rounded-xl outline-green-500' onChange={searchPlant} />
-                                <ul id="searchSuggestions" className=" bg-white absolute mt-12 w-full left-0 p-1 rounded-b-md">
-                                </ul>
+                    <div className="bg-green-light rounded-md flex flex-col gap-4 p-3 w-full h-2/4 place-content-between text-green-dark">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-row place-content-between items-center">
+                                <h3>Add Plant</h3>
+                                <button onClick={(e) => setIsModalOpen(false)} className="p-1 px-2 text-white bg-red-500 hover:bg-red-400 transition-colors rounded-md font-semibold">
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </button>
                             </div>
-                            <div className=" h-56" id='plantDescription'></div>
+                            <SearchbarProp setSelectedProp={setSelectedProp} />
+                            <div className="flex flex-col gap-2">
+                                <p>{plant.description}</p>
+                            </div>
                         </div>
                         <div className="flex flex-row place-content-between items-center">
                             <div></div>
-                            <button onClick={addPlant} className="px-3 py-2 text-white bg-green-500 hover:bg-green-600 transition-colors rounded-md font-semibold">Add Plant</button>
+                            <button onClick={addPlant} className="p-1 px-2 text-white bg-green-600 hover:bg-green-500 transition-colors rounded-md font-semibold">
+                                <FontAwesomeIcon icon={faSquarePlus} />
+                            </button>
                         </div>
                     </div>
                 </div>

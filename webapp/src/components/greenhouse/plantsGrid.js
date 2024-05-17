@@ -6,36 +6,51 @@ import { getPlantsInGreenhouse } from '../../services/greenhouses';
 import PlantInGreenhouse from './plantInGreenhouse';
 import ModalPlant from './modalPlant';
 
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAdd } from '@fortawesome/free-solid-svg-icons'
+
 const PlantsGrid = ({ id }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [plants, setPlants] = useState([]);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         setPlants([]);
         getPlantsInGreenhouse(id)
             .then(response => {
                 setPlants(response.data);
+                countPlants(response.data);
             });
     }, [id]);
 
-    const deleteCallback = (plant_id) => {
-        setPlants(plants.filter(p => p.plant_id !== plant_id));
-    };
+    useEffect(() => {
+        countPlants(plants);
+    }, [plants]);
+
+    async function countPlants(data) {
+        let c = 0;
+        for (let p of data) {
+            c += p.quantity;
+        }
+        setCount(c);
+    }
 
     return (
         <React.Fragment>
-            <ModalPlant isOpen={modalOpen} greenhouseId={id} onClose={() => setModalOpen(false)} />
-            <div className='grid grid-cols-1 xl:grid-cols-2 gap-2' id='grid'>
-                <button className='xl:col-span-2' onClick={() => setModalOpen(true)} >
-                    <div className=" flex place-content-center gap-2 p-3 rounded-md border-2 hover:bg-green-200 border-amber-400 border-dashed hover:border-solid transition-all text-green-dark">
-                        <div className="flex flex-row place-content-between items-center">
-                            <h3>Add Plant</h3>
-                        </div>
-                    </div>
-                </button>
-                {plants.map((plant, index) => {
+            {
+                isModalOpen && <ModalPlant greenhouseId={id} setIsModalOpen={setIsModalOpen} plants={plants} setPlants={setPlants} />
+            }
+            <div className='grid grid-cols-1 xl:grid-cols-2 gap-2 text-green-dark' id='grid'>
+                <div className='xl:col-span-2 p-2 flex flex-row place-content-between'>
+                    <h4 className='font-semibold'>Number of plants in greenhouse: {count}</h4>
+                    <button className='xl:col-span-2 px-2 rounded-sm text-white bg-green-600 hover:bg-green-500 transition-colors' onClick={() => setIsModalOpen(true)} >
+                        <FontAwesomeIcon icon={faAdd} />
+                    </button>
+                </div>
+                {plants.map((plant) => {
                     return (
-                        <PlantInGreenhouse key={index} plant={plant} deleteCallback={deleteCallback} />
+                        <PlantInGreenhouse key={plant.plant_id} plant={plant} setPlants={setPlants} count={count} setCount={setCount} plants={plants} />
                     );
                 })}
             </div>

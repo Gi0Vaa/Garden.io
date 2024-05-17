@@ -7,7 +7,7 @@ import { deletePlantInGreenhouse, patchPlantInGreenhouse  } from '../../services
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faTrash, faAdd, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-const PlantInGreenhouse = ({ plant, deleteCallback }) => {
+const PlantInGreenhouse = ({ plant, plants, setPlants, count, setCount }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
     const [plantInfo, setPlantInfo] = useState({});
@@ -26,12 +26,14 @@ const PlantInGreenhouse = ({ plant, deleteCallback }) => {
     function addPlant() {
         setQuantity(quantity + 1);
         updateQuantity(1);
+        setCount(count + 1);
     }
 
     function removePlant() {
         if(quantity > 1) {
             setQuantity(quantity - 1);
             updateQuantity(-1);
+            setCount(count - 1);
         }
     }
 
@@ -42,7 +44,7 @@ const PlantInGreenhouse = ({ plant, deleteCallback }) => {
     function deletePlant() {
         deletePlantInGreenhouse(plant.greenhouse_id, plant.plant_id)
             .then(() => {
-                deleteCallback(plant.plant_id);
+                setPlants(plants.filter(p => p.plant_id !== plant.plant_id));
             });
     }
 
