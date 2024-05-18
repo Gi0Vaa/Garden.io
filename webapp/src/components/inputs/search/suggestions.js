@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlantsByName } from "../../../services/plants";
+import { getPlantsByName } from "@services/plants";
 
 import Prop from "./prop";
 

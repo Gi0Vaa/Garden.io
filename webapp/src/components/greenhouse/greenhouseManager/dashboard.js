@@ -1,4 +1,4 @@
-import Check from '../../assets/icons/check';
+import Check from '@icons/check';
 
 const Dashboard = ({ greenhouse }) => {
     return (
@@ -21,7 +21,7 @@ const Dashboard = ({ greenhouse }) => {
                     <div className='w-32 h-32 text-green-500'>
                         <Check />
                     </div>
-                    <h4>La tua serra è in buone condizioni!</h4>
+                    <h4>Your greenhouse is in good condition!</h4>
                 </div>
             </div>
             <div className='p-3'>

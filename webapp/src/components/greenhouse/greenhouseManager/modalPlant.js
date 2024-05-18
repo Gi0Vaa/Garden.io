@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { addPlantInGreenhouse, patchPlantInGreenhouse } from "../../services/greenhouses";
-import { getPlantById } from "../../services/plants";
+import { addPlantInGreenhouse, patchPlantInGreenhouse } from "@services/greenhouses";
+import { getPlantById } from "@services/plants";
 
-import SearchbarProp from "../input/search/searchbarProp";
+import SearchbarProp from "@inputs/search/searchbarProp";
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

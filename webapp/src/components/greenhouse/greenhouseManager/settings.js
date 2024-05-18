@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { useNavigate } from 'react-router-dom';
-import { deleteGreenhouse, updateGreenhouse } from "../../services/greenhouses";
+import { deleteGreenhouse, updateGreenhouse } from "@services/greenhouses";
 
 axios.defaults.withCredentials = true;
 

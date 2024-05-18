@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { UserContext } from "../context/userContext";
 
 import Header from "../components/header";
-import GreenhouseSteps from "../components/greenhouseSteps";
+import GreenhouseSteps from "@greenhouse/createGreenhouse/greenhouseSteps";
 
 const CreateGreenhouse = ({first}) => {
     const location = useLocation();

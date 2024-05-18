@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import {getPlants} from '../../services/plants'
+import {getPlants} from '../../../services/plants'
 
-import plantsImg from '../../assets/img/Potted-plants.svg'
+import plantsImg from '@images/Potted-plants.svg'
 
 const AddPlant = ({plant}) => {
     let dataRef = useRef();

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { UserContext } from '../../context/userContext';
+import { UserContext } from '../../../context/userContext';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import GreenhouseCard from './greenhouseCard';
 
-import { getGreenhouses } from '../../services/greenhouses'
+import { getGreenhouses } from '@services/greenhouses'
 
 const Greenhouses = () => {
     const { user } = React.useContext(UserContext);

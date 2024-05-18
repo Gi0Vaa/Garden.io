@@ -3,12 +3,12 @@ import axios from 'axios';
 
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/userContext';
-import { createGreenhouse, addPlantInGreenhouse } from '../services/greenhouses';
+import { UserContext } from '../../../context/userContext';
+import { createGreenhouse, addPlantInGreenhouse } from '../../../services/greenhouses';
 
-import AddPlant from "./createGreenhouse/addPlant";
-import AddGreenhouse from "./createGreenhouse/addGreenhouse";
-import Loading from "../pages/status/loading";
+import AddPlant from "./addPlant";
+import AddGreenhouse from "./addGreenhouse";
+import Loading from "../../../pages/status/loading";
 
 axios.defaults.withCredentials = true;
 

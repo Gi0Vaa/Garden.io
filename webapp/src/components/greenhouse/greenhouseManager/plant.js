@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getPlantById } from '../../services/plants';
-import { deletePlantInGreenhouse, patchPlantInGreenhouse  } from '../../services/greenhouses';
+import { getPlantById } from '@services/plants';
+import { deletePlantInGreenhouse, patchPlantInGreenhouse  } from '@services/greenhouses';
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faTrash, faAdd, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-const PlantInGreenhouse = ({ plant, plants, setPlants, count, setCount }) => {
+const Plant = ({ plant, plants, setPlants, count, setCount }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
     const [plantInfo, setPlantInfo] = useState({});
@@ -18,6 +18,10 @@ const PlantInGreenhouse = ({ plant, plants, setPlants, count, setCount }) => {
                 setPlantInfo(response.data);
             });
     }, []);
+
+    useEffect(() => {
+        setQuantity(plant.quantity);
+    }, [plant]);
 
     function goToInfoPlant() {
         navigate('/plant', {state: {plant: plantInfo}});
@@ -69,4 +73,4 @@ const PlantInGreenhouse = ({ plant, plants, setPlants, count, setCount }) => {
     )
 }
 
-export default PlantInGreenhouse;
+export default Plant;

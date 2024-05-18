@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
-import plant from '../../assets/img/wateringPlant.svg'
-import { getGreenhouse } from '../../services/greenhouses';
+import plant from '@images/wateringPlant.svg'
+import { getGreenhouse } from '@services/greenhouses';
 import SkeletonCard from './skeletonCard';
 
 const GreenhouseCard = ({ id }) => {

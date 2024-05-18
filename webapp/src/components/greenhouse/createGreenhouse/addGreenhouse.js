@@ -1,4 +1,4 @@
-import greenhouseImg from '../../assets/img/greenhouse.svg';
+import greenhouseImg from '@images/greenhouse.svg';
 
 function AddGreenhouse({message, greenhouse}){
     return (

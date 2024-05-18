@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faPlantWilt } from '@fortawesome/free-solid-svg-icons'
 
 //logo
-import Logo from '../assets/icons/logo';
+import Logo from '@icons/logo';
 
 const Header = ({greenhouse}) => {
     const { user } = React.useContext(UserContext);

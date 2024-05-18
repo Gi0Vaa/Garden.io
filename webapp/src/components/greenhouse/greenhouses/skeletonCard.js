@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton, Typography } from '@mui/material'
-import plant from '../../assets/img/wateringPlant.svg'
+import plant from '@images/wateringPlant.svg'
 
 const SkeletonCard = () => {
     return (

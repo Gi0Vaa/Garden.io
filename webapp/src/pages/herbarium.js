@@ -4,26 +4,10 @@ import { useState } from 'react';
 
 import Header from "../components/header";
 import Plants from '../components/plants/plants';
-import Searchbar from '../components/input/search/searchbar';
+import Searchbar from '@inputs/search/searchbar';
 
 const Herbarium = () => {
     const [search, setSearch] = useState('');
-    /*
-    function searchPlant() {
-        const name = document.getElementById('search').value;
-        if(name === ''){
-            getPlants() 
-                .then(res => setPlants(res.data));
-            return;
-        }
-        getPlantsByName(name)
-            .then(res => {
-                setPlants(res.data);
-            })
-            .catch(() => {
-                setPlants([]);
-            });
-    }*/
 
     return(
         <React.Fragment>

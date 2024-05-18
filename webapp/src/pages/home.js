@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Header from '../components/header';
-import Greenhouses from '../components/greenhouses/greenhouses';
+import Greenhouses from '@greenhouse/greenhouses/greenhouses';
 
 const Home = () => {
 

@@ -5,9 +5,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Header from '../components/header.js';
-import PlantsGrid from '../components/greenhouse/plantsGrid.js';
-import Dashboard from '../components/greenhouse/dashboard.js';
-import Settings from '../components/greenhouse/settings.js';
+import Plants from '@greenhouse/greenhouseManager/plants.js';
+import Dashboard from '@greenhouse/greenhouseManager/dashboard.js';
+import Settings from '@greenhouse/greenhouseManager/settings.js';
 
 axios.defaults.withCredentials = true;
 
@@ -63,7 +63,7 @@ const Greenhouse = () => {
              case 1:
                 navigate('/greenhouse/#/plants', { state: { greenhouse_id: greenhouseId } });
                 setContent(
-                    <PlantsGrid id={greenhouseId} />
+                    <Plants id={greenhouseId} />
                 );
                 break;
             

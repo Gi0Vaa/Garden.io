@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from 'react';
 
 import PlantCard from "./plantCard";
-import { getPlants, getPlantsByName } from '../../services/plants';
+import { getPlants, getPlantsByName } from '@services/plants';
 
 const Plants = ({name}) => {
     const [plants, setPlants] = useState([]);
