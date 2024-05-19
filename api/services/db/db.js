@@ -1,4 +1,14 @@
-const pool = require('./pool');
+const mariadb = require('mariadb');
+require('dotenv').config();
+
+const pool = mariadb.createPool({
+    host: 'localhost',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    connectionLimit: 5
+});
+
+module.exports = pool;
 
 async function createDatabase() {
     let conn;
