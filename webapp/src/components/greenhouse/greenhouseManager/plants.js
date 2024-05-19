@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useEffect, useState } from 'react';
-import { getPlantsInGreenhouse } from '@services/greenhouses';
 
 import Plant from './plant';
 import ModalPlant from './modalPlant';
@@ -10,19 +9,13 @@ import ModalPlant from './modalPlant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 
-const Plants = ({ id }) => {
+const Plants = ({plants, setPlants, greenhouse }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [plants, setPlants] = useState([]);
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        setPlants([]);
-        getPlantsInGreenhouse(id)
-            .then(response => {
-                setPlants(response.data);
-                countPlants(response.data);
-            });
-    }, [id]);
+        countPlants(plants);
+    }, [greenhouse]);
 
     useEffect(() => {
         countPlants(plants);
@@ -39,7 +32,7 @@ const Plants = ({ id }) => {
     return (
         <React.Fragment>
             {
-                isModalOpen && <ModalPlant greenhouseId={id} setIsModalOpen={setIsModalOpen} plants={plants} setPlants={setPlants} />
+                isModalOpen && <ModalPlant greenhouseId={greenhouse.greenhouse_id} setIsModalOpen={setIsModalOpen} plants={plants} setPlants={setPlants} />
             }
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-2 text-green-dark' id='grid'>
                 <div className='xl:col-span-2 p-2 flex flex-row place-content-between'>
@@ -50,7 +43,7 @@ const Plants = ({ id }) => {
                 </div>
                 {plants.map((plant) => {
                     return (
-                        <Plant key={plant.plant_id} plant={plant} setPlants={setPlants} count={count} setCount={setCount} plants={plants} />
+                        <Plant key={plant.plant_id} plant={plant} greenhouse={greenhouse} setPlants={setPlants} count={count} setCount={setCount} plants={plants} />
                     );
                 })}
             </div>

@@ -6,7 +6,7 @@ const SearchbarProp = ({ setSelectedProp }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     return (
-        <div className='flex flex-col gap-1 bg-green-dark rounded-md p-1 text-green-dark'>
+        <div className='flex flex-col bg-green-dark rounded-md p-1 text-green-dark'>
             <input type='text' id='search' 
                 className=' bg-green-100 px-2 py-1 w-full rounded-sm outline-none' placeholder='Search' value={search} 
                 onChange={(e) => {

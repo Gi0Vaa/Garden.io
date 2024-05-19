@@ -1,6 +1,8 @@
-import Check from '@icons/check';
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTriangleExclamation, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
-const Dashboard = ({ greenhouse }) => {
+const Dashboard = ({ warningCount, greenhouse }) => {
     return (
         <div className="p-3 bg-slate-50 text-green-dark rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
@@ -17,15 +19,28 @@ const Dashboard = ({ greenhouse }) => {
                         <h4 className="font-bold">{greenhouse.humidity}%</h4>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 items-center">
-                    <div className='w-32 h-32 text-green-500'>
-                        <Check />
+                {
+                    warningCount > 0 &&
+                    <div className="flex flex-col gap-4 items-center">
+                        <div className='text-8xl'>
+                            <FontAwesomeIcon icon={faTriangleExclamation} className='text-red-500' />
+                        </div>
+                        <h4 className='text-red-500'>Your greenhouse has {warningCount} warning(s)!</h4>
                     </div>
-                    <h4>Your greenhouse is in good condition!</h4>
-                </div>
+
+                }
+                {
+                    warningCount === 0 &&
+                    <div className="flex flex-col gap-2 items-center">
+                        <div className='text-8xl'>
+                            <FontAwesomeIcon icon={faCircleCheck} className='text-green-500' />
+                        </div>
+                        <h4>Your greenhouse is in good condition!</h4>
+                    </div>
+                }
             </div>
             <div className='p-3'>
-                
+
             </div>
         </div>
     );

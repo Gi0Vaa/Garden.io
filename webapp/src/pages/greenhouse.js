@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -8,105 +7,84 @@ import Header from '../components/header.js';
 import Plants from '@greenhouse/greenhouseManager/plants.js';
 import Dashboard from '@greenhouse/greenhouseManager/dashboard.js';
 import Settings from '@greenhouse/greenhouseManager/settings.js';
+import SubMenuBtn from '@inputs/buttons/subMenuBtn.js';
 
-axios.defaults.withCredentials = true;
+import { getPlantsInGreenhouse, getGreenhouse } from '@services/greenhouses.js';
 
 const Greenhouse = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const greenhouseId = location.state.greenhouse_id;
 
-    const [greenhouseId, setGreenhouseId] = useState(null);
+    const [plants, setPlants] = useState([]);
     const [greenhouse, setGreenhouse] = useState({});
-    const [index, setIndex] = useState(setFirstIndex());
-    const [content, setContent] = useState(<div></div>);
-
-    function setFirstIndex(){
-        if(window.location.hash === '#/dashboard') return 0;
-        else if(window.location.hash === '#/plants') return 1;
-        else if(window.location.hash === '#/settings') return 2;
-        else return 0;
-    }
+    const [currentPanel, setCurrentPanel] = useState('dashboard');
+    const [warningCount, setWarningCount] = useState(null);
+    
 
     useEffect(() => {
-        if(location.state !== null){
-            setGreenhouseId(location.state.greenhouse_id);
-        }
-    }, [location.state, setGreenhouseId]);
-
-    useEffect(() => {
-        if(greenhouseId === null) return;
-        axios.get(`/api/greenhouses/${greenhouseId}`)
+        if (greenhouseId === null) return navigate('/');
+        getGreenhouse(greenhouseId)
             .then(response => {
                 setGreenhouse(response.data);
-            })
-    }, [greenhouseId, setGreenhouse])
+            });
+    }, [greenhouseId, setGreenhouse, navigate]);
 
     useEffect(() => {
-        document.title = `${greenhouse.name} | ${process.env.REACT_APP_NAME}`;
-    }, [greenhouse]);
+        if (greenhouseId === null) return;
+        getPlantsInGreenhouse(greenhouseId)
+            .then(response => {
+                setPlants(response);
+            });
+    }, [greenhouseId, setPlants]);
 
-    //change index
     useEffect(() => {
-        if(index === undefined) return;
-        const menu = document.getElementById('menu');
-        menu.children[index].classList.remove('border-green-100');
-        menu.children[index].classList.add('border-green-light');
-        
-        if(greenhouseId === null) return;
-        switch (index) {
-            case 0:
-                navigate('/greenhouse/#/dashboard', { state: { greenhouse_id: greenhouseId } });
-                setContent(
-                    <Dashboard greenhouse={greenhouse} />
-                );
-                break;
-             case 1:
-                navigate('/greenhouse/#/plants', { state: { greenhouse_id: greenhouseId } });
-                setContent(
-                    <Plants id={greenhouseId} />
-                );
-                break;
-            
-            case 2:
-                navigate('/greenhouse/#/settings', { state: { greenhouse_id: greenhouseId } });
-                setContent(
-                    <Settings greenhouse={greenhouse} />
-                );
-                break;
-            default:
-                setContent(
-                    <div>
-                        <h1>Not A Page</h1>
-                    </div>
-                );
-                break;
+        if (plants.length === 0 || Object.keys(greenhouse).length === 0) return;
+        let count = 0;
+        for (let plant of plants) {
+            if(plant.minHumidity > greenhouse.humidity || plant.maxHumidity < greenhouse.humidity) {
+                count++;
+            }
+            if(plant.minTemperature > greenhouse.temperature || plant.maxTemperature < greenhouse.temperature) {
+                count++;
+            }
         }
-    }, [index, greenhouse, greenhouseId, navigate]);
+        console.log(count);
+        setWarningCount(count);
+    }, [plants, greenhouse]);
 
-    function handleClick(i) {
-        const menu = document.getElementById('menu');
-        menu.children[index].classList.remove('border-green-light');
-        menu.children[index].classList.add('border-green-100');
-        setIndex(i);
+    const renderContent = () => {
+        switch (currentPanel) {
+            case 'dashboard':
+                return <Dashboard warningCount={warningCount} greenhouse={greenhouse} />;
+            case 'plants':
+                return <Plants plants={plants} setPlants={setPlants} greenhouse={greenhouse} />;
+            case 'settings':
+                return <Settings greenhouse={greenhouse} />;
+            default:
+                return <Dashboard warningCount={warningCount} greenhouse={greenhouse} />;
+        }
     }
 
-    return(
+    if (greenhouseId === null) return <div></div>;
+    return (
         <React.Fragment>
             <Header greenhouse={greenhouse} />
             <div className='mt-14 grid md:grid-cols-4 grid-cols-1 p-3'>
                 <div></div>
                 <div className='md:col-span-2' id='greenhouses'>
                     <div className='flex flex-row gap-2 my-2 text-green-dark text-lg' id='menu'>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(0)}>Dashboard</button>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(1)}>Plants</button>
-                        <button className='flex-grow font-normal p-1 border-b-2 border-green-100 hover:border-green-dark transition-colors' onClick={() => handleClick(2)}>Settings</button>
+                        <SubMenuBtn title='Dashboard' onClick={() => setCurrentPanel('dashboard')} isActive={currentPanel === 'dashboard'} />
+                        <SubMenuBtn title='Plants' onClick={() => setCurrentPanel('plants')} isActive={currentPanel === 'plants'} />
+                        <SubMenuBtn title='Settings' onClick={() => setCurrentPanel('settings')} isActive={currentPanel === 'settings'} />
                     </div>
-                    {content}
+                    {renderContent()}
                 </div>
                 <div></div>
             </div>
         </React.Fragment>
     )
+
 }
 
 export default Greenhouse;
