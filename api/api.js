@@ -24,8 +24,11 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8080;
 
-//db
-const db = require('./db.js');
+//create database
+require('./services/db/db.js').createDatabase();
+
+//create tables
+require('./services/db/db.js').createTables();
 
 app.use(express.json()); // JSON
 app.use(cookieParser()); //cookie parser

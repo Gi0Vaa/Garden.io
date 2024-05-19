@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const db = require('../db.js');
 
 const isAuthenticated = (requiredRole) => {
     return (req, res, next) => {

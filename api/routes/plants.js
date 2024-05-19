@@ -1,63 +1,55 @@
 const { Router } = require('express');
 const { isAuthenticated } = require('../middlewares/isAuthenticated');
 
-const db = require('../db');
+const plants = require('../services/db/plants');
 
 const router = Router();
 
 //get di tutte le piante
 router.get('/v1/plants', isAuthenticated(["user", "partner", "admin"]), async (req, res) => {
-    db.all('SELECT * FROM plant', (err, rows) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        else {
-            res.status(200).json(rows);
-        }
-    });
+    const allPlants = await plants.getAllPlants();
+    if(allPlants.length > 0){
+        res.status(200).json(allPlants);
+    }
+    else{
+        res.status(404).json({
+            code: 404,
+            message: "No plants found"
+        });
+    }
 });
 
 //get di una singola pianta
-router.get('/v1/plants/:id', isAuthenticated(["user", "partner", "admin"]), (req, res) => {
+router.get('/v1/plants/:id', isAuthenticated(["user", "partner", "admin"]), async (req, res) => {
     const id = req.params.id;
-    db.get('SELECT * FROM plant WHERE plant_id = ?', [id], (err, row) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        else if (!row) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        else {
-            res.status(200).json(row);
-        }
-    });
+    const plant = await plants.getPlant(id);
+    if(plant){
+        res.status(200).json(plant);
+    }
+    else{
+        res.status(404).json({
+            code: 404,
+            message: "Plant not found"
+        });
+    }
 });
 
 //ricerca di tutte le piante che contengono la stringa passata
-router.get('/v1/plants/research/:name', isAuthenticated(["user", "partner", "admin"]), (req, res) => {
+router.get('/v1/plants/research/:name', isAuthenticated(["user", "partner", "admin"]), async (req, res) => {
     const name = req.params.name;
-    db.all('SELECT * FROM plant WHERE name LIKE ? LIMIT 3', ['%' + name + '%'], (err, rows) => {
-        if (err) {
-            res.status(500).json({
-                code: 500,
-                message: "Query failed"
-            });
-        }
-        else {
-            res.status(200).json(rows);
-        }
-    });
+    const plantsFound = await plants.getPlantByName(name);
+    if(plantsFound.length > 0){
+        res.status(200).json(plantsFound);
+    }
+    else{
+        res.status(404).json({
+            code: 404,
+            message: "No plants found"
+        });
+    }
 })
 
+/*
 router.post('/v1/plants', isAuthenticated(["partner", "admin"]), (req, res) => {
     console.log(req.body);
     res.send('ok');
@@ -105,5 +97,6 @@ router.delete('/v1/plants/:id', isAuthenticated(["partner", "admin"]), (req, res
         }
     });
 });
+*/
 
 module.exports = router;

@@ -1,46 +1,55 @@
 const { Router } = require('express');
 const { isAuthenticated } = require('../middlewares/isAuthenticated');
 
-const db = require('../db');
+const users = require('../services/db/users');
 
 const router = Router();
 
 //v1/users
-router.get('/v1/users', isAuthenticated(["admin"]), (req, res) => {
-    db.all('SELECT * FROM api_user', (err, rows) => {
-        if (err) {
+router.get('/v1/users', isAuthenticated(["user"]), (req, res) => {
+    users.getAllUsers()
+        .then(rows => {
+            if(rows){
+                res.status(200).json(rows);
+            }
+            else{
+                res.status(404).json({
+                    code: 404,
+                    message: "No users found"
+                });
+            }
+        })
+        .catch(err => {
             res.status(500).json({
                 code: 500,
-                error: "Query failed"
+                message: "Query failed"
             });
-        }
-        else {
-            res.status(200).json(rows);
-        }
-    });
+        });
 });
 
 router.get('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
     const email = req.params.email;
-    db.get('SELECT * FROM api_user WHERE email = ?', [email], (err, row) => {
-        if (err) {
+    users.getUser(email)
+        .then(row => {
+            if (row) {
+                res.status(200).json(row);
+            }
+            else {
+                res.status(404).json({
+                    code: 404,
+                    message: "User not found"
+                });
+            }
+        })
+        .catch(err => {
             res.status(500).json({
-                code: 404,
+                code: 500,
                 message: "Query failed"
             });
-        }
-        else if (!row) {
-            res.status(404).json({
-                code: 404,
-                message: "Not found"
-            });
-        }
-        else {
-            res.status(200).json(row);
-        }
-    });
+        });
 })
 
+/*
 router.post('/v1/users', isAuthenticated(["admin"]), (req, res) => {
     const user = req.body;
     db.run('INSERT INTO api_user (email, name, surname, role) VALUES (?, ?, ?, ?)', [user.email, user.name, user.surname, 'user'], (err) => {
@@ -63,8 +72,6 @@ router.post('/v1/users', isAuthenticated(["admin"]), (req, res) => {
             }
         });
     });
-
-
 });
 
 router.put('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
@@ -100,5 +107,6 @@ router.delete('/v1/users/:email', isAuthenticated(["admin"]), (req, res) => {
         res.status(204).send();
     });
 });
+*/
 
 module.exports = router;
