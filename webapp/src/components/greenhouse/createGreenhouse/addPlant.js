@@ -1,36 +1,20 @@
-import { useEffect, useRef } from 'react';
-import {getPlants} from '../../../services/plants'
+import { useState, useEffect } from 'react';
 
 import plantsImg from '@images/Potted-plants.svg'
+import SearchbarProp from '@inputs/search/searchbarProp';
 
-const AddPlant = ({plant}) => {
-    let dataRef = useRef();
+import { getPlantById } from '@services/plants';
+
+const AddPlant = ({plant, setPlant}) => {
+    const [selectedProp, setSelectedProp] = useState(undefined);
+
     useEffect(() => {
-        getPlants()
-            .then(response => {
-                const select = document.getElementById('plants');
-                select.innerHTML = '';
-                dataRef.current = response.data;
-                dataRef.current.forEach(p => {
-                    const option = document.createElement('option');
-                    option.value = p.plant_id;
-                    option.text = p.name;
-                    if (p.plant_id === plant.plant_id) {
-                        option.selected = true;
-                        document.getElementById('plantDescription').innerHTML = p.description;
-                    }
-                    select.appendChild(option);
-                });
-
+        if (!selectedProp) return;
+        getPlantById(selectedProp.id)
+            .then(res => {
+                setPlant(res.data);
             });
-    }, [plant]);
-
-    function addDescription() {
-        const description = document.getElementById('plantDescription');
-        const id = parseInt(document.getElementById('plants').value);
-        const text = dataRef.current.find(p => p.plant_id === id).description;
-        description.innerHTML = text;
-    }
+    }, [selectedProp, setPlant]);
 
     return (
         <div>
@@ -40,9 +24,8 @@ const AddPlant = ({plant}) => {
                     <img src={plantsImg} alt="greenhouse" className="h-full w-full object-cover" />
                 </div>
                 <div className='flex flex-col gap-3 p-2'>
-                    <select name='plants' id='plants' className=' focus:outline-none p-1 rounded-md' onChange={addDescription}>
-                    </select>
-                    <div id='plantDescription'></div>
+                    <SearchbarProp setSelectedProp={setSelectedProp} />
+                    <p>{plant?.description || ""}</p>
                 </div>
             </div>
         </div>

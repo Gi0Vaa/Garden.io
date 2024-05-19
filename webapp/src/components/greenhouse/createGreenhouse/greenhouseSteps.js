@@ -15,8 +15,8 @@ axios.defaults.withCredentials = true;
 function CreateGreenhouse({ message, welcome = false }) {
     const { user } = React.useContext(UserContext);
 
-    const [greenhouse, setGreenhouse] = useState({});
-    const [plant, setPlant] = useState({ plant_id: 1 });
+    const [greenhouse, setGreenhouse] = useState(undefined);
+    const [plant, setPlant] = useState(undefined);
     const [content, setContent] = useState("");
     const [step, setStep] = useState(1);
 
@@ -28,13 +28,13 @@ function CreateGreenhouse({ message, welcome = false }) {
                 document.getElementById('btnContainer').classList.remove('place-content-between');
                 document.getElementById('btnContainer').classList.add('place-content-end');
                 document.getElementById('backBtn').classList.add('hidden');
-                setContent(<AddGreenhouse message={message} greenhouse={greenhouse} />);
+                setContent(<AddGreenhouse message={message} greenhouse={greenhouse} setGreenhouse={setGreenhouse} />);
                 break;
             case 2:
                 document.getElementById('btnContainer').classList.remove('place-content-end');
                 document.getElementById('btnContainer').classList.add('place-content-between');
                 document.getElementById('backBtn').classList.remove('hidden');
-                setContent(<AddPlant plant={plant} />);
+                setContent(<AddPlant plant={plant} setPlant={setPlant} />);
                 break;
             case 3:
                 setContent(<Loading message={"Creando la tua serra..."} />);
@@ -58,29 +58,7 @@ function CreateGreenhouse({ message, welcome = false }) {
     }, [step, plant, message, greenhouse, navigate, welcome, user.email]);
 
     function next() {
-        switch (step) {
-            case 1:
-                if (document.getElementById('greenhouseName') !== null && document.getElementById('greenhouseName').value !== '') {
-                    setGreenhouse({
-                        name: document.getElementById('greenhouseName').value,
-                        description: document.getElementById('greenhouseDescription').value
-                    });
-                    setStep(step + 1);
-                }
-                break;
-            case 2:
-                console.log(document.getElementById('plants'));
-                if (document.getElementById('plants') !== null) {
-                    setPlant({
-                        plant_id: parseInt(document.getElementById('plants').value)
-                    });
-                    setStep(step + 1);
-                }
-                break;
-            default:
-                setStep(step + 1);
-                break;
-        }
+        setStep(step + 1);
     }
 
     function back() {

@@ -40,7 +40,7 @@ const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
                 .then(() => {
                     setSelectedProp({ id: null, name: null });
                     setPlant({ plant_id: 0, name: '', description: '' });
-                    setPlants([...plants, { plant_id: plant.plant_id, greenhouse_id: greenhouseId, quantity: 1 }]);
+                    setPlants([...plants, { ...plant, quantity: 1 }]);
                     setIsModalOpen(false);
                 });
         }
