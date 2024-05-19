@@ -15,7 +15,7 @@ const Plant = () => {
     const plant = location.state.plant;
     let imgURL;
     try{
-        imgURL = require(`../assets/img/plants/${plant.name.toLowerCase().replace(/\s/g, '')}.jpg`);
+        imgURL = require(`../assets/img/plants/${plant.plant_id}.jpg`);
     }
     catch (e){
         imgURL = defaultImg;
