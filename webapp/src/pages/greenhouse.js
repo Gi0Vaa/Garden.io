@@ -49,7 +49,6 @@ const Greenhouse = () => {
                 count++;
             }
         }
-        console.log(count);
         setWarningCount(count);
     }, [plants, greenhouse]);
 
