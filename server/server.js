@@ -17,6 +17,11 @@ app.use(express.json());
 
 const port = 3001;
 
+//crea database
+require('./services/db/db').createDatabase();
+//crea tabelle
+require('./services/db/db').createTables();
+
 //log delle richieste
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path} dal client ${req.ip}:${req.socket.remotePort}`);

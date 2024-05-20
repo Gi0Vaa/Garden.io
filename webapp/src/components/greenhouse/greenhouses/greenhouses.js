@@ -14,11 +14,11 @@ const Greenhouses = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const email = user.email;
-        if (!email) return;
+        const id = user.id;
+        if (!id) return;
         document.title = `Home | ${process.env.REACT_APP_NAME}`;
 
-        getGreenhouses(user.email)
+        getGreenhouses(id)
             .then(res => {
                 setGreenhouses(res.data);
             })
@@ -27,14 +27,14 @@ const Greenhouses = () => {
                     navigate('/createGreenhouse', { state: { first: true } });
                 }
             });
-    }, [user.email, navigate]);
+    }, [user, navigate]);
 
     return (
         <div className='md:col-span-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-2' id='greenhouses'>
             {greenhouses.map((greenhouse, index) => {
                 return (
                     <Link to='/greenhouse' state={greenhouse} key={index}>
-                        <GreenhouseCard id={greenhouse.greenhouse_id} />
+                        <GreenhouseCard id={greenhouse.greenhouse} />
                     </Link>
                 );
             })}

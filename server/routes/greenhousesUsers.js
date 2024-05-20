@@ -1,47 +1,38 @@
 const { Router } = require('express');
 
-const db = require('../db');
 const isLogged = require('../middleware/isLogged');
+const greenhousesUsers = require('../services/db/greenhousesUsers');
 
 const router = Router();
 
 //greenhouse of a user
-router.get('/api/users/:email/greenhouses', isLogged, (req, res) => { 
-    const email = req.params.email;
-    db.all(`SELECT * 
-            FROM user_greenhouse
-            WHERE email = ?`, 
-            [email], 
-            (err, rows) => {
-            if (err) {
-                return res.sendStatus(500);
-            }
-            if (rows.length === 0) {
-                return res.sendStatus(404);
-            }
-            return res.status(200).json(rows);
-        }
-    );
+router.get('/api/users/:user/greenhouses', isLogged, async (req, res) => { 
+    const userId = req.params.user;
+    const greenhouses = await greenhousesUsers.getAllGreenhouses(userId);
+    if(greenhouses.length === 0){
+        return res.status(404).json({
+            code: 404,
+            message: "No greenhouses found"
+        });
+    }
+    else{
+        return res.status(200).json(greenhouses);
+    }
 });
 
 //add a greenhouse to a user
-router.post('/api/users/greenhouses', isLogged, (req, res) => {
+router.post('/api/users/greenhouses', isLogged, async (req, res) => {
     const data = req.body;
-    db.run(`INSERT INTO user_greenhouse (email, greenhouse_id) VALUES (?, ?)`, 
-            [data.email, data.greenhouse_id], 
-            (err) => {
-                if (err) {
-                    return res.status(500).json({
-                        code: 500,
-                        message: "Query failed"
-                    });
-                }
-                return res.status(201).json({
-                    code: 201,
-                    message: "Greenhouse added to user"
-                });
-            }
-    );
+    const greenhouse = await greenhousesUsers.addGreenhouseUser(data.user, data.greenhouse);
+    if(greenhouse){
+        return res.status(200).json(greenhouse);
+    }
+    else{
+        return res.status(500).json({
+            code: 500,
+            message: "Greenhouse not added"
+        });
+    }
 });
 
 

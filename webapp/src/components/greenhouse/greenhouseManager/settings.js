@@ -28,14 +28,13 @@ const Settings = ({greenhouse}) => {
     function save(){
         const name = document.getElementById('name').value;
         const description = document.getElementById('description').value;
-        console.log(greenhouse);
         const obj = {
             name: name,
             description: description,
             temperature: greenhouse.temperature,
             humidity: greenhouse.humidity
         }
-        updateGreenhouse(greenhouse.greenhouse_id, obj)
+        updateGreenhouse(greenhouse.id, obj)
             .then(() => {
                 window.location.reload();
             })

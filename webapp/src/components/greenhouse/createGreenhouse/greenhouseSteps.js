@@ -39,14 +39,16 @@ function CreateGreenhouse({ message, welcome = false }) {
             case 3:
                 setContent(<Loading message={"Creando la tua serra..."} />);
                 const obj = greenhouse;
-                obj.email = user.email;
+                obj.userId = user.id;
                 createGreenhouse(obj)
                     .then(response => {
-                        addPlantInGreenhouse(response.data.greenhouse_id, plant.plant_id, 1)
+                        console.log(response.data);
+                        console.log(plant);
+                        addPlantInGreenhouse(response.data.id, plant.plant_id, 1)
                         .then(() => {
                             setTimeout(() => {
                                 if(welcome) navigate('/welcome');
-                                else navigate('/greenhouse', { state : { greenhouse_id: response.data.greenhouse_id } });
+                                else navigate('/greenhouse', { state : { greenhouse: response.data.id } });
                             }, 300);
                         });
                     });
@@ -55,7 +57,7 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<div>Not Found</div>);
                 break;
         }
-    }, [step, plant, message, greenhouse, navigate, welcome, user.email]);
+    }, [step, plant, message, greenhouse, navigate, welcome, user.id]);
 
     function next() {
         setStep(step + 1);

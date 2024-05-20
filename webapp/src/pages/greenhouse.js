@@ -14,7 +14,7 @@ import { getPlantsInGreenhouse, getGreenhouse } from '@services/greenhouses.js';
 const Greenhouse = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const greenhouseId = location.state.greenhouse_id;
+    const greenhouseId = location.state.greenhouse;
 
     const [plants, setPlants] = useState([]);
     const [greenhouse, setGreenhouse] = useState({});
@@ -35,6 +35,9 @@ const Greenhouse = () => {
         getPlantsInGreenhouse(greenhouseId)
             .then(response => {
                 setPlants(response);
+            })
+            .catch(err => {
+                setPlants([]);
             });
     }, [greenhouseId, setPlants]);
 

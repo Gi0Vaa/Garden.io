@@ -8,8 +8,6 @@ const pool = mariadb.createPool({
     connectionLimit: 5
 });
 
-module.exports = pool;
-
 async function createDatabase() {
     let conn;
     try {

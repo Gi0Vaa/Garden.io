@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getGreenhouses = async (email) => {
-    return await axios.get(`/api/users/${email}/greenhouses`);
+export const getGreenhouses = async (userId) => {
+    return await axios.get(`/api/users/${userId}/greenhouses`);
 }
 
 export const getGreenhouse = async (greenhouse_id) => {
@@ -20,15 +20,15 @@ export const deleteGreenhouse = async (greenhouse_id) => {
     return await axios.delete(`/api/greenhouses/${greenhouse_id}`);
 }
 
-export const getPlantsInGreenhouse = async (greenhouse_id) => {
-    const plantsId = await axios.get(`/api/greenhouses/${greenhouse_id}/plants`);
+export const getPlantsInGreenhouse = async (id) => {
+    const plantsId = await axios.get(`/api/greenhouses/${id}/plants`);
     const plants = [];
     for (let plantId of plantsId.data) {
-        const plantInfo = await (await axios.get(`/api/plants/${plantId.plant_id}`)).data;
+        const plantInfo = await (await axios.get(`/api/plants/${plantId.plant}`)).data;
         const plant = {
             ...plantInfo,
             quantity: plantId.quantity,
-            greenhouse_id: greenhouse_id
+            greenhouse_id: id
         };
         plants.push(plant);
     }
