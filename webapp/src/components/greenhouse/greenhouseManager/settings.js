@@ -44,7 +44,7 @@ const Settings = ({greenhouse}) => {
     }
 
     function removeGreenhouse(){
-        deleteGreenhouse(greenhouse.greenhouse_id)
+        deleteGreenhouse(greenhouse.id)
             .then(() => {
                 navigate('/');
             })

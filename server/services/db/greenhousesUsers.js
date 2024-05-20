@@ -6,7 +6,7 @@ async function getAllGreenhouses(userId){
         conn = await pool.getConnection();
         const rows = await conn.query(`
             SELECT * FROM greenhouse_user g
-            JOIN user u ON g.user = u.id
+            JOIN greenhouse u ON g.greenhouse = u.id
             WHERE user = ?`, 
             [userId]
         );
@@ -26,7 +26,7 @@ async function getGreenhouseUser(userId, greenhouseId){
         conn = await pool.getConnection();
         const row = await conn.query(`
             SELECT * FROM greenhouse_user g
-            JOIN user u ON g.user = u.id 
+            JOIN greenhouse u ON g.greenhouse = u.id
             WHERE user = ? AND greenhouse = ?`, 
             [userId, greenhouseId]
         );

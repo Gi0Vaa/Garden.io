@@ -42,8 +42,6 @@ function CreateGreenhouse({ message, welcome = false }) {
                 obj.userId = user.id;
                 createGreenhouse(obj)
                     .then(response => {
-                        console.log(response.data);
-                        console.log(plant);
                         addPlantInGreenhouse(response.data.id, plant.plant_id, 1)
                         .then(() => {
                             setTimeout(() => {

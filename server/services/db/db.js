@@ -75,7 +75,7 @@ async function createTables() {
                 temperature TEXT NOT NULL,
                 humidity TEXT NOT NULL,
                 date DATETIME NOT NULL,
-                CONSTRAINT fk_greenhouse_measurement FOREIGN KEY (greenhouse) REFERENCES greenhouse(id)
+                CONSTRAINT fk_greenhouse_measurement FOREIGN KEY (greenhouse) REFERENCES greenhouse(id) ON DELETE CASCADE
             )
         `);
 
@@ -85,8 +85,8 @@ async function createTables() {
                 greenhouse INT NOT NULL,
                 user CHAR(32) NOT NULL,
                 role CHAR(32) DEFAULT 'owner',
-                CONSTRAINT fk_greenhouse FOREIGN KEY (greenhouse) REFERENCES greenhouse(id),
-                CONSTRAINT fk_user FOREIGN KEY (user) REFERENCES user(id)
+                CONSTRAINT fk_greenhouse FOREIGN KEY (greenhouse) REFERENCES greenhouse(id) ON DELETE CASCADE,
+                CONSTRAINT fk_user FOREIGN KEY (user) REFERENCES user(id) ON DELETE CASCADE
             )
         `);
 
@@ -96,7 +96,7 @@ async function createTables() {
                 plant INT NOT NULL,
                 greenhouse INT NOT NULL,
                 quantity INT NOT NULL,
-                CONSTRAINT fk_plants FOREIGN KEY (greenhouse) REFERENCES greenhouse(id)
+                CONSTRAINT fk_plants FOREIGN KEY (greenhouse) REFERENCES greenhouse(id) ON DELETE CASCADE
             )
         `);
 

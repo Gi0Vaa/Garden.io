@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTriangleExclamation, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 const Dashboard = ({ warningCount, greenhouse }) => {
+    console.log(greenhouse)
     return (
         <div className="p-3 bg-slate-50 text-green-dark rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
