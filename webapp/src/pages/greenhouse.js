@@ -53,7 +53,7 @@ const Greenhouse = () => {
             if(plant.minHumidity > greenhouse.humidity || plant.maxHumidity < greenhouse.humidity) {
                 count++;
             }
-            if(plant.minTemperature > greenhouse.temperature || plant.maxTemperature < greenhouse.temperature) {
+            if(parseFloat(plant.minTemperature) > parseFloat(greenhouse.temperature) || parseFloat(plant.maxTemperature) < parseFloat(greenhouse.temperature)) {
                 count++;
             }
         }
