@@ -11,8 +11,8 @@ const AddPlant = ({plant, setPlant}) => {
     useEffect(() => {
         if (!selectedProp) return;
         getPlantById(selectedProp.id)
-            .then(res => {
-                setPlant(res.data);
+            .then(p => {
+                setPlant(p);
             });
     }, [selectedProp, setPlant]);
 

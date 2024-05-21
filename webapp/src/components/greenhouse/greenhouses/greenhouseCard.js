@@ -10,14 +10,10 @@ const GreenhouseCard = ({ id }) => {
 
     useEffect(() => {
         getGreenhouse(id)
-            .then(res => {
-                setGreenhouse(res.data);
+            .then(g => {
+                setGreenhouse(g);
                 setLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-            }
-        );
+            });
     }, [id]);
 
     function handleMouseOver() {

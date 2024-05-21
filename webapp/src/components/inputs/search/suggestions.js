@@ -8,8 +8,7 @@ const Suggestions = ({name, setSearch, setSelectedProp, setIsSelected}) => {
 
     useEffect(() => {
         getPlantsByName(name)
-            .then(res => setProps(res.data))
-            .catch(err => setProps([]));
+            .then(plants => setProps(plants))
     }, [name]);
 
     if(props.length === 0) return (<div></div>);

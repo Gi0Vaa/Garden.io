@@ -13,14 +13,14 @@ const Plants = ({name}) => {
 
         if(name !== ""){
             getPlantsByName(name)
-                .then(res => {
-                    setPlants(res.data)
+                .then(plants => {
+                    setPlants(plants)
                 }
         );
         }
         else{
             getPlants()
-                .then(res => setPlants(res.data));
+                .then(plants => setPlants(plants));
         }
     }, [name]);
 

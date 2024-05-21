@@ -16,7 +16,7 @@ const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
     useEffect(() => {
         if (selectedProp.id === null) return;
         getPlantById(selectedProp.id)
-            .then(res => setPlant(res.data));
+            .then(p => setPlant(p));
     }, [selectedProp]);
 
     function addPlant() {

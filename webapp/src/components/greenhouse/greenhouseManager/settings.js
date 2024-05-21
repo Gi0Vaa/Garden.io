@@ -38,9 +38,6 @@ const Settings = ({greenhouse}) => {
             .then(() => {
                 window.location.reload();
             })
-            .catch(error => {
-                navigate('/error', {state: {code: error.response.status, message: error.response.data.message}});
-            });
     }
 
     function removeGreenhouse(){
@@ -48,9 +45,6 @@ const Settings = ({greenhouse}) => {
             .then(() => {
                 navigate('/');
             })
-            .catch(error => {
-                navigate('/error', {state: {code: error.response.status, message: error.response.data.message}});
-            });
     }
 
     return(

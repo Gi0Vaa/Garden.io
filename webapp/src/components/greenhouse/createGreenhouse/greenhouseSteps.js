@@ -41,12 +41,12 @@ function CreateGreenhouse({ message, welcome = false }) {
                 const obj = greenhouse;
                 obj.userId = user.id;
                 createGreenhouse(obj)
-                    .then(response => {
-                        addPlantInGreenhouse(response.data.id, plant.plant_id, 1)
+                    .then(g => {
+                        addPlantInGreenhouse(g.id, plant.plant_id, 1)
                         .then(() => {
                             setTimeout(() => {
                                 if(welcome) navigate('/welcome');
-                                else navigate('/greenhouse', { state : { greenhouse: response.data.id } });
+                                else navigate('/greenhouse', { state : { greenhouse: g.id } });
                             }, 300);
                         });
                     });

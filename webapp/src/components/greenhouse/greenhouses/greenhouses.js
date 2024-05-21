@@ -19,14 +19,12 @@ const Greenhouses = () => {
         document.title = `Home | ${process.env.REACT_APP_NAME}`;
 
         getGreenhouses(id)
-            .then(res => {
-                setGreenhouses(res.data);
-            })
-            .catch(err => {
-                if (err.response.status === 404) {
-                    navigate('/createGreenhouse', { state: { first: true } });
+            .then(g => {
+                if(g.length === 0) {
+                    navigate('/createGreenhouse');
                 }
-            });
+                setGreenhouses(g);
+            })
     }, [user, navigate]);
 
     return (

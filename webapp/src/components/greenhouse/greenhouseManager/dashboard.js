@@ -1,9 +1,8 @@
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTriangleExclamation, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTriangleExclamation, faCircleCheck, faHourglassHalf } from '@fortawesome/free-solid-svg-icons'
 
 const Dashboard = ({ warningCount, greenhouse }) => {
-    console.log(greenhouse)
     return (
         <div className="p-3 bg-slate-50 text-green-dark rounded-md shadow-md flex flex-col gap-2">
             <div className='flex flex-row place-content-between'>
@@ -37,6 +36,14 @@ const Dashboard = ({ warningCount, greenhouse }) => {
                             <FontAwesomeIcon icon={faCircleCheck} className='text-green-500' />
                         </div>
                         <h4>Your greenhouse is in good condition!</h4>
+                    </div>
+                }
+                {
+                    !warningCount &&
+                    <div className="flex flex-col gap-2 items-center">
+                        <div className='text-8xl'>
+                            <FontAwesomeIcon icon={faHourglassHalf} className='text-blue-500' />
+                        </div>
                     </div>
                 }
             </div>

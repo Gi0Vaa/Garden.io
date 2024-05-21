@@ -25,8 +25,9 @@ const Greenhouse = () => {
     useEffect(() => {
         if (greenhouseId === null) return navigate('/');
         getGreenhouse(greenhouseId)
-            .then(response => {
-                setGreenhouse(response.data);
+            .then(g => {
+                if(!g) return navigate('/');
+                setGreenhouse(g);
             });
     }, [greenhouseId, setGreenhouse, navigate]);
 
