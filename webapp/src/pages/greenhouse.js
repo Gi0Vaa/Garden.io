@@ -32,6 +32,10 @@ const Greenhouse = () => {
     }, [greenhouseId, setGreenhouse, navigate]);
 
     useEffect(() => {
+        document.title = `${greenhouse.name || "Dashboard"} | ${process.env.REACT_APP_NAME}`;
+    }, [greenhouse]);
+
+    useEffect(() => {
         if (greenhouseId === null) return;
         getPlantsInGreenhouse(greenhouseId)
             .then(response => {
