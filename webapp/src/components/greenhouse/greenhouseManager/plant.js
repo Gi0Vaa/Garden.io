@@ -22,11 +22,12 @@ const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
         else {
             setIsGoodHumidity({ state: true, message: 'The humidity is good' });
         }
-
-        if (greenhouse.temperature < plant.minTemperature) {
+        
+        const temperature = parseFloat(greenhouse.temperature);
+        if (temperature < parseFloat(plant.minTemperature)) {
             setIsGoodTemperature({ state: false, message: `The temperature is too low minimum is`, value: `${plant.minTemperature}°C` });
         }
-        else if (greenhouse.temperature > plant.maxTemperature) {
+        else if (temperature > parseFloat(plant.maxTemperature)) {
             setIsGoodTemperature({ state: false, message: `The temperature is too high maximum is`, value: `${plant.maxTemperature}°C` });
         }
         else {
