@@ -39,7 +39,7 @@ const Dashboard = ({ warningCount, greenhouse }) => {
                     </div>
                 }
                 {
-                    !warningCount &&
+                    warningCount === null &&
                     <div className="flex flex-col gap-2 items-center">
                         <div className='text-8xl'>
                             <FontAwesomeIcon icon={faHourglassHalf} className='text-blue-500' />
