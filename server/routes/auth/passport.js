@@ -13,7 +13,7 @@ passport.use(
     }, async (request, accessToken, refreshToken, profile, done) => {
         const user = await users.getUser(profile.emails[0].value);
         if(!user){
-            const newUser = await users.createUser(profile.id, profile.emails[0].value, profile.name.givenName, profile.name.familyName, profile.photos[0].value, "user");
+            const newUser = await users.createUser(profile.id, profile.emails[0].value, profile.name.givenName || "", profile.name.familyName || "", profile.photos[0].value, "user");
             if(newUser === false){
                 return done(null, false);
             }
