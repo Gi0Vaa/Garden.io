@@ -59,7 +59,7 @@ const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
     }
 
     function updateQuantity(value) {
-        patchPlantInGreenhouse(plant.greenhouse_id, plant.plant_id, value)
+        patchPlantInGreenhouse(greenhouse.greenhouse, plant.plant_id, value)
     }
 
     function deletePlant() {
