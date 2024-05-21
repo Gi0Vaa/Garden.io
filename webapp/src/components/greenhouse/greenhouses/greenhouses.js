@@ -21,7 +21,7 @@ const Greenhouses = () => {
         getGreenhouses(id)
             .then(g => {
                 if(g.length === 0) {
-                    navigate('/welcome');
+                    navigate('/createGreenhouse', {state: {first: true}});
                 }
                 setGreenhouses(g);
             })
