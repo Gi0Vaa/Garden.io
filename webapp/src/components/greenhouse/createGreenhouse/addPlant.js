@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import plantsImg from '@images/Potted-plants.svg'
 import SearchbarProp from '@inputs/search/searchbarProp';
 
-import { getPlantById } from '@services/plants';
+import { getPlantById, getPlantsByName } from '@services/plants';
 
 const AddPlant = ({plant, setPlant}) => {
     const [selectedProp, setSelectedProp] = useState(undefined);
@@ -24,7 +24,7 @@ const AddPlant = ({plant, setPlant}) => {
                     <img src={plantsImg} alt="greenhouse" className="h-full w-full object-cover" />
                 </div>
                 <div className='flex flex-col gap-3 p-2'>
-                    <SearchbarProp setSelectedProp={setSelectedProp} />
+                    <SearchbarProp setSelectedProp={setSelectedProp} searchResults={getPlantsByName} />
                     <p>{plant?.description || ""}</p>
                 </div>
             </div>
