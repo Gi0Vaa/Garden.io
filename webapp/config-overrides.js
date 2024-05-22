@@ -12,6 +12,7 @@ module.exports = override(
             '@greenhouse': path.resolve(__dirname, 'src/components/greenhouse'),
             '@context': path.resolve(__dirname, 'src/context'),
             '@utils': path.resolve(__dirname, 'src/utils'),
+            '@components': path.resolve(__dirname, 'src/components'),
         }
     )
 );

@@ -40,7 +40,7 @@ const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
     }, [plant]);
 
     function goToInfoPlant() {
-        navigate('/plant', { state: { plant: plant } });
+        navigate('/plant', { state: { plant: plant, greenhouse: greenhouse } });
     }
 
     function addPlant() {

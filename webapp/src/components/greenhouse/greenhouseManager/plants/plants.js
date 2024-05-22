@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import Plant from './plant';
 import ModalPlant from './modalPlant';
+import GreenButton from '@inputs/buttons/greenButton';
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,9 +34,7 @@ const Plants = ({plants, setPlants, greenhouse }) => {
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-2 text-green-dark' id='grid'>
                 <div className='xl:col-span-2 p-2 flex flex-row place-content-between'>
                     <h4 className='font-semibold'>Number of plants: {count}</h4>
-                    <button className='xl:col-span-2 px-2 rounded-sm text-white bg-green-600 hover:bg-green-500 transition-colors' onClick={() => setIsModalOpen(true)} >
-                        <FontAwesomeIcon icon={faAdd} />
-                    </button>
+                    <GreenButton icon={<FontAwesomeIcon icon={faAdd} />} onClick={() => setIsModalOpen(true)} padding={'px-2 py-1 '} />
                 </div>
                 {plants.map((plant) => {
                     return (

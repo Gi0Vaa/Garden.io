@@ -1,7 +1,7 @@
 import { useState } from 'react';   
 import Suggestions from './suggestions';
 
-const SearchbarProp = ({ setSelectedProp }) => {
+const SearchbarProp = ({ setSelectedProp, searchResults }) => {
     const [search, setSearch] = useState('');
     const [isSelected, setIsSelected] = useState(false);
 
@@ -16,7 +16,7 @@ const SearchbarProp = ({ setSelectedProp }) => {
                 }
             />
             {
-                search.length > 0 && !isSelected && <Suggestions name={search} setSearch={setSearch} setSelectedProp={setSelectedProp} setIsSelected={setIsSelected} />
+                search.length > 0 && !isSelected && <Suggestions name={search} setSearch={setSearch} setSelectedProp={setSelectedProp} setIsSelected={setIsSelected} searchResults={searchResults} />
             }
         </div>
     );

@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +7,9 @@ import { createGreenhouse, addPlantInGreenhouse } from '../../../services/greenh
 
 import AddPlant from "./addPlant";
 import AddGreenhouse from "./addGreenhouse";
-import Loading from "../../../pages/status/loading";
-
-axios.defaults.withCredentials = true;
+import Loading from "@components/status/loading";
+import GreenButton from "@inputs/buttons/greenButton";
+import RedButton from '@inputs/buttons/redButton';
 
 function CreateGreenhouse({ message, welcome = false }) {
     const { user } = React.useContext(UserContext);
@@ -25,15 +24,9 @@ function CreateGreenhouse({ message, welcome = false }) {
     useEffect(() => {
         switch (step) {
             case 1:
-                document.getElementById('btnContainer').classList.remove('place-content-between');
-                document.getElementById('btnContainer').classList.add('place-content-end');
-                document.getElementById('backBtn').classList.add('hidden');
                 setContent(<AddGreenhouse message={message} greenhouse={greenhouse} setGreenhouse={setGreenhouse} />);
                 break;
             case 2:
-                document.getElementById('btnContainer').classList.remove('place-content-end');
-                document.getElementById('btnContainer').classList.add('place-content-between');
-                document.getElementById('backBtn').classList.remove('hidden');
                 setContent(<AddPlant plant={plant} setPlant={setPlant} />);
                 break;
             case 3:
@@ -71,9 +64,13 @@ function CreateGreenhouse({ message, welcome = false }) {
         <div className='md:col-span-2 flex flex-col gap-2 text-center'>
             <div className="p-2 rounded-md text-left  bg-green-300 shadow-md flex flex-col gap-2">
                 {content}
-                <div id="btnContainer" className='flex flex-row p-3'>
-                    <button id="backBtn" className="p-2 text-green-950 font-semibold hover:bg-green-200 rounded-md transition-colors" onClick={back}>Back</button>
-                    <button id="nextBtn" className="p-2 bg-green-600 hover:bg-green-700 transition-colors text-white rounded-md" onClick={next}>Next</button>
+                <div id="btnContainer" className='flex flex-row p-3 place-content-between'>
+                    <RedButton text={"Back"} onClick={back} isActive={step > 1} />
+                    <GreenButton text={"Next"} onClick={next} isActive={
+                        (step === 1 && (greenhouse?.name !== undefined && greenhouse?.name !== "")) ||
+                        (step === 2 && plant !== undefined) ||
+                        (step === 3)
+                    } />
                 </div>
             </div>
         </div>

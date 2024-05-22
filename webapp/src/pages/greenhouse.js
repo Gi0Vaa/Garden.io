@@ -4,9 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Header from '../components/header.js';
-import Plants from '@greenhouse/greenhouseManager/plants.js';
+import Plants from '@greenhouse/greenhouseManager/plants/plants.js';
 import Dashboard from '@greenhouse/greenhouseManager/dashboard.js';
-import Settings from '@greenhouse/greenhouseManager/settings.js';
+import Settings from '@greenhouse/greenhouseManager/settings/settings.js';
 import SubMenuBtn from '@inputs/buttons/subMenuBtn.js';
 
 import { getPlantsInGreenhouse, getGreenhouse } from '@services/greenhouses.js';
@@ -67,7 +67,7 @@ const Greenhouse = () => {
             case 'plants':
                 return <Plants plants={plants} setPlants={setPlants} greenhouse={greenhouse} />;
             case 'settings':
-                return <Settings greenhouse={greenhouse} />;
+                return <Settings greenhouse={greenhouse} setGreenhouse={setGreenhouse} />;
             default:
                 return <Dashboard warningCount={warningCount} greenhouse={greenhouse} />;
         }
