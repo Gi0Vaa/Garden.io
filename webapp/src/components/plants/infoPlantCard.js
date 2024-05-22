@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
-//import defaultImg from '@images/plants/default.svg'
-
 const InfoPlantCard = ({plant, img}) => {
+
     useEffect(() => {
         document.title = `${plant.name} | ${process.env.REACT_APP_NAME}`;
     }, [plant.name]);
