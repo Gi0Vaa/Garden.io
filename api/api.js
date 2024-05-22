@@ -19,10 +19,11 @@ const openApiValidator = require('express-openapi-validator');
 const jwt = require('jsonwebtoken');
 //cookie parser
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
 
 //application
 const app = express();
-const port = 8080;
+const port = process.env.PORT;
 
 //create database
 require('./services/db/db.js').createDatabase();
