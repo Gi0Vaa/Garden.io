@@ -3,10 +3,12 @@ import axios from 'axios';
 
 import { UserContext } from '../../context/userContext';
 
+import DarkGreenButton from '@inputs/buttons/darkGreenButton';
+
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
-import Logo from '../../assets/icons/logo';
+import Logo from '@icons/logo';
 
 const Login = () => {
     const { setUser } = React.useContext(UserContext);
@@ -63,11 +65,11 @@ const Login = () => {
                         <h4 className=' font-normal'>sign in</h4>
                         <h1>{process.env.REACT_APP_NAME}</h1>
                     </div>
-                    <a href={`/api/auth/google`}
-                        className=' bg-green-light outline outline-2 hover:outline-green-700 hover:bg-green-100 transition-all p-3 rounded-md text-green-950 w-max'>
-                        <FontAwesomeIcon icon={faGoogle} className='mr-2' />
-                        Sign in with Google
-                    </a>
+                    <DarkGreenButton 
+                        text='Sign in with Google' 
+                        icon={<FontAwesomeIcon icon={faGoogle} />} 
+                        onClick={() => window.location.href = '/api/auth/google'}
+                    />
                 </div>
             </div>
             <div></div>

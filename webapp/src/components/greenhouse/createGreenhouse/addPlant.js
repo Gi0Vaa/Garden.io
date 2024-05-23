@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 
 import plantsImg from '@images/Potted-plants.svg'
@@ -17,7 +18,7 @@ const AddPlant = ({plant, setPlant}) => {
     }, [selectedProp, setPlant]);
 
     return (
-        <div>
+        <React.Fragment>
             <h3 className=" font-bold text-green-950 p-3" >Add your first Plant</h3>
             <div className="grid grid-cols-1 xl:grid-cols-2" >
                 <div className="hidden xl:block h-80">
@@ -28,7 +29,7 @@ const AddPlant = ({plant, setPlant}) => {
                     <p>{plant?.description || ""}</p>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

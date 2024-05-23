@@ -63,7 +63,9 @@ async function createTables() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 description TEXT,
-                type CHAR(32) DEFAULT 'greenhouse'
+                type CHAR(32) DEFAULT 'greenhouse',
+                location INT NOT NULL,
+                CONSTRAINT fk_location FOREIGN KEY (location) REFERENCES location(locationId) ON DELETE CASCADE
             )
         `);
 
@@ -97,6 +99,15 @@ async function createTables() {
                 greenhouse INT NOT NULL,
                 quantity INT NOT NULL,
                 CONSTRAINT fk_plants FOREIGN KEY (greenhouse) REFERENCES greenhouse(id) ON DELETE CASCADE
+            )
+        `);
+
+        //locations
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS location (
+                locationId INT AUTO_INCREMENT PRIMARY KEY,
+                country VARCHAR(255) NOT NULL,
+                region VARCHAR(255) NOT NULL
             )
         `);
 

@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../../context/userContext';
-import { createGreenhouse, addPlantInGreenhouse } from '../../../services/greenhouses';
 
 import AddPlant from "./addPlant";
 import AddGreenhouse from "./addGreenhouse";
-import Loading from "@components/status/loading";
+import AddLocationAndType from './addLocationAndType';
+import CreateLoading from "./createLoading";
 import GreenButton from "@inputs/buttons/greenButton";
 import RedButton from '@inputs/buttons/redButton';
 
@@ -19,8 +18,6 @@ function CreateGreenhouse({ message, welcome = false }) {
     const [content, setContent] = useState("");
     const [step, setStep] = useState(1);
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         switch (step) {
             case 1:
@@ -30,25 +27,16 @@ function CreateGreenhouse({ message, welcome = false }) {
                 setContent(<AddPlant plant={plant} setPlant={setPlant} />);
                 break;
             case 3:
-                setContent(<Loading message={"Creando la tua serra..."} />);
-                const obj = greenhouse;
-                obj.userId = user.id;
-                createGreenhouse(obj)
-                    .then(g => {
-                        addPlantInGreenhouse(g.id, plant.plant_id, 1)
-                        .then(() => {
-                            setTimeout(() => {
-                                if(welcome) navigate('/welcome');
-                                else navigate('/greenhouse', { state : { greenhouse: g.id } });
-                            }, 300);
-                        });
-                    });
+                setContent(<AddLocationAndType greenhouse={greenhouse} setGreenhouse={setGreenhouse} />);
+                break;
+            case 4:
+                setContent(<CreateLoading userId={user.id} greenhouse={greenhouse} plant={plant} welcome={welcome} />);
                 break;
             default:
                 setContent(<div>Not Found</div>);
                 break;
         }
-    }, [step, plant, message, greenhouse, navigate, welcome, user.id]);
+    }, [step, greenhouse, plant, message, user.id, welcome]);
 
     function next() {
         setStep(step + 1);
@@ -62,14 +50,15 @@ function CreateGreenhouse({ message, welcome = false }) {
 
     return (
         <div className='md:col-span-2 flex flex-col gap-2 text-center'>
-            <div className="p-2 rounded-md text-left  bg-green-300 shadow-md flex flex-col gap-2">
+            <div className="p-2 rounded-md text-left  bg-green-light shadow-md flex flex-col gap-2">
                 {content}
                 <div id="btnContainer" className='flex flex-row p-3 place-content-between'>
                     <RedButton text={"Back"} onClick={back} isActive={step > 1} />
                     <GreenButton text={"Next"} onClick={next} isActive={
                         (step === 1 && (greenhouse?.name !== undefined && greenhouse?.name !== "")) ||
                         (step === 2 && plant !== undefined) ||
-                        (step === 3)
+                        (step === 3) ||
+                        (step === 4)
                     } />
                 </div>
             </div>

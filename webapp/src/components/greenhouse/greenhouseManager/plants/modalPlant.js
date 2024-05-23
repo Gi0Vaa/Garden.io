@@ -69,7 +69,7 @@ const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
                         </div>
                         <div className="flex flex-row place-content-between items-center">
                             <div></div>
-                            <GreenButton text="Add Plant" onClick={addPlant} />
+                            <GreenButton text="Add Plant" onClick={addPlant} isActive={selectedProp.id !== null} />
                         </div>
                     </div>
                 </div>

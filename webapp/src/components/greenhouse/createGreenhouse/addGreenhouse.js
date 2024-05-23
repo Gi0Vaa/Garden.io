@@ -1,6 +1,7 @@
+import React from 'react';
 import greenhouseImg from '@images/greenhouse.svg';
 
-function AddGreenhouse({message, greenhouse, setGreenhouse}){
+const AddGreenhouse = ({message, greenhouse, setGreenhouse}) => {
     function setInputs(){
         setGreenhouse({
             name: document.getElementById('greenhouseName').value,
@@ -9,7 +10,7 @@ function AddGreenhouse({message, greenhouse, setGreenhouse}){
     }
 
     return (
-        <div>
+        <React.Fragment>
             <h3 className=" font-bold text-green-950 p-3" >{message}</h3>
             <div className="grid grid-cols-1 xl:grid-cols-2" >
                 <div className="hidden xl:block h-80">
@@ -20,7 +21,7 @@ function AddGreenhouse({message, greenhouse, setGreenhouse}){
                     <textarea placeholder="Description" onChange={setInputs} value={greenhouse?.description ? greenhouse.description : ''} className="p-2 m-2 resize-none rounded-md focus:outline-none h-full" id='greenhouseDescription'></textarea>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

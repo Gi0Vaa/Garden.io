@@ -11,8 +11,8 @@ const GreenButton = ({ text, icon, onClick, isActive=true, padding }) => {
                 if(isActive) onClick();
             }}
         >
-            {text || ""}
             {icon || null}
+            {text || ""}
         </button>
     );
 }

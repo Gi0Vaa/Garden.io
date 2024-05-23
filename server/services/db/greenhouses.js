@@ -42,7 +42,7 @@ async function createGreenhouse(greenhouse){
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query('INSERT INTO greenhouse (name, description) VALUES (?, ?)', [greenhouse.name, greenhouse.description]);
+        await conn.query('INSERT INTO greenhouse (name, description, location) VALUES (?, ?, ?)', [greenhouse.name, greenhouse.description, greenhouse.location]);
         const row = await conn.query('SELECT MAX(id) id FROM greenhouse');
         await conn.query('INSERT INTO measurement (greenhouse, temperature, humidity, date) VALUES (?, ?, ?, ?)', [row[0].id, 0, 0, new Date()]);
         await require('./greenhousesUsers').addGreenhouseUser(greenhouse.userId, row[0].id);

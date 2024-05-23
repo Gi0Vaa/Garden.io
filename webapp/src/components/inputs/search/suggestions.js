@@ -6,7 +6,6 @@ const Suggestions = ({name, setSearch, setSelectedProp, setIsSelected, searchRes
     const [props, setProps] = useState([]);
 
     useEffect(() => {
-        console.log(searchResults);
         searchResults(name)
             .then(res => setProps(res));
     }, [name, searchResults]);
