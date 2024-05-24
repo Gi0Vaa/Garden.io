@@ -31,7 +31,7 @@ const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
                 <div className='flex flex-col gap-3 p-2'>
                     <DarkGreenContainer 
                         icon={<FontAwesomeIcon icon={faLocationDot}/>}
-                        title={`Location: ${locations[0]?.country || ""} - ${locations[0]?.region || ""}`}
+                        title={`Location: ${locations[0]?.country || ""} - ${locations[0]?.city || ""}`}
                     />
                     <DarkGreenContainer 
                         icon={<FontAwesomeIcon icon={faSeedling}/>}

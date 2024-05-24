@@ -1,6 +1,6 @@
 const pool = require('./pool');
 
-async function getAllGreenhouses(){
+async function getAllGreenhouses() {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -19,17 +19,20 @@ async function getAllGreenhouses(){
     }
 }
 
-async function getGreenhouse(greenhouseId){
+async function getGreenhouse(greenhouseId) {
     let conn;
     try {
         conn = await pool.getConnection();
         const row = await conn.query(`
-        SELECT g.*, m.temperature, m.humidity, l.country, l.region FROM greenhouse g
-        JOIN measurement m ON g.id = m.greenhouse
-        LEFT JOIN location l ON g.location = l.locationId
-        WHERE g.id = ?`, 
-        [greenhouseId]
-    );
+            SELECT g.*, l.country, l.city, w.temperature, w.humidity, w.date
+            FROM greenhouse g
+            LEFT JOIN location l ON g.location = l.locationId
+            LEFT JOIN weather w ON l.locationId = w.location
+            WHERE g.id = ?
+            ORDER BY w.date DESC
+            LIMIT 1`,
+            [greenhouseId]
+        );
         return row[0];
     }
     catch (err) {
@@ -40,7 +43,7 @@ async function getGreenhouse(greenhouseId){
     }
 }
 
-async function createGreenhouse(greenhouse){
+async function createGreenhouse(greenhouse) {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -59,7 +62,7 @@ async function createGreenhouse(greenhouse){
 
 }
 
-async function updateGreenhouse(greenhouseId, greenhouse){
+async function updateGreenhouse(greenhouseId, greenhouse) {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -74,7 +77,7 @@ async function updateGreenhouse(greenhouseId, greenhouse){
     }
 }
 
-async function deleteGreenhouse(greenhouseId){
+async function deleteGreenhouse(greenhouseId) {
     let conn;
     try {
         conn = await pool.getConnection();

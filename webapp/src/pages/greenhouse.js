@@ -28,6 +28,7 @@ const Greenhouse = () => {
             .then(g => {
                 if(!g) return navigate('/');
                 setGreenhouse(g);
+                console.log(g);
             });
     }, [greenhouseId, setGreenhouse, navigate]);
 

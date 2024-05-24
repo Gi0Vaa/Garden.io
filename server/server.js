@@ -20,7 +20,12 @@ const port = 3001;
 //crea database
 require('./services/db/db').createDatabase();
 //crea tabelle
-require('./services/db/db').createTables();
+require('./services/db/db').createTables()
+.then(() => {
+    //jobs
+    require('./jobs/updateWeather');
+});
+
 
 //log delle richieste
 app.use((req, res, next) => {

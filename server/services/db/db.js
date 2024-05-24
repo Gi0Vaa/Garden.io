@@ -64,7 +64,7 @@ async function createTables() {
                 name VARCHAR(255) NOT NULL,
                 description TEXT,
                 type CHAR(32) DEFAULT 'greenhouse',
-                location INT NOT NULL,
+                location INT,
                 CONSTRAINT fk_location FOREIGN KEY (location) REFERENCES location(locationId) ON DELETE CASCADE
             )
         `);
@@ -107,7 +107,21 @@ async function createTables() {
             CREATE TABLE IF NOT EXISTS location (
                 locationId INT AUTO_INCREMENT PRIMARY KEY,
                 country VARCHAR(255) NOT NULL,
-                region VARCHAR(255) NOT NULL
+                city VARCHAR(255) NOT NULL,
+                latitude TEXT NOT NULL,
+                longitude TEXT NOT NULL
+            )
+        `);
+
+        //weather
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS weather (
+                weatherId INT AUTO_INCREMENT PRIMARY KEY,
+                location INT NOT NULL,
+                temperature DECIMAL(5, 2) NOT NULL,
+                humidity INT NOT NULL,
+                date DATETIME NOT NULL,
+                CONSTRAINT fk_location_weather FOREIGN KEY (location) REFERENCES location(locationId) ON DELETE CASCADE
             )
         `);
 

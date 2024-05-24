@@ -29,7 +29,7 @@ const Plants = ({plants, setPlants, greenhouse }) => {
     return (
         <React.Fragment>
             {
-                isModalOpen && <ModalPlant greenhouseId={greenhouse.greenhouse} setIsModalOpen={setIsModalOpen} plants={plants} setPlants={setPlants} />
+                isModalOpen && <ModalPlant greenhouseId={greenhouse.id} setIsModalOpen={setIsModalOpen} plants={plants} setPlants={setPlants} />
             }
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-2 text-green-dark' id='grid'>
                 <div className='xl:col-span-2 p-2 flex flex-row place-content-between'>
