@@ -17,8 +17,9 @@ const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
         getLocations()
             .then(l => {
                 setLocations(l);
+                setGreenhouse({ ...greenhouse, location: l[0].locationId, type: "greenhouse" })                
             });
-    }, []);
+    }, [greenhouse, setGreenhouse]);
 
     return (
         <React.Fragment>

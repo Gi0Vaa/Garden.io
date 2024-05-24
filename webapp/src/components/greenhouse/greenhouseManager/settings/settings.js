@@ -5,6 +5,7 @@ import { deleteGreenhouse, updateGreenhouse } from "@services/greenhouses";
 import ModalUser from './modalUser';
 import RedButton from '@inputs/buttons/redButton';
 import SkyButton from '@inputs/buttons/skyButton';
+import SettingContainer from './settingContainer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
@@ -59,28 +60,24 @@ const Settings = ({ greenhouse, setGreenhouse }) => {
                     actualGreenhouse.description !== greenhouse.description
                 } />
             </div>
-            <div className="flex flex-row place-content-between gap-1 p-3 rounded-md shadow-md">
-                <div className="flex flex-col">
-                    <h4 className="font-semibold">Add user</h4>
-                    <h5 className="font-normal">Add a user to this greenhouse</h5>
-                </div>
-                <div className="flex items-center">
+            <SettingContainer
+                title="Add user"
+                description="Add a user to this greenhouse"
+                button={
                     <SkyButton
                         icon={<FontAwesomeIcon icon={faUserPlus} />}
                         isActive={false}
                         padding={'px-2 py-1'}
                     />
-                </div>
-            </div>
-            <div className="flex flex-row place-content-between gap-1 p-3 rounded-md shadow-md">
-                <div className="flex flex-col">
-                    <h4 className="font-semibold">Delete greenhouse</h4>
-                    <h5 className="font-normal">Once you delete a greenhouse, there is no going back. Please be certain.</h5>
-                </div>
-                <div className="flex items-center">
+                }
+            />
+            <SettingContainer
+                title="DELETE greenhouse"
+                description="Once you delete a greenhouse, there is no going back. Please be certain."
+                button={
                     <RedButton text="DELETE" onClick={removeGreenhouse} />
-                </div>
-            </div>
+                }
+            />
         </div>
     );
 }

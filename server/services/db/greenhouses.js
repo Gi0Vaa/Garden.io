@@ -7,6 +7,7 @@ async function getAllGreenhouses(){
         const rows = await conn.query(`
         SELECT * FROM greenhouse g
         JOIN measurement m ON g.id = m.greenhouse
+        JOIN location l ON g.location = l.locationId
     `);
         return rows;
     }
@@ -23,8 +24,9 @@ async function getGreenhouse(greenhouseId){
     try {
         conn = await pool.getConnection();
         const row = await conn.query(`
-        SELECT * FROM greenhouse g
+        SELECT g.*, m.temperature, m.humidity, l.country, l.region FROM greenhouse g
         JOIN measurement m ON g.id = m.greenhouse
+        LEFT JOIN location l ON g.location = l.locationId
         WHERE g.id = ?`, 
         [greenhouseId]
     );
@@ -42,7 +44,7 @@ async function createGreenhouse(greenhouse){
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query('INSERT INTO greenhouse (name, description, location) VALUES (?, ?, ?)', [greenhouse.name, greenhouse.description, greenhouse.location]);
+        await conn.query('INSERT INTO greenhouse (name, description, type, location) VALUES (?, ?, ?, ?)', [greenhouse.name, greenhouse.description, greenhouse.type, greenhouse.location]);
         const row = await conn.query('SELECT MAX(id) id FROM greenhouse');
         await conn.query('INSERT INTO measurement (greenhouse, temperature, humidity, date) VALUES (?, ?, ?, ?)', [row[0].id, 0, 0, new Date()]);
         await require('./greenhousesUsers').addGreenhouseUser(greenhouse.userId, row[0].id);
