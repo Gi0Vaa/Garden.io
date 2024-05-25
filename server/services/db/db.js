@@ -74,8 +74,8 @@ async function createTables() {
             CREATE TABLE IF NOT EXISTS measurement (
                 measureId INT AUTO_INCREMENT PRIMARY KEY,
                 greenhouse INT NOT NULL,
-                temperature TEXT NOT NULL,
-                humidity TEXT NOT NULL,
+                temperature DECIMAL(5, 2) NOT NULL,
+                humidity INT NOT NULL,
                 date DATETIME NOT NULL,
                 CONSTRAINT fk_greenhouse_measurement FOREIGN KEY (greenhouse) REFERENCES greenhouse(id) ON DELETE CASCADE
             )

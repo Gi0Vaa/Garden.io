@@ -1,25 +1,32 @@
 import React from 'react';
 
 import { useEffect, useState } from 'react';
-import { getLocations } from '@services/locations';
+import { getCountries, getCities } from '@services/locations';
 
 import locationImg from '@images/location.svg'
 import DarkGreenContainer from '@components/containers/darkGreenContainer';
+import DarkGreenSelect from '@inputs/selects/darkGreenSelect';
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faSeedling } from '@fortawesome/free-solid-svg-icons'
 
 const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
-    const [locations, setLocations] = useState([]);
-    //const [types, setTypes] = useState([]);
+    const [country, setCountry] = useState(null);
+    const [location, setLocation] = useState([]);
+    //const [type, setType] = useState([]);
+
     useEffect(() => {
-        getLocations()
-            .then(l => {
-                setLocations(l);
-                setGreenhouse({ ...greenhouse, location: l[0].locationId, type: "greenhouse" })                
-            });
-    }, [greenhouse, setGreenhouse]);
+        document.title = `Create Greenhouse | ${process.env.REACT_APP_NAME}`;
+    }, []);
+
+    useEffect(() => {
+        setGreenhouse(prevGreenhouse => ({
+            ...prevGreenhouse,
+            location: location,
+            type: 'greenhouse'
+        }));
+    }, [location, setGreenhouse]);
 
     return (
         <React.Fragment>
@@ -31,7 +38,29 @@ const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
                 <div className='flex flex-col gap-3 p-2'>
                     <DarkGreenContainer 
                         icon={<FontAwesomeIcon icon={faLocationDot}/>}
-                        title={`Location: ${locations[0]?.country || ""} - ${locations[0]?.city || ""}`}
+                        title={`Location`}
+                        content={
+                            <div className='flex flex-col gap-2'>
+                                <DarkGreenSelect
+                                    title="Select Country"
+                                    optionsFunction={
+                                        getCountries
+                                    }
+                                    setSelectedItem={setCountry}
+                                    fieldShowed="country"
+                                    fieldValue="country"
+                                />
+                                <DarkGreenSelect
+                                    title="Select City"
+                                    optionsFunction={
+                                        country ? () => getCities(country) : null
+                                    }
+                                    setSelectedItem={setLocation}
+                                    fieldShowed="city"
+                                    fieldValue="locationId"
+                                />
+                            </div>
+                        }
                     />
                     <DarkGreenContainer 
                         icon={<FontAwesomeIcon icon={faSeedling}/>}

@@ -19,4 +19,32 @@ router.get('/api/locations', isLogged, async (req, res) => {
     }
 });
 
+//countries
+router.get('/api/countries', isLogged, async (req, res) => {
+    const countries = await locations.getCountries();
+    if(countries.length === 0){
+        return res.status(404).json({
+            code: 404,
+            message: "No countries found"
+        });
+    }
+    else{
+        return res.status(200).json(countries);
+    }
+});
+
+//cities
+router.get('/api/cities/:country', isLogged, async (req, res) => {
+    const cities = await locations.getCities(req.params.country);
+    if(cities.length === 0){
+        return res.status(404).json({
+            code: 404,
+            message: "No cities found"
+        });
+    }
+    else{
+        return res.status(200).json(cities);
+    }
+});
+
 module.exports = router;

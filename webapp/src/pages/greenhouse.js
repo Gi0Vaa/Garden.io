@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import Header from '../components/header.js';
 import Plants from '@greenhouse/greenhouseManager/plants/plants.js';
-import Dashboard from '@greenhouse/greenhouseManager/dashboard.js';
+import Dashboard from '@greenhouse/greenhouseManager/dashboard/dashboard.js';
 import Settings from '@greenhouse/greenhouseManager/settings/settings.js';
 import SubMenuBtn from '@inputs/buttons/subMenuBtn.js';
 
@@ -14,7 +14,7 @@ import { getPlantsInGreenhouse, getGreenhouse } from '@services/greenhouses.js';
 const Greenhouse = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const greenhouseId = location.state.greenhouse;
+    const greenhouseId = location.state.greenhouse || location.state.id;
 
     const [plants, setPlants] = useState([]);
     const [greenhouse, setGreenhouse] = useState({});
@@ -23,12 +23,11 @@ const Greenhouse = () => {
     
 
     useEffect(() => {
-        if (greenhouseId === null) return navigate('/');
+        if (!greenhouseId) return navigate('/');
         getGreenhouse(greenhouseId)
             .then(g => {
                 if(!g) return navigate('/');
                 setGreenhouse(g);
-                console.log(g);
             });
     }, [greenhouseId, setGreenhouse, navigate]);
 
@@ -37,7 +36,7 @@ const Greenhouse = () => {
     }, [greenhouse]);
 
     useEffect(() => {
-        if (greenhouseId === null) return;
+        if (!greenhouseId) return;
         getPlantsInGreenhouse(greenhouseId)
             .then(response => {
                 setPlants(response);
@@ -54,7 +53,7 @@ const Greenhouse = () => {
             if(plant.minHumidity > greenhouse.humidity || plant.maxHumidity < greenhouse.humidity) {
                 count++;
             }
-            if(parseFloat(plant.minTemperature) > parseFloat(greenhouse.temperature) || parseFloat(plant.maxTemperature) < parseFloat(greenhouse.temperature)) {
+            if(plant.minTemperature > greenhouse.temperature || plant.maxTemperature < greenhouse.temperature) {
                 count++;
             }
         }

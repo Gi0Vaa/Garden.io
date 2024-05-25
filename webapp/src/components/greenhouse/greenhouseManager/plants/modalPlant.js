@@ -41,7 +41,6 @@ const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
                 });
         }
         else {
-            console.log(greenhouseId);
             addPlantInGreenhouse(greenhouseId, plant.plant_id, 1)
                 .then(() => {
                     setSelectedProp({ id: null, name: null });

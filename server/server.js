@@ -23,7 +23,7 @@ require('./services/db/db').createDatabase();
 require('./services/db/db').createTables()
 .then(() => {
     //jobs
-    require('./jobs/updateWeather');
+    //require('./jobs/updateWeather');
 });
 
 

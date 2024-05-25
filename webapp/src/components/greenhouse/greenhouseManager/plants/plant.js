@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deletePlantInGreenhouse, patchPlantInGreenhouse } from '@services/greenhouses';
 
+//utils
+import { humidityMessage, temperatureMessage } from '@utils/plantStatusMessage.js';
+
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faTrash, faAdd, faMinus, faExclamation, faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -9,31 +12,8 @@ import { faBook, faTrash, faAdd, faMinus, faExclamation, faCheck } from '@fortaw
 const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
-    const [isGoodHumidity, setIsGoodHumidity] = useState({ state: null, message: '', value: null });
-    const [isGoodTemperature, setIsGoodTemperature] = useState({ state: null, message: '', value: null });
-
-    useState(() => {
-        if (greenhouse.humidity < plant.minHumidity) {
-            setIsGoodHumidity({ state: false, message: `The humidity is too low minimum is`, value: `${plant.minHumidity}%` });
-        }
-        else if (greenhouse.humidity > plant.maxHumidity) {
-            setIsGoodHumidity({ state: false, message: `The humidity is too high maximum is`, value: `${plant.maxHumidity}%` });
-        }
-        else {
-            setIsGoodHumidity({ state: true, message: 'The humidity is good' });
-        }
-        
-        const temperature = parseFloat(greenhouse.temperature);
-        if (temperature < parseFloat(plant.minTemperature)) {
-            setIsGoodTemperature({ state: false, message: `The temperature is too low minimum is`, value: `${plant.minTemperature}°C` });
-        }
-        else if (temperature > parseFloat(plant.maxTemperature)) {
-            setIsGoodTemperature({ state: false, message: `The temperature is too high maximum is`, value: `${plant.maxTemperature}°C` });
-        }
-        else {
-            setIsGoodTemperature({ state: true, message: 'The temperature is good' });
-        }
-    }, []);
+    const [isGoodHumidity] = useState(humidityMessage(plant.minHumidity, plant.maxHumidity, greenhouse.humidity));
+    const [isGoodTemperature] = useState(temperatureMessage(plant.minTemperature, plant.maxTemperature, greenhouse.temperature));
 
     useEffect(() => {
         setQuantity(plant.quantity);
@@ -60,7 +40,7 @@ const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
     }
 
     function updateQuantity(value) {
-        patchPlantInGreenhouse(greenhouse.greenhouse, plant.plant_id, value)
+        patchPlantInGreenhouse(greenhouse.id, plant.plant_id, value)
     }
 
     function deletePlant() {
