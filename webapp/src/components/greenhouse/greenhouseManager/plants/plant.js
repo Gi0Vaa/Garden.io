@@ -12,8 +12,8 @@ import { faBook, faTrash, faAdd, faMinus, faExclamation, faCheck } from '@fortaw
 const Plant = ({ plant, greenhouse, plants, setPlants, count, setCount }) => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(plant.quantity);
-    const [isGoodHumidity] = useState(humidityMessage(plant.minHumidity, plant.maxHumidity, greenhouse.humidity));
-    const [isGoodTemperature] = useState(temperatureMessage(plant.minTemperature, plant.maxTemperature, greenhouse.temperature));
+    const [isGoodHumidity] = useState(humidityMessage(parseInt(plant.minHumidity), parseInt(plant.maxHumidity), greenhouse.humidity));
+    const [isGoodTemperature] = useState(temperatureMessage(parseFloat(plant.minTemperature), parseFloat(plant.maxTemperature), greenhouse.temperature));
 
     useEffect(() => {
         setQuantity(plant.quantity);

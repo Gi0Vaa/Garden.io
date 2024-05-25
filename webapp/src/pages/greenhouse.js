@@ -50,10 +50,10 @@ const Greenhouse = () => {
         if (plants.length === 0 || Object.keys(greenhouse).length === 0) return;
         let count = 0;
         for (let plant of plants) {
-            if(plant.minHumidity > greenhouse.humidity || plant.maxHumidity < greenhouse.humidity) {
+            if(parseInt(plant.minHumidity) > greenhouse.humidity || parseInt(plant.maxHumidity) < greenhouse.humidity) {
                 count++;
             }
-            if(plant.minTemperature > greenhouse.temperature || plant.maxTemperature < greenhouse.temperature) {
+            if(parseFloat(plant.minTemperature) > greenhouse.temperature || parseFloat(plant.maxTemperature) < greenhouse.temperature) {
                 count++;
             }
         }
