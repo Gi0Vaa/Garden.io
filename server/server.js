@@ -23,7 +23,9 @@ require('./services/db/db').createDatabase();
 require('./services/db/db').createTables()
 .then(() => {
     //jobs
-    //require('./jobs/updateWeather');
+    if(process.env.NODE_ENV === 'production'){
+        require('./jobs/updateWeather');
+    }
 });
 
 
@@ -54,7 +56,7 @@ app.use(routes.greenhousesPlants);
 app.use(routes.locations);
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port} - environment: ${process.env.NODE_ENV}`);
 });
 
 module.exports = router;
