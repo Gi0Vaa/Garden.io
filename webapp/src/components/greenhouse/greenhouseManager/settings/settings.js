@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { deleteGreenhouse, updateGreenhouse } from "@services/greenhouses";
+import { getCities, getCountries } from '@services/locations';
 
 import ModalUser from './modalUser';
 import RedButton from '@inputs/buttons/redButton';
 import SkyButton from '@inputs/buttons/skyButton';
 import SettingContainer from './settingContainer';
+import LightGreenSelect from '@inputs/selects/lightGreenSelect';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
 const Settings = ({ greenhouse, setGreenhouse }) => {
-    const [actualGreenhouse, setActualGreenhouse] = useState({ name: '', description: '' });
+    const [actualGreenhouse, setActualGreenhouse] = useState(greenhouse);
+    const [country, setCountry] = useState({value: greenhouse.country || null, label: greenhouse.country || null});
+    const [location, setLocation] = useState({value: greenhouse.location || null, label: greenhouse.city || null});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setActualGreenhouse(greenhouse);
-    }, [greenhouse]);
 
     function setChanges() {
         const name = document.getElementById('name').value;
@@ -31,11 +31,12 @@ const Settings = ({ greenhouse, setGreenhouse }) => {
         const obj = {
             name: name,
             description: description,
-            type: "greenhouse"
+            type: "greenhouse",
+            location: location.value
         }
         updateGreenhouse(greenhouse.id, obj)
             .then(() => {
-                setGreenhouse({ ...greenhouse, name: name, description: description });
+                setGreenhouse({ ...greenhouse, name: name, description: description, location: location.value, country: country.label, city: location.label});
             })
     }
 
@@ -53,12 +54,32 @@ const Settings = ({ greenhouse, setGreenhouse }) => {
             }
             <div className="flex flex-col gap-1 p-3 rounded-md shadow-md">
                 <h3>Greenhouse info:</h3>
-                <input onChange={setChanges} type="text" id="name" defaultValue={greenhouse.name} className="p-1 rounded-md border-2 border-green-300 focus:border-green-600 focus:outline-none transition-colors" />
-                <textarea onChange={setChanges} id="description" defaultValue={greenhouse.description} className="p-1 h-32 rounded-md border-2 border-green-300 focus:border-green-600 focus:outline-none transition-colors  resize-none"></textarea>
-                <SkyButton text="Save" onClick={save} isActive={
-                    actualGreenhouse.name !== greenhouse.name ||
-                    actualGreenhouse.description !== greenhouse.description
-                } />
+                <input onChange={setChanges} type="text" id="name" defaultValue={greenhouse.name} className="p-1 rounded-md border-2 border-green-light focus:border-green-600 focus:outline-none transition-colors" />
+                <textarea onChange={setChanges} id="description" defaultValue={greenhouse.description} className="p-1 h-32 rounded-md border-2 border-green-light focus:border-green-600 focus:outline-none transition-colors  resize-none"></textarea>
+                <LightGreenSelect
+                    title="Country"
+                    optionsFunction={getCountries}
+                    setSelectedItem={setCountry}
+                    fieldShowed="country"
+                    fieldValue="country"
+                    defaultValue={{country: country.value}}
+                />
+                <LightGreenSelect
+                    title="City"
+                    optionsFunction={country.value ? () => getCities(country.value) : null}
+                    setSelectedItem={setLocation}
+                    fieldShowed="city"
+                    fieldValue="locationId"
+                    defaultValue={{city: greenhouse.city, locationId: greenhouse.location}}
+                />
+                <SkyButton 
+                    text="Save" 
+                    onClick={save} isActive={
+                        actualGreenhouse.name !== greenhouse.name ||
+                        actualGreenhouse.description !== greenhouse.description ||
+                        location.value !== greenhouse.location
+                    } 
+                />
             </div>
             <SettingContainer
                 title="Add user"

@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faSeedling } from '@fortawesome/free-solid-svg-icons'
 
 const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
-    const [country, setCountry] = useState(undefined);
-    const [location, setLocation] = useState(undefined);
+    const [country, setCountry] = useState({value: null, label: null});
+    const [location, setLocation] = useState({value: null, label: null});
     //const [type, setType] = useState([]);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
     useEffect(() => {
         setGreenhouse(prevGreenhouse => ({
             ...prevGreenhouse,
-            location: location,
+            location: location.value,
             type: 'greenhouse'
         }));
     }, [location, setGreenhouse]);
@@ -53,7 +53,7 @@ const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
                                 <DarkGreenSelect
                                     title="Select City"
                                     optionsFunction={
-                                        country ? () => getCities(country) : null
+                                        country?.label ? () => getCities(country.label) : null
                                     }
                                     setSelectedItem={setLocation}
                                     fieldShowed="city"

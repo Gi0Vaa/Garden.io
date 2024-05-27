@@ -66,7 +66,7 @@ async function updateGreenhouse(greenhouseId, greenhouse) {
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query('UPDATE greenhouse SET name = ?, description = ? WHERE id = ?', [greenhouse.name, greenhouse.description, greenhouseId]);
+        await conn.query('UPDATE greenhouse SET name = ?, description = ?, type = ?, location = ? WHERE id = ?', [greenhouse.name, greenhouse.description, greenhouse.type, greenhouse.location, greenhouseId]);
         return await getGreenhouse(greenhouseId);
     }
     catch (err) {
