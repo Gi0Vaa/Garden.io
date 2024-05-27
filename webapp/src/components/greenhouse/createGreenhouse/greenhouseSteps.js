@@ -56,8 +56,8 @@ function CreateGreenhouse({ message, welcome = false }) {
                     <RedButton text={"Back"} onClick={back} isActive={step > 1} />
                     <GreenButton text={"Next"} onClick={next} isActive={
                         (step === 1 && (greenhouse?.name !== undefined && greenhouse?.name !== "")) ||
-                        (step === 2 && plant !== undefined) ||
-                        (step === 3) ||
+                        (step === 2 && plant) ||
+                        (step === 3 && greenhouse?.location) ||
                         (step === 4)
                     } />
                 </div>

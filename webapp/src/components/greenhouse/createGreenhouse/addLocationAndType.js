@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faSeedling } from '@fortawesome/free-solid-svg-icons'
 
 const AddLocationAndType = ({ greenhouse, setGreenhouse }) => {
-    const [country, setCountry] = useState(null);
-    const [location, setLocation] = useState([]);
+    const [country, setCountry] = useState(undefined);
+    const [location, setLocation] = useState(undefined);
     //const [type, setType] = useState([]);
 
     useEffect(() => {

@@ -10,7 +10,8 @@ const AddPlant = ({plant, setPlant}) => {
     const [selectedProp, setSelectedProp] = useState(undefined);
 
     useEffect(() => {
-        if (!selectedProp) return;
+        if(selectedProp === "") return setPlant(null)
+        if(!selectedProp) return;
         getPlantById(selectedProp.id)
             .then(p => {
                 setPlant(p);
@@ -25,7 +26,11 @@ const AddPlant = ({plant, setPlant}) => {
                     <img src={plantsImg} alt="greenhouse" className="h-full w-full object-cover" />
                 </div>
                 <div className='flex flex-col gap-3 p-2'>
-                    <SearchbarProp setSelectedProp={setSelectedProp} searchResults={getPlantsByName} />
+                    <SearchbarProp 
+                        setSelectedProp={setSelectedProp} 
+                        searchResults={getPlantsByName}
+                        searchValue={plant?.name || ""} 
+                    />
                     <p>{plant?.description || ""}</p>
                 </div>
             </div>

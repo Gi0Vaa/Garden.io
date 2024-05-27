@@ -1,9 +1,9 @@
 import { useState } from 'react';   
 import Suggestions from './suggestions';
 
-const SearchbarProp = ({ setSelectedProp, searchResults }) => {
-    const [search, setSearch] = useState('');
-    const [isSelected, setIsSelected] = useState(false);
+const SearchbarProp = ({ setSelectedProp, searchResults, searchValue = '' }) => {
+    const [search, setSearch] = useState(searchValue);
+    const [isSelected, setIsSelected] = useState(searchValue === '' ? false : true);
 
     return (
         <div className='flex flex-col bg-green-dark rounded-md p-1 text-green-dark'>
@@ -12,6 +12,7 @@ const SearchbarProp = ({ setSelectedProp, searchResults }) => {
                 onChange={(e) => {
                         setSearch(e.target.value)
                         setIsSelected(false)
+                        setSelectedProp("")
                     }
                 }
             />
