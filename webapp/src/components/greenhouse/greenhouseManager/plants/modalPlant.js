@@ -64,7 +64,7 @@ const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
                             </div>
                             <SearchbarProp setSelectedProp={setSelectedProp} searchResults={getPlantsByName} />
                             <div className="flex flex-col gap-2">
-                                <p>{plant.description}</p>
+                                <p>{plant?.description || ""}</p>
                             </div>
                         </div>
                         <div className="flex flex-row place-content-between items-center">
