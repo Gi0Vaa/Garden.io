@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const ModalPlant = ({ setIsModalOpen, greenhouseId, plants, setPlants }) => {
-    const [plant, setPlant] = useState({ plant_id: 0, name: '', description: '' });
+    const [plant, setPlant] = useState({});
     const [selectedProp, setSelectedProp] = useState({ id: null, name: null });
 
     useEffect(() => {
