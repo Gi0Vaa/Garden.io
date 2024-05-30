@@ -15,6 +15,21 @@ async function getUser(email){
     }
 }
 
+async function getUsersByName(name){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const row = await conn.query('SELECT * FROM user WHERE email LIKE ? OR name LIKE ? OR surname LIKE ?', [name, name, name]);
+        return row[0];
+    }
+    catch (err) {
+        throw err;
+    }
+    finally {
+        if (conn) conn.end();
+    }
+}
+
 async function createUser(id, email, name, surname, pfp, type){
     let conn;
     try {
@@ -33,5 +48,6 @@ async function createUser(id, email, name, surname, pfp, type){
 
 module.exports = {
     getUser,
+    getUsersByName,
     createUser
 };

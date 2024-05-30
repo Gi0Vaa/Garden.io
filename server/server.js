@@ -54,6 +54,8 @@ app.use(routes.greenhousesUsers);
 app.use(routes.plants);
 app.use(routes.greenhousesPlants);
 app.use(routes.locations);
+app.use(routes.weather);
+app.use(routes.users);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port} - environment: ${process.env.NODE_ENV}`);

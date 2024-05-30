@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { deleteGreenhouse, updateGreenhouse } from "@services/greenhouses";
 import { getCities, getCountries } from '@services/locations';
+import { getWeather } from '@services/weather';
 
 import ModalUser from './modalUser';
 import RedButton from '@inputs/buttons/redButton';
@@ -36,7 +37,19 @@ const Settings = ({ greenhouse, setGreenhouse }) => {
         }
         updateGreenhouse(greenhouse.id, obj)
             .then(() => {
-                setGreenhouse({ ...greenhouse, name: name, description: description, location: location.value, country: country.label, city: location.label});
+                if(location.value !== greenhouse.location){
+                    getWeather(location.value)
+                        .then(l => {
+                            setGreenhouse(
+                                { ...greenhouse, name: name, description: description, 
+                                    location: location.value, country: country.label, city: location.label,
+                                    temperature: l?.temperature || undefined, humidity: l?.humidity || undefined
+                                });
+                        });
+                }
+                else{
+                    setGreenhouse({ ...greenhouse, name: name, description: description, location: location.value, country: country.label, city: location.label});
+                }
             })
     }
 
@@ -87,7 +100,8 @@ const Settings = ({ greenhouse, setGreenhouse }) => {
                 button={
                     <SkyButton
                         icon={<FontAwesomeIcon icon={faUserPlus} />}
-                        isActive={false}
+                        isActive={true}
+                        onClick={() => setIsModalOpen(true)}
                         padding={'px-2 py-1'}
                     />
                 }

@@ -3,7 +3,7 @@ const cron = require('node-cron');
 
 const locations = require('../services/db/locations');
 const key = require('../apiKeys.json').openWeather.apiKey;
-const weather = require('../services/db/wheater');
+const weather = require('../services/db/weather');
 
 async function updateWeather() {
     const ls = await locations.getGreenhousesLocations();

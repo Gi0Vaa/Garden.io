@@ -34,7 +34,7 @@ const ModalUser = ({ setIsModalOpen, greenhouseId, users, setUsers }) => {
                     <div className="bg-green-light rounded-md flex flex-col gap-4 p-3 w-full h-2/4 place-content-between text-green-dark">
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-row place-content-between items-center">
-                                <h3>Add Plant</h3>
+                                <h3>Add User</h3>
                                 <RedButton icon={<FontAwesomeIcon icon={faXmark} />} onClick={() => setIsModalOpen(false)} padding={'px-2 py-1'} />
                             </div>
                             <SearchbarProp />
@@ -44,7 +44,7 @@ const ModalUser = ({ setIsModalOpen, greenhouseId, users, setUsers }) => {
                         </div>
                         <div className="flex flex-row place-content-between items-center">
                             <div></div>
-                            <SkyButton text="Add Plant" />
+                            <SkyButton text="Add User" />
                         </div>
                     </div>
                 </div>
